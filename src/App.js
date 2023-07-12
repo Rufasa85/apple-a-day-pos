@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route index={true} element={<Home />} />
         <Route path="/new-shift" element={<NewShift/>} />
-        <Route path="/edit-shift/:id" element={<EditShift/>} />
+        <Route path="/edit-shift" element={<EditShift/>} />
         <Route path="/service" element={<Service/>} />
         <Route path="/reports" element={<Reports/>} />
         <Route path="/reports/shifts/:id" element={<ShiftReport/>} />
