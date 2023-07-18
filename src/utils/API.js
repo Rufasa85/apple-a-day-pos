@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'localhost:3001/api';
+const baseUrl = 'http://localhost:3001/api';
 // const baseUrl = "deployedurl"
 
 const instance = axios.create({
@@ -88,13 +88,17 @@ const api = {
 		}
 	},
 	// Items
-	getAllItems: async (token) => {
+	getAllItems: async () => {
 		try {
-			const items = await instance.get('/items', {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			});
+			const items = await instance.get('/items');
+			return items;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	getTodaysItems: async () => {
+		try {
+			const items = await instance.get('/shifts/today');
 			return items;
 		} catch (error) {
 			console.log(error);
