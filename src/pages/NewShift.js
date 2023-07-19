@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import Loading from '../components/Loading';
 import api from '../utils/API';
 import foodEmojis from '../utils/emojis';
+import twColors from '../utils/twColors';
+import classCondition from '../utils/classCondition';
 
 const NewShift = () => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -15,6 +17,9 @@ const NewShift = () => {
 	const [itemStockInput, setItemStockInput] = useState(0);
 
 	const currentDay = dayjs().format('MMMM D, YYYY');
+
+	// const availableColors = [...twColors.colors];
+	// console.log(availableColors);
 
 	const getAllItems = async () => {
 		try {
@@ -49,16 +54,17 @@ const NewShift = () => {
 			const term = terms[i];
 			const res = emoji.search(term);
 
-			res.forEach((object) => {
-				const isFood = foodEmojis.some((food) => object.name?.includes(food));
+			for (let i = 0; i < res.length; i++) {
+				const resObject = res[i];
+				const isFood = foodEmojis.some((food) => resObject.name?.includes(food));
 
 				if (isFood) {
-					foundEmoji = object.emoji;
+					foundEmoji = resObject.emoji;
 				}
-			});
+			}
 		}
 
-		return foundEmoji || <img src='./assets/icons/food-icon.png' className='h-32' />;
+		return foundEmoji || <img src='./assets/icons/food-icon.png' alt='food-icon' className='h-32' />;
 	};
 
 	useEffect(() => {
@@ -73,19 +79,21 @@ const NewShift = () => {
 				<h3 className='text-xl font-light'>{currentDay}</h3>
 			</header>
 
-			{!todaysItems.length ? (
+			{!todaysItems ? (
 				<Loading />
 			) : (
-				<section className='grid grid-cols-2 gap-4'>
+				<section className='grid grid-cols-2 gap-8'>
 					{todaysItems.length > 0 &&
-						todaysItems.map(({ id, name, ShiftItem }) => (
-							<button key={`menuitem-${id}`} className='p-12 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-100 active:bg-slate-100 active:shadow-lg active:shadow-gray-200'>
-								<h2 className='text-9xl font-semibold'>{getEmoji(name)}</h2>
-								<h2 className='text-3xl font-semibold'>{name}</h2>
-							</button>
-						))}
+						todaysItems.map(({ id, name }, i) => {
+							return (
+								<button key={`menuitem-${id}`} className={classCondition(twColors.getColorClasses(i), 'p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
+									<h2 className='text-9xl font-semibold'>{getEmoji(name)}</h2>
+									<h2 className='text-3xl font-semibold'>{name}</h2>
+								</button>
+							);
+						})}
 
-					<button className='p-12 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-100 active:bg-slate-100 active:shadow-lg active:shadow-gray-200' onClick={() => setModalVisible(true)}>
+					<button className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100' onClick={() => setModalVisible(true)}>
 						<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-36 h-36'>
 							<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
 						</svg>
@@ -145,7 +153,7 @@ const NewShift = () => {
 													</div>
 												</form>
 
-												<div className='bg-gray-50 sm:flex sm:flex-row-reverse'>
+												<div className='sm:flex sm:flex-row-reverse'>
 													<button type='button' className='inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto' onClick={() => setModalVisible(false)}>
 														Add
 													</button>
