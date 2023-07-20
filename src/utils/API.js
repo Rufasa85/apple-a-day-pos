@@ -234,6 +234,14 @@ const api = {
       console.log(error)
     }
   },
+  getTodaysShift: async () => {
+    try {
+      const shift = await instance.get(`/shifts/today`)
+      return shift
+    } catch (error) {
+      console.log(error)
+    }
+  },
   createShift: async (token, shiftObj) => {
     try {
       const newShift = await instance.post("/shifts", shiftObj, {
