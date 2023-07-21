@@ -20,8 +20,8 @@ const Reports = () => {
   });
 
   return (
-    <main className="relative bg-yellow-50 overflow-hidden">
-      <aside className="fixed left-0 bg-white shadow-md w-60 h-full">
+    <main className="relative bg-yellow-50 overflow-hidden grid grid-cols-6">
+      <aside className="relative left-0 bg-white shadow-md col-span-1 h-full">
         <div className="flex flex-col justify-between h-full">
           <div className="flex-grow">
             <div className="px-4 py-6 text-center border-b">
@@ -127,7 +127,7 @@ const Reports = () => {
         </div>
       </aside>
 
-      <section className="ml-60 pt-16 max-h-screen">
+      <section className="pt-16 max-h-screen col-span-5">
         <div className="px-6 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-3xl p-8 mb-5">
