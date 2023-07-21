@@ -13,21 +13,16 @@ dayjs.extend(advancedFormat);
 const ShiftReport = () => {
   const [itemCounts, setItemCounts] = useState({});
   const [orders, setOrders] = useState([]);
-  const [date, setDate] = useState("")
-
+  const [date, setDate] = useState("");
 
   const shiftId = window.location.pathname.split("/")[3];
 
   const { data, isLoading } = useQuery({
     queryKey: `report-${shiftId}`,
-    queryFn: () =>
-      api.getOneShift(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbiI6dHJ1ZSwiaWF0IjoxNjg5OTcwMzgxLCJleHAiOjE2OTAwMTM1ODF9.feqBg3Oxt4Lg76_YieHl20kYGbxMk31hP4cShOzMTAg",
-        shiftId
-      ),
+    queryFn: () => api.getOneShift(shiftId),
     onSuccess: (response) => {
       getItemCounts(response.data.Orders);
-      setDate(dayjs(response.data.date).format("MMMM Do, YYYY"))
+      setDate(dayjs(response.data.date).format("MMMM Do, YYYY"));
     },
   });
 
@@ -59,7 +54,7 @@ const ShiftReport = () => {
     setItemCounts(counts);
   };
 
-  console.log(Object.values(itemCounts))
+  console.log(Object.values(itemCounts));
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -70,23 +65,23 @@ const ShiftReport = () => {
             labels: Object.keys(itemCounts),
             datasets: [
               {
-                label: '# of Votes',
+                label: "# of Votes",
                 data: Object.values(itemCounts),
                 backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                  "rgba(255, 159, 64, 0.2)",
                 ],
                 borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                  "rgba(255, 159, 64, 1)",
                 ],
                 borderWidth: 1,
               },

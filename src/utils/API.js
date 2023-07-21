@@ -18,11 +18,11 @@ const api = {
       console.log(error)
     }
   },
-  checkToken: async (token) => {
+  checkToken: async () => {
     try {
       const res = await instance.post("/users/checktoken", {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return res
@@ -31,11 +31,11 @@ const api = {
     }
   },
   // Customers
-  getAllCustomers: async (token) => {
+  getAllCustomers: async () => {
     try {
       const customers = await instance.get("/customers", {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return customers
@@ -43,11 +43,11 @@ const api = {
       console.log(error)
     }
   },
-  getOneCustomer: async (token, customerId) => {
+  getOneCustomer: async (customerId) => {
     try {
       const customer = await instance.get(`/customers/${customerId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return customer
@@ -55,11 +55,11 @@ const api = {
       console.log(error)
     }
   },
-  createCustomer: async (token, customerObj) => {
+  createCustomer: async (customerObj) => {
     try {
       const newCustomer = await instance.post("/customers", customerObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return newCustomer
@@ -67,11 +67,11 @@ const api = {
       console.log(error)
     }
   },
-  updateCustomer: async (token, customerObj, customerId) => {
+  updateCustomer: async (customerObj, customerId) => {
     try {
       const updatedCustomer = await instance.put(`/customers/${customerId}`, customerObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return updatedCustomer
@@ -79,11 +79,11 @@ const api = {
       console.log(error)
     }
   },
-  deleteCustomer: async (token, customerId) => {
+  deleteCustomer: async (customerId) => {
     try {
       const deletedCustomer = await instance.delete(`/customers/${customerId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return deletedCustomer
@@ -92,11 +92,11 @@ const api = {
     }
   },
   // Items
-  getAllItems: async (token) => {
+  getAllItems: async () => {
     try {
       const items = await instance.get("/items", {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return items
@@ -104,11 +104,11 @@ const api = {
       console.log(error)
     }
   },
-  getOneItem: async (token, itemId) => {
+  getOneItem: async (itemId) => {
     try {
       const item = await instance.get(`/items/${itemId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return item
@@ -116,11 +116,11 @@ const api = {
       console.log(error)
     }
   },
-  createItem: async (token, ItemObj) => {
+  createItem: async (ItemObj) => {
     try {
       const newItem = await instance.post("/items", ItemObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return newItem
@@ -128,11 +128,11 @@ const api = {
       console.log(error)
     }
   },
-  updateItem: async (token, itemObj, itemId) => {
+  updateItem: async (itemObj, itemId) => {
     try {
       const updatedItem = await instance.put(`/items/${itemId}`, itemObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return updatedItem
@@ -140,11 +140,11 @@ const api = {
       console.log(error)
     }
   },
-  deleteItem: async (token, itemId) => {
+  deleteItem: async (itemId) => {
     try {
       const deletedItem = await instance.delete(`/items/${itemId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return deletedItem
@@ -153,11 +153,11 @@ const api = {
     }
   },
   // Orders
-  getAllOrders: async (token) => {
+  getAllOrders: async () => {
     try {
       const orders = await instance.get("/orders", {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return orders
@@ -165,11 +165,11 @@ const api = {
       console.log(error)
     }
   },
-  getOneOrder: async (token, orderId) => {
+  getOneOrder: async (orderId) => {
     try {
       const order = await instance.get(`/orders/${orderId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return order
@@ -177,11 +177,11 @@ const api = {
       console.log(error)
     }
   },
-  createOrder: async (token, orderObj) => {
+  createOrder: async (orderObj) => {
     try {
       const newOrder = await instance.post("/orders", orderObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return newOrder
@@ -189,11 +189,11 @@ const api = {
       console.log(error)
     }
   },
-  updateOrder: async (token, orderObj, orderId) => {
+  updateOrder: async (orderObj, orderId) => {
     try {
       const updatedOrder = await instance.put(`/orders/${orderId}`, orderObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return updatedOrder
@@ -201,11 +201,11 @@ const api = {
       console.log(error)
     }
   },
-  deleteOrder: async (token, orderId) => {
+  deleteOrder: async (orderId) => {
     try {
       const deletedOrder = await instance.delete(`/orders/${orderId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return deletedOrder
@@ -214,11 +214,11 @@ const api = {
     }
   },
   // Shifts
-  getAllShifts: async (token) => {
+  getAllShifts: async () => {
     try {
       const shifts = await instance.get("/shifts", {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return shifts
@@ -226,11 +226,11 @@ const api = {
       console.log(error)
     }
   },
-  getOneShift: async (token, shiftId) => {
+  getOneShift: async (shiftId) => {
     try {
       const shift = await instance.get(`/shifts/${shiftId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return shift
@@ -246,11 +246,11 @@ const api = {
       console.log(error)
     }
   },
-  createShift: async (token, shiftObj) => {
+  createShift: async (shiftObj) => {
     try {
       const newShift = await instance.post("/shifts", shiftObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return newShift
@@ -258,11 +258,11 @@ const api = {
       console.log(error)
     }
   },
-  updateShift: async (token, shiftObj, shiftId) => {
+  updateShift: async (shiftObj, shiftId) => {
     try {
       const updatedShift = await instance.put(`/shifts/${shiftId}`, shiftObj, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return updatedShift
@@ -270,11 +270,11 @@ const api = {
       console.log(error)
     }
   },
-  deleteShift: async (token, shiftId) => {
+  deleteShift: async (shiftId) => {
     try {
       const deletedShift = await instance.delete(`/shifts/${shiftId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
       })
       return deletedShift

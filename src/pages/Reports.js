@@ -14,9 +14,7 @@ const Reports = () => {
   const { data: response, isLoading } = useQuery({
     queryKey: `${today}/all-shifts`,
     queryFn: () =>
-      api.getAllShifts(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbiI6dHJ1ZSwiaWF0IjoxNjg5OTcxMDA3LCJleHAiOjE2OTAwMTQyMDd9.NeFTq_xYXp-pGDM8awU6MbFGvbNeOjAKN16HkAJ6Ce4"
-      ),
+      api.getAllShifts(),
   });
 
   return (
@@ -131,6 +129,7 @@ const Reports = () => {
         <div className="px-6 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-3xl p-8 mb-5">
+              <h2 className="text-2xl">Recent shifts:</h2>
               {isLoading ? <Loading /> : null}
               {response ? <Shifts shifts={response.data}/> : null}
             </div>
