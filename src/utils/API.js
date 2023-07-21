@@ -1,12 +1,12 @@
-import axios from "axios"
+import axios from 'axios';
 
 const baseUrl = "http://localhost:3001/api"
 // const baseUrl = "deployedurl"
 
 const instance = axios.create({
-  baseURL: baseUrl,
-  timeout: 15000,
-})
+	baseURL: baseUrl,
+	timeout: 15000
+});
 
 const api = {
   // Auth
@@ -284,4 +284,4 @@ const api = {
   },
 }
 
-export default api
+export default api;
