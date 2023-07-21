@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseUrl = "localhost:3001/api"
+const baseUrl = "http://localhost:3001/api"
 // const baseUrl = "deployedurl"
 
 const instance = axios.create({
@@ -12,7 +12,7 @@ const api = {
   // Auth
   login: async (loginObj) => {
     try {
-      const res = await instance.post("/users/login")
+      const res = await instance.post("/users/login", {loginObj})
       return res
     } catch (error) {
       console.log(error)
@@ -20,7 +20,11 @@ const api = {
   },
   checkToken: async (token) => {
     try {
-      const res = await instance.post("/users/checktoken")
+      const res = await instance.post("/users/checktoken", {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
       return res
     } catch (error) {
       console.log(error)

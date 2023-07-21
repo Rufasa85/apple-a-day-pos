@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
+import dayjs from "dayjs"
 import api from "../utils/API"
+import Loading from "../components/Loading";
 
 const Service = () => {
   const [order, setOrder] = useState([]); // array of itemIds
   const [items, setItems] = useState([]); // array of 4 item objects with id, name,
-  const [first, setfirst] = useState(second)
   const [shiftId, setShiftId] = useState(0)
   const [customerId, setCustomerId] = useState(0)
 
@@ -14,8 +15,8 @@ const Service = () => {
     queryKey: currentDay,
     queryFn: () => api.getTodaysShift(),
     onSuccess: (data) => {
-      setItems(data.items)
-      setShiftId(data.shiftId)
+      // setItems(data.items)
+      // setShiftId(data.shiftId)
     },
   });
 
