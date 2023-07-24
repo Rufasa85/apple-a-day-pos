@@ -1,17 +1,23 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "react-query";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
+import Loading from "../components/Loading";
+import api from "../utils/API";
+
 dayjs.extend(advancedFormat);
 
-const Shifts = ({shifts}) => {
+const Shifts = () => {
+  const today = dayjs().format("MM-DD-YYYY");
 
-    return (
-        <>
-          {shifts.map(shiftCard)}
-        </>
-    )
-}
+  const { data: response, isLoading } = useQuery({
+    queryKey: `${today}/all-shifts`,
+    queryFn: () => api.getAllShifts(),
+  });
+
+  return <>{isLoading ? <Loading /> : <>{response.data.map(shiftCard)}</>}</>;
+};
 
 const shiftCard = (shiftObj) => {
   const totalOrders = shiftObj.Orders.length;
@@ -47,4 +53,4 @@ const shiftCard = (shiftObj) => {
   );
 };
 
-export default Shifts
+export default Shifts;
