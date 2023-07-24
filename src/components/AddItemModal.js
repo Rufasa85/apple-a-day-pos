@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import Loading from '../components/Loading';
 import api from '../utils/API';
 
-const AddItemModal = ({ modalVisible, setModalVisible }) => {
+const AddItemModal = ({ modalVisible, setModalVisible, refetch }) => {
 	const [itemNameInput, setItemNameInput] = useState('');
 	// const [itemStockInput, setItemStockInput] = useState(0);
 
@@ -17,12 +17,14 @@ const AddItemModal = ({ modalVisible, setModalVisible }) => {
 		queryFn: () => api.getAllItems()
 	});
 
-	const addItem = () => {
+	const addItem = async () => {
 		const itemObj = {
 			name: itemNameInput
 		};
 
-		api.createItem(itemObj);
+		await api.createItem(itemObj);
+		setModalVisible(false);
+		refetch();
 	};
 
 	return (

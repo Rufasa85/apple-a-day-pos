@@ -14,7 +14,11 @@ const NewShift = () => {
 
 	const today = dayjs().format('MMMM D, YYYY');
 
-	const { data: response, isLoading } = useQuery({
+	const {
+		data: response,
+		isLoading,
+		refetch
+	} = useQuery({
 		queryKey: `${today}/todays-items`,
 		queryFn: () => api.getTodaysItems()
 	});
@@ -31,14 +35,16 @@ const NewShift = () => {
 			) : (
 				<section className='grid grid-cols-2 gap-8'>
 					{response?.data.length > 0 &&
-						response?.data.map(({ id, name }, i) => {
-							return (
-								<button key={`menuitem-${id}`} className={classCondition(twColors.getColorClasses(i), 'p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
-									<h2 className='text-9xl font-semibold'>{getEmoji(name)}</h2>
-									<h2 className='text-3xl font-semibold'>{name}</h2>
-								</button>
-							);
-						})}
+						response?.data
+							.sort((a, b) => a.ShiftItem.createdAt > b.ShiftItem.createdAt)
+							.map(({ id, name }, i) => {
+								return (
+									<button key={`menuitem-${id}`} className={classCondition(twColors.getColorClasses(i), 'p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
+										<h2 className='text-9xl font-semibold'>{getEmoji(name)}</h2>
+										<h2 className='text-3xl font-semibold'>{name}</h2>
+									</button>
+								);
+							})}
 
 					<button className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100' onClick={() => setModalVisible(true)}>
 						<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-36 h-36'>
@@ -50,7 +56,7 @@ const NewShift = () => {
 				</section>
 			)}
 
-			<AddItemModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+			<AddItemModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={refetch} />
 		</main>
 	);
 };
