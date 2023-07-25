@@ -12,22 +12,31 @@ const api = {
 	// Auth
 	login: async (loginObj) => {
 		try {
-			const res = await instance.post('/users/login', { loginObj });
+			const res = await instance.post('/users/login', loginObj);
 			return res;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	logout: () => {
+		try {
+			const token = localStorage.removeItem('token');
+			console.log(token);
 		} catch (error) {
 			console.log(error);
 		}
 	},
 	checkToken: async () => {
 		try {
-			const res = await instance.post('/users/checktoken', {
+			const res = await instance.get('/users/checktoken', {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
 			});
 			return res;
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
+			return error;
 		}
 	},
 	// Customers

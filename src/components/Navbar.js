@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router-dom';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import classCondition from '../utils/classCondition';
+import { api } from '../components';
+import { classCondition } from '../utils';
 
 export default function Example() {
 	const { pathname } = useLocation();
@@ -17,7 +18,11 @@ export default function Example() {
 		<Disclosure as='nav' className='bg-gray-200 shadow-lg shadow-gray-100'>
 			{({ open }) => (
 				<>
-					<div className='mx-auto py-2 px-8'>
+					<div className='relative mx-auto py-2 px-8'>
+						<div className='absolute left-0 inset-0 h-full aspect-square flex justify-center items-center'>
+							<h1 className='text-4xl drop-shadow-xl w-full h-full flex justify-center items-center'>🍎</h1>
+						</div>
+
 						<div className='relative flex h-16 items-center justify-center'>
 							<div className='absolute inset-y-0 right-0 flex items-center sm:hidden'>
 								{/* Mobile menu button*/}
@@ -28,10 +33,6 @@ export default function Example() {
 							</div>
 
 							<div className='flex items-center sm:items-stretch sm:justify-start'>
-								<div className='absolute inset-y-0 left-0 flex flex-shrink-0 items-center'>
-									<h1 className='text-4xl'>🍎</h1>
-								</div>
-
 								<div className='hidden sm:ml-6 sm:block'>
 									<div className='flex gap-4'>
 										{navigation.map((item) => (
@@ -43,6 +44,8 @@ export default function Example() {
 								</div>
 							</div>
 						</div>
+
+						<button></button>
 					</div>
 
 					{/* Mobile menu */}

@@ -2,12 +2,8 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import Loading from '../components/Loading';
-import AddItemModal from '../components/AddItemModal';
-import api from '../utils/API';
-import getEmoji from '../utils/emojis';
-import twColors from '../utils/twColors';
-import classCondition from '../utils/classCondition';
+import { Loading, AddItemModal } from '../components';
+import { api, getEmoji, twColors, classCondition } from '../utils';
 
 const NewShift = () => {
 	const [modalVisible, setModalVisible] = useState(false);
