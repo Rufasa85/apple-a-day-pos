@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { Loading, AddItemModal } from '../components';
+import { Loading, AddItemButton } from '../components';
 import { api, getEmoji, twColors, classCondition } from '../utils';
 
 const NewShift = () => {
@@ -52,7 +52,7 @@ const NewShift = () => {
 				</section>
 			)}
 
-			<AddItemModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={refetch} />
+			<AddItemButton refetch={refetch} />
 		</main>
 	);
 };

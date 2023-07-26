@@ -1,29 +1,29 @@
 import { useLocation } from 'react-router-dom';
-import { Disclosure, Dialog } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { api } from '../components';
+import { api, LogoutButton } from '../components';
 import { classCondition } from '../utils';
 
 export default function Example() {
 	const { pathname } = useLocation();
 
 	const navigation = [
-		{ name: 'New Day', href: '/new-shift' },
+		{ name: 'Menu', href: '/new-shift' },
 		{ name: 'Service', href: '/service' },
 		{ name: 'Reports', href: '/reports' }
 	];
 
 	return (
-		<Disclosure as='nav' className='bg-gray-200 shadow-lg shadow-gray-100'>
+		<Disclosure as='nav' className='box-border bg-gray-300 shadow-lg shadow-gray-300/50'>
 			{({ open }) => (
 				<>
-					<div className='relative mx-auto py-2 px-8'>
-						<div className='absolute left-0 inset-0 h-full aspect-square flex justify-center items-center'>
-							<h1 className='text-4xl drop-shadow-xl w-full h-full flex justify-center items-center'>🍎</h1>
+					<div className='px-8 py-6 grid grid-flow-col items-center relative mx-auto'>
+						<div className='flex'>
+							<h1 className='text-4xl drop-shadow-xl flex justify-center items-center'>🍎</h1>
 						</div>
 
-						<div className='relative flex h-16 items-center justify-center'>
+						<div className='relative flex items-center justify-center'>
 							<div className='absolute inset-y-0 right-0 flex items-center sm:hidden'>
 								{/* Mobile menu button*/}
 								<Disclosure.Button className='inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'>
@@ -36,7 +36,7 @@ export default function Example() {
 								<div className='hidden sm:ml-6 sm:block'>
 									<div className='flex gap-4'>
 										{navigation.map((item) => (
-											<a key={item.name} href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-700 text-white' : ' hover:bg-gray-300', 'rounded-md px-3 py-2  font-medium')} aria-current={item.current ? 'page' : undefined}>
+											<a key={item.name} href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'rounded-md px-3 py-2  font-medium')} aria-current={item.current ? 'page' : undefined}>
 												{item.name}
 											</a>
 										))}
@@ -45,17 +45,25 @@ export default function Example() {
 							</div>
 						</div>
 
-						<button></button>
+						<div className='hidden sm:flex justify-end'>
+							<LogoutButton className='hover:bg-gray-200 rounded-md px-4 py-2' />
+						</div>
 					</div>
 
 					{/* Mobile menu */}
 					<Disclosure.Panel className='sm:hidden'>
-						<div className='space-y-1 px-2 pb-3 pt-2'>
+						<div className='grid grid-flow-row px-2 pb-3 pt-2'>
 							{navigation.map((item) => (
-								<Disclosure.Button key={item.name} as='a' href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-700 text-white' : ' hover:bg-gray-300', 'block rounded-md px-3 py-2 text-base font-medium')} aria-current={item.current ? 'page' : undefined}>
+								<Disclosure.Button key={item.name} as='a' href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'block rounded-md px-3 py-2 text-base font-medium')} aria-current={item.current ? 'page' : undefined}>
 									{item.name}
 								</Disclosure.Button>
 							))}
+
+							<hr className='my-2 h-px w-full bg-gray-800/20 flex border-0 sm:hidden' />
+
+							<div className='sm:hidden flex'>
+								<LogoutButton className=' hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium' />
+							</div>
 						</div>
 					</Disclosure.Panel>
 				</>
