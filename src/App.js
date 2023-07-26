@@ -1,28 +1,56 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import NewShift from './pages/NewShift';
-import EditShift from './pages/EditShift';
-import Reports from './pages/Reports';
-import Service from './pages/Service';
-import Service2 from './pages/Service2';
-import ShiftReport from './pages/ShiftReport';
-import CustomerReport from './pages/CustomerReport';
-import NewCustomer from './pages/NewCustomer';
+import { useQuery } from 'react-query';
+
+import { Home, Login, NotFound, NewShift, EditShift, Reports, Service, Service2, ShiftReport, CustomerReport, NewCustomer } from './pages';
+import { Navbar } from './components';
+import { api } from './utils';
 
 function App() {
-	// check for token
-	// redirect
+	const [showNav, setShowNav] = useState(true);
+	const { location } = window;
+
+	const {
+		data: response,
+		isLoading,
+		refetch
+	} = useQuery({
+		queryKey: ['checkToken'],
+		queryFn: () => api.checkToken()
+	});
+
+	useEffect(() => {
+		if (isLoading) return;
+
+		const status = response?.status;
+		const isLoginPage = location.pathname === '/login';
+
+		if (status === 200 && isLoginPage) {
+			location.replace('/');
+		}
+
+		if (status === 200) {
+			setShowNav(true);
+			return;
+		}
+
+		if (!isLoginPage) {
+			location.replace('/login');
+		}
+
+		setShowNav(false);
+
+		// eslint-disable-next-line
+	}, [isLoading]);
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				<Navbar />
+				{showNav ? <Navbar /> : null}
+
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login />} />
+					<Route path='/login' element={<Login refetch={refetch} />} />
 					<Route path='/new-shift' element={<NewShift />} />
 					<Route path='/edit-shift' element={<EditShift />} />
 					<Route path='/service' element={<Service />} />
