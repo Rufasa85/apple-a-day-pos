@@ -7,6 +7,7 @@ import { Navbar } from './components';
 import { api } from './utils';
 
 function App() {
+	const [showNav, setShowNav] = useState(true);
 	const { location } = window;
 
 	const {
@@ -21,7 +22,6 @@ function App() {
 	useEffect(() => {
 		if (isLoading) return;
 
-		const data = response?.data;
 		const status = response?.status;
 		const isLoginPage = location.pathname === '/login';
 
@@ -30,6 +30,7 @@ function App() {
 		}
 
 		if (status === 200) {
+			setShowNav(true);
 			return;
 		}
 
@@ -37,13 +38,15 @@ function App() {
 			location.replace('/login');
 		}
 
+		setShowNav(false);
+
 		// eslint-disable-next-line
 	}, [isLoading]);
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				<Navbar />
+				{showNav ? <Navbar /> : null}
 
 				<Routes>
 					<Route index={true} element={<Home />} />

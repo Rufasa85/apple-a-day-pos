@@ -20,8 +20,7 @@ const api = {
 	},
 	logout: () => {
 		try {
-			const token = localStorage.removeItem('token');
-			console.log(token);
+			localStorage.removeItem('token');
 		} catch (error) {
 			console.log(error);
 		}

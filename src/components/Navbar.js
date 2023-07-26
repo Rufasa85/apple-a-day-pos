@@ -18,25 +18,17 @@ export default function Example() {
 		<Disclosure as='nav' className='box-border bg-gray-300 shadow-lg shadow-gray-300/50'>
 			{({ open }) => (
 				<>
-					<div className='px-8 py-6 grid grid-flow-col items-center relative mx-auto'>
-						<div className='flex'>
+					<div className='px-8 py-6 grid grid-cols-3 items-center relative mx-auto'>
+						<div className='px-3 flex'>
 							<h1 className='text-4xl drop-shadow-xl flex justify-center items-center'>🍎</h1>
 						</div>
 
 						<div className='relative flex items-center justify-center'>
-							<div className='absolute inset-y-0 right-0 flex items-center sm:hidden'>
-								{/* Mobile menu button*/}
-								<Disclosure.Button className='inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'>
-									<span className='sr-only'>Open main menu</span>
-									{open ? <XMarkIcon className='block h-6 w-6' aria-hidden='true' /> : <Bars3Icon className='block h-6 w-6' aria-hidden='true' />}
-								</Disclosure.Button>
-							</div>
-
 							<div className='flex items-center sm:items-stretch sm:justify-start'>
 								<div className='hidden sm:ml-6 sm:block'>
-									<div className='flex gap-4'>
+									<div className='gap-2 flex justify-center items-center'>
 										{navigation.map((item) => (
-											<a key={item.name} href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'rounded-md px-3 py-2  font-medium')} aria-current={item.current ? 'page' : undefined}>
+											<a key={item.name} href={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'lg:w-36 w-24 rounded-md px-4 py-2 font-medium flex justify-center items-center')} aria-current={item.current ? 'page' : undefined}>
 												{item.name}
 											</a>
 										))}
@@ -46,7 +38,15 @@ export default function Example() {
 						</div>
 
 						<div className='hidden sm:flex justify-end'>
-							<LogoutButton className='hover:bg-gray-200 rounded-md px-4 py-2' />
+							<LogoutButton className='hover:bg-gray-200 rounded-md px-4 py-2 font-medium' />
+						</div>
+
+						<div className='flex justify-end sm:hidden'>
+							{/* Mobile menu button*/}
+							<Disclosure.Button className='inline-flex items-center justify-center rounded-md p-1 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'>
+								<span className='sr-only'>Open main menu</span>
+								{open ? <XMarkIcon className='block h-8 w-8' aria-hidden='true' /> : <Bars3Icon className='block h-8 w-8' aria-hidden='true' />}
+							</Disclosure.Button>
 						</div>
 					</div>
 

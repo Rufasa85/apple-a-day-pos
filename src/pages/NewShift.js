@@ -6,17 +6,15 @@ import { Loading, AddItemButton } from '../components';
 import { api, getEmoji, twColors, classCondition } from '../utils';
 
 const NewShift = () => {
-	const [modalVisible, setModalVisible] = useState(false);
-
+	const [items, setItems] = useState([]);
 	const today = dayjs().format('MMMM D, YYYY');
 
-	const {
-		data: response,
-		isLoading,
-		refetch
-	} = useQuery({
+	const { isLoading, refetch } = useQuery({
 		queryKey: `${today}/todays-items`,
-		queryFn: () => api.getTodaysItems()
+		queryFn: () => api.getTodaysItems(),
+		onSuccess: ({ data }) => {
+			setItems(data.Items);
+		}
 	});
 
 	return (
@@ -30,8 +28,8 @@ const NewShift = () => {
 				<Loading />
 			) : (
 				<section className='grid grid-cols-2 gap-8'>
-					{response?.data.length > 0 &&
-						response?.data
+					{items &&
+						items
 							.sort((a, b) => a.ShiftItem.createdAt > b.ShiftItem.createdAt)
 							.map(({ id, name }, i) => {
 								return (
@@ -42,17 +40,9 @@ const NewShift = () => {
 								);
 							})}
 
-					<button className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100' onClick={() => setModalVisible(true)}>
-						<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-36 h-36'>
-							<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-						</svg>
-
-						<h2 className='text-3xl font-semibold'>Add Menu Item</h2>
-					</button>
+					<AddItemButton refetch={refetch} className='flex' />
 				</section>
 			)}
-
-			<AddItemButton refetch={refetch} />
 		</main>
 	);
 };
