@@ -27,15 +27,20 @@ const api = {
 	},
 	checkToken: async () => {
 		try {
-			const res = await instance.get('/users/checktoken', {
+			const res = await instance.post('/users/check-token', {}, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
 			});
-			return res;
+      console.log(res)
+			if (res.status === 200) {
+        localStorage.setItem("token", res.data.token)
+        return res
+      } else {
+        window.location.replace("/login")
+      }
 		} catch (error) {
-			// console.log(error);
-			return error;
+			console.log(error);
 		}
 	},
 	// Customers

@@ -6,8 +6,9 @@ import { api } from '../utils';
 export default function LogoutButton({ className }) {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleLogout = () => {
+	const handleLogout = async () => {
 		api.logout();
+    window.location.replace("/login")
 	};
 
 	return (

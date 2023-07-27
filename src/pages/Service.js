@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import api from "../utils/API";
 import Loading from "../components/Loading";
 import ComboboxEl from "../components/ComboboxEl";
-import getEmoji from "../utils/emojis";
+import getEmoji from "../utils/getEmoji";
 import twColors from "../utils/twColors";
 import classCondition from "../utils/classCondition";
 

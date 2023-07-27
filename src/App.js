@@ -8,49 +8,42 @@ import { api } from './utils';
 
 function App() {
 	const [showNav, setShowNav] = useState(true);
+  const [userId, setUserId] = useState(0)
 	const { location } = window;
 
-	const {
-		data: response,
-		isLoading,
-		refetch
-	} = useQuery({
-		queryKey: ['checkToken'],
-		queryFn: () => api.checkToken()
-	});
+	useEffect(() => {
+    if (localStorage.getItem("token")) {
+      checkTokenData()
+    }
+  }, [])
+  
 
 	useEffect(() => {
-		if (isLoading) return;
+		// if (isLoading) return;
 
-		const status = response?.status;
 		const isLoginPage = location.pathname === '/login';
-
-		if (status === 200 && isLoginPage) {
-			location.replace('/');
-		}
-
-		if (status === 200) {
-			setShowNav(true);
-			return;
-		}
-
 		if (!isLoginPage) {
-			location.replace('/login');
-		}
+      setShowNav(true);
+		} else {
+      setShowNav(false);
+    }
 
-		setShowNav(false);
+	}, [location.pathname]);
 
-		// eslint-disable-next-line
-	}, [isLoading]);
+  const checkTokenData = async () => {
+    const res = await api.checkToken()
+    console.log(res)
+    setUserId(res.userId)
+  }
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				{showNav ? <Navbar /> : null}
+				{showNav ? <Navbar userId={userId}/> : null}
 
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login refetch={refetch} />} />
+					<Route path='/login' element={<Login />} />
 					<Route path='/new-shift' element={<NewShift />} />
 					<Route path='/edit-shift' element={<EditShift />} />
 					<Route path='/service' element={<Service />} />

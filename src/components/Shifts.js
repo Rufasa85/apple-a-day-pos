@@ -20,6 +20,7 @@ const Shifts = () => {
 };
 
 const shiftCard = (shiftObj) => {
+  console.log(shiftObj)
   const totalOrders = shiftObj.Orders.length;
   const itemCounts = {};
   shiftObj.Items.forEach((item) => {
