@@ -15,7 +15,7 @@ const api = {
 			const res = await instance.post('/users/login', loginObj);
 			return res;
 		} catch (error) {
-			console.log(error);
+      return error.response
 		}
 	},
 	logout: () => {
@@ -27,15 +27,20 @@ const api = {
 	},
 	checkToken: async () => {
 		try {
-			const res = await instance.get('/users/checktoken', {
+			const res = await instance.post('/users/check-token', {}, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
 			});
-			return res;
+			if (res.status === 200) {
+        localStorage.setItem("token", res.data.token)
+        return res
+      } 
 		} catch (error) {
-			// console.log(error);
-			return error;
+			console.log(error);
+      if (error.response.status === 403) {
+        window.location.replace("/login")
+      }
 		}
 	},
 	// Customers
@@ -246,9 +251,9 @@ const api = {
 			console.log(error);
 		}
 	},
-	getTodaysItems: async () => {
+	getTodaysItems: async (userId) => {
 		try {
-			const shift = await instance.get(`/shifts/today`);
+			const shift = await instance.get(`/shifts/today/${userId}`);
 			return shift;
 		} catch (error) {
 			console.log(error);
