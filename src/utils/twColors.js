@@ -2,9 +2,9 @@ const colors = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'a
 const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 const getColorClass = (i) => {
-	const sortedColors = ['red', 'green', 'blue', 'yellow', 'pink', 'lime', 'sky', 'amber', 'purple', 'yellow', 'cyan', 'orange'];
-
+	// const sortedColors = ['red', 'green', 'blue', 'yellow', 'pink', 'lime', 'sky', 'amber', 'purple', 'yellow', 'cyan', 'orange'];
 	// return `bg-${sortedColors[i]}-${300} border-${sortedColors[i]}-${500}`;
+
 	switch (i) {
 		case 0:
 			return `bg-red-300 border-red-500`;
@@ -32,7 +32,7 @@ const getColorClass = (i) => {
 			return 'bg-orange-300 border-orange-500';
 
 		default:
-			return 'bg-gray-300';
+			return 'bg-gray-300 border-gray-500';
 	}
 };
 

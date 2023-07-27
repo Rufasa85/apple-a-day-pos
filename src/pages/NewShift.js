@@ -33,9 +33,11 @@ const NewShift = () => {
 							.sort((a, b) => a.ShiftItem.createdAt > b.ShiftItem.createdAt)
 							.map(({ id, name }, i) => {
 								return (
-									<button key={`menuitem-${id}`} className={classCondition(twColors.getColorClass(i), 'p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
-										<h2 className='text-9xl font-semibold drop-shadow-md'>{getEmoji(name)}</h2>
-										<h2 className='text-3xl font-semibold drop-shadow-md'>{name}</h2>
+									<button key={`menuitem-${id}`} className={classCondition(twColors.getColorClass(i), 'p-12 h-72 gap-4 flex grow place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
+										<div>
+											<h2 className='text-9xl font-semibold drop-shadow-md'>{getEmoji(name)}</h2>
+											<h2 className='text-3xl font-semibold drop-shadow-md'>{name}</h2>
+										</div>
 									</button>
 								);
 							})}
