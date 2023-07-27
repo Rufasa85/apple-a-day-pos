@@ -5,15 +5,17 @@ import dayjs from 'dayjs';
 import { Loading, AddItemButton } from '../components';
 import { api, getEmoji, twColors, classCondition } from '../utils';
 
-const NewShift = () => {
+const NewShift = ({userId}) => {
 	const [items, setItems] = useState([]);
 	const today = dayjs().format('MMMM D, YYYY');
 
 	const { isLoading, refetch } = useQuery({
 		queryKey: `${today}/todays-items`,
-		queryFn: () => api.getTodaysItems(),
-		onSuccess: ({ data }) => {
-			setItems(data.Items);
+		queryFn: () => api.getTodaysItems(userId),
+		onSuccess: (res) => {
+      console.log(res)
+      // if there are items
+      if (res) setItems(res.data.Items);
 		}
 	});
 

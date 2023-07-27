@@ -12,7 +12,7 @@ function App() {
 	const { location } = window;
 
 	useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") && location.pathname !== "/login") {
       checkTokenData()
     }
   }, [])
@@ -32,21 +32,26 @@ function App() {
 
   const checkTokenData = async () => {
     const res = await api.checkToken()
-    console.log(res)
-    setUserId(res.userId)
+    setUserId(res.data.userId)
+  }
+
+  const logout = () => {
+    setUserId(0)
+    api.logout()
+    location.replace("/login")
   }
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				{showNav ? <Navbar userId={userId}/> : null}
+				{showNav ? <Navbar userId={userId} logout={logout}/> : null}
 
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login />} />
-					<Route path='/new-shift' element={<NewShift />} />
+					<Route path='/login' element={<Login userId={userId} setUserId={setUserId}/>} />
+					<Route path='/new-shift' element={<NewShift userId={userId}/>} />
 					<Route path='/edit-shift' element={<EditShift />} />
-					<Route path='/service' element={<Service />} />
+					<Route path='/service' element={<Service userId={userId}/>} />
 					<Route path='/service2' element={<Service2 />} />
 					<Route path='/new-customer' element={<NewCustomer />} />
 					<Route path='/reports' element={<Reports />} />

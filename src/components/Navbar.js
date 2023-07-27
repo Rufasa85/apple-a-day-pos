@@ -6,7 +6,7 @@ import { api, LogoutButton } from "../components";
 import { BouncingApple } from "../components";
 import { classCondition } from "../utils";
 
-export default function Navbar({ userId }) {
+export default function Navbar({ userId, logout }) {
   const { pathname } = useLocation();
 
   const navigation = [
@@ -34,9 +34,9 @@ export default function Navbar({ userId }) {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="gap-2 flex justify-center items-center">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classCondition(
                           item.href === pathname
                             ? "bg-gray-800 text-white"
@@ -46,7 +46,7 @@ export default function Navbar({ userId }) {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -54,8 +54,8 @@ export default function Navbar({ userId }) {
             </div>
 
             {userId !== 0 ? (
-              <div className="sm:hidden md:flex">
-                <LogoutButton className=" hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium" />
+              <div className="hidden sm:flex justify-end">
+                <LogoutButton className=" hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium" logout={logout}/>
               </div>
             ) : (
               <div className="sm:hidden md:flex">
@@ -80,10 +80,10 @@ export default function Navbar({ userId }) {
           <Disclosure.Panel className="sm:hidden">
             <div className="grid grid-flow-row px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link
                   key={item.name}
-                  as="a"
-                  href={item.href}
+                  // as="a"
+                  to={item.href}
                   className={classCondition(
                     item.href === pathname
                       ? "bg-gray-800 text-white"
@@ -93,7 +93,7 @@ export default function Navbar({ userId }) {
                   aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Link>
               ))}
 
               <hr className="my-2 h-px w-full bg-gray-800/20 flex border-0 sm:hidden" />
