@@ -3,11 +3,11 @@ import { Fragment, useState } from 'react';
 
 import { api } from '../utils';
 
-export default function LogoutButton({ className }) {
+export default function LogoutButton({ className, logout }) {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleLogout = () => {
-		api.logout();
+	const handleLogout = async () => {
+		logout()
 	};
 
 	return (

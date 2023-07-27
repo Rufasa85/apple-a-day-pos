@@ -8,52 +8,50 @@ import { api } from './utils';
 
 function App() {
 	const [showNav, setShowNav] = useState(true);
+  const [userId, setUserId] = useState(0)
 	const { location } = window;
 
-	const {
-		data: response,
-		isLoading,
-		refetch
-	} = useQuery({
-		queryKey: ['checkToken'],
-		queryFn: () => api.checkToken()
-	});
+	useEffect(() => {
+    if (localStorage.getItem("token") && location.pathname !== "/login") {
+      checkTokenData()
+    }
+  }, [])
+  
 
 	useEffect(() => {
-		if (isLoading) return;
+		// if (isLoading) return;
 
-		const status = response?.status;
 		const isLoginPage = location.pathname === '/login';
-
-		if (status === 200 && isLoginPage) {
-			location.replace('/');
-		}
-
-		if (status === 200) {
-			setShowNav(true);
-			return;
-		}
-
 		if (!isLoginPage) {
-			location.replace('/login');
-		}
+      setShowNav(true);
+		} else {
+      setShowNav(false);
+    }
 
-		setShowNav(false);
+	}, [location.pathname]);
 
-		// eslint-disable-next-line
-	}, [isLoading]);
+  const checkTokenData = async () => {
+    const res = await api.checkToken()
+    setUserId(res.data.userId)
+  }
+
+  const logout = () => {
+    setUserId(0)
+    api.logout()
+    location.replace("/login")
+  }
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				{showNav ? <Navbar /> : null}
+				{showNav ? <Navbar userId={userId} logout={logout}/> : null}
 
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login refetch={refetch} />} />
-					<Route path='/new-shift' element={<NewShift />} />
+					<Route path='/login' element={<Login userId={userId} setUserId={setUserId}/>} />
+					<Route path='/new-shift' element={<NewShift userId={userId}/>} />
 					<Route path='/edit-shift' element={<EditShift />} />
-					<Route path='/service' element={<Service />} />
+					<Route path='/service' element={<Service userId={userId}/>} />
 					<Route path='/service2' element={<Service2 />} />
 					<Route path='/new-customer' element={<NewCustomer />} />
 					<Route path='/reports' element={<Reports />} />

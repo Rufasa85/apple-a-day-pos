@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { Loading, AddItemButton } from '../components';
 import { api, getEmoji, twColors, classCondition } from '../utils';
 
-const NewShift = () => {
+const NewShift = ({ userId }) => {
 	const [items, setItems] = useState([]);
 	const today = dayjs().format('MMMM D, YYYY');
 
