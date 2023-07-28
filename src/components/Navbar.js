@@ -16,7 +16,7 @@ export default function Navbar({ userId, logout }) {
 	];
 
 	return (
-		<Disclosure as='nav' className='box-border bg-gray-300 shadow-lg shadow-gray-300/50'>
+		<Disclosure as='nav' className='z-10 border-b border-gray-300 bg-gray-200 shadow-lg shadow-gray-400/25 box-border'>
 			{({ open }) => (
 				<>
 					<div className='px-8 py-6 grid grid-cols-3 items-center relative mx-auto'>
