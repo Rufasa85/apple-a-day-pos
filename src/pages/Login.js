@@ -3,11 +3,10 @@ import { useState } from 'react';
 import { BouncingApple } from '../components';
 import { api, classCondition } from '../utils';
 
-const Login = ({ userId, setUserId }) => {
+const Login = ({ setUserId }) => {
 	const [passwordInput, setPasswordInput] = useState('');
 	const [emailInput, setEmailInput] = useState('');
 	const [infoText, setInfoText] = useState('');
-	const { location } = window;
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -19,18 +18,25 @@ const Login = ({ userId, setUserId }) => {
 			};
 
 			const response = await api.login(loginObj);
+
 			if (response.status === 400) {
 				setInfoText(response.data.error);
 				return;
-			} else if (response.status === 200) {
+			}
+
+			if (response.status === 200) {
 				setEmailInput('');
 				setPasswordInput('');
 				setInfoText('');
+
 				setUserId(response.data.userId);
 				localStorage.setItem('token', response.data.token);
-				location.replace('/');
+
+				window.location.replace('/');
 			}
-		} catch (error) {}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -48,7 +54,9 @@ const Login = ({ userId, setUserId }) => {
 				<input type='password' placeholder='password' value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} id='password' className='z-50 block w-full rounded-md border-0 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600' />
 
 				{infoText ? <p className='text-red-700 pb-3'>{infoText}</p> : null}
-				<input type='submit' value='Login' className={classCondition(passwordInput.length > 0 ? 'opacity-100 hover:bg-blue-500 cursor-pointer' : 'opacity-50 cursor-not-allowed', 'z-50 inline-flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto')} />
+				<button type='submit' className={classCondition(passwordInput.length > 0 ? 'opacity-100 hover:bg-blue-500 cursor-pointer' : 'opacity-50 cursor-not-allowed', 'z-50 inline-flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto')}>
+					Login
+				</button>
 			</form>
 		</main>
 	);

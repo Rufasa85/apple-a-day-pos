@@ -5,46 +5,71 @@ import dayjs from 'dayjs';
 import { AddItemButton, ComboboxEl, Loading } from '../components';
 import { api, classCondition, getEmoji, twColors } from '../utils';
 
-const Service = ({ userId }) => {
+const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
+	const [customers, setCustomers] = useState([]);
 	const [order, setOrder] = useState({});
-	// const [orderIds, setOrderIds] = useState([]);
 	const [itemCount, setItemCount] = useState(0);
-	const [shiftId, setShiftId] = useState(0);
-	const [customer, setCustomer] = useState({ id: 0, name: 'NONE' });
+	const [ShiftId, setShiftId] = useState(0);
+	const [selectedCustomer, setSelectedCustomer] = useState({ id: 0, name: 'NONE' });
 
 	const today = dayjs().format('MM/DD/YYYY');
 
 	const { isLoading: itemsLoading, refetch: itemRefetch } = useQuery({
 		queryKey: `items-${today}`,
-		queryFn: () => api.getTodaysItems(userId),
+		queryFn: () => api.getTodaysItems(UserId),
+
 		onSuccess: (response) => {
-			if (response) {
+			if (response?.data?.ShiftItems) {
+				const itemObjects = response.data.ShiftItems.map((shiftItem) => {
+					const { createdAt, Item } = shiftItem;
+					const { id, name } = Item;
+
+					return { id, name, createdAt };
+				});
+
 				setShiftId(response.data.id);
-				setItems(response.data.Items);
+				setItems(itemObjects);
 			}
 		}
 	});
 
-	const { data: customerData, isLoading: customerLoading } = useQuery({
+	const { isLoading: customersLoading } = useQuery({
 		queryKey: `all-customers`,
-		queryFn: () => api.getAllCustomers()
+		queryFn: () => api.getAllCustomers(),
+
+		onSuccess: (response) => {
+			if (response) {
+				setCustomers(response.data);
+			}
+		}
 	});
 
+	const reset = () => {
+		setSelectedCustomer({ id: 0, name: 'NONE' });
+		setItemCount(0);
+		setOrder({});
+	};
+
 	const submitOrder = async () => {
-		const yes = window.confirm(`Are you sure you'd like to submit this order?`);
-		if (yes) {
-			const orderIds = [];
+		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
+
+		if (confirmed) {
+			const CustomerId = selectedCustomer.id === 0 ? null : selectedCustomer.id;
+			const ItemIds = [];
+
 			for (const key in order) {
 				for (let i = 0; i > order[key].count; i++) {
-					orderIds.push(key);
+					ItemIds.push(key);
 				}
 			}
+
 			const res = await api.createOrder({
-				ShiftId: shiftId,
-				CustomerId: customer.id === 0 ? null : customer.id,
-				ItemIds: orderIds
+				ShiftId,
+				CustomerId,
+				ItemIds
 			});
+
 			if (res.status === 200) {
 				console.log('order added!');
 				reset();
@@ -54,32 +79,21 @@ const Service = ({ userId }) => {
 		}
 	};
 
-	const reset = () => {
-		setCustomer({ id: 0, name: 'NONE' });
-		setItemCount(0);
-		setOrder({});
-		// setOrderIds([]);
-	};
-
 	const addToOrder = (id, name) => {
 		if (id in order) {
 			order[id].count = order[id].count + 1;
 		} else {
 			order[id] = { name, count: 1 };
 		}
-		// setOrderIds([...orderIds, id]);
+
 		setItemCount(itemCount + 1);
 	};
 
-	const decrementItem = (itemId) => {
-		// setOrder(prevState => {
-		//   const temp = {itemId: {...prevState[itemId], count: prevState[itemId].count - 1}}
-		//   return temp
-		// })
-		const temp = { ...order };
+	const decrementItem = (ItemId) => {
+		const newOrder = { ...order };
 
-		temp[itemId].count = temp[itemId].count - 1;
-		setOrder(temp);
+		newOrder[ItemId].count = newOrder[ItemId].count - 1;
+		setOrder(newOrder);
 	};
 
 	return (
@@ -95,12 +109,12 @@ const Service = ({ userId }) => {
 					<div className='gap-8 overflow-scroll w-full max-h-full grid grid-cols-2'>
 						{items &&
 							items
-								.sort((a, b) => a.ShiftItem.createdAt > b.ShiftItem.createdAt)
+								.sort((a, b) => a.createdAt > b.createdAt)
 								.map(({ id, name }, i) => {
 									return (
 										<button key={`menuitem-${id}`} onClick={() => addToOrder(id, name)} className={classCondition(twColors.getColorClass(i), 'p-12 h-72 gap-4 flex grow place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
-											<div>
-												<h2 className='text-9xl font-semibold drop-shadow-md'>{getEmoji(name)}</h2>
+											<div className='gap-4 flex flex-col justify-center items-center'>
+												<h2 className='text-8xl font-semibold drop-shadow-md flex flex-col justify-end items-center'>{getEmoji(name)}</h2>
 												<h2 className='text-3xl font-semibold drop-shadow-md'>{name}</h2>
 											</div>
 										</button>
@@ -119,22 +133,11 @@ const Service = ({ userId }) => {
 
 				<hr className='h-px bg-gray-400 border-0' />
 
-				{customerLoading ? null : (
+				{customersLoading ? null : (
 					<div className='pb-2'>
 						<h2 className='text-xl mb-4'>
 							Customer <span className='text-gray-500'>(optional)</span>
 						</h2>
-
-						<ComboboxEl
-							customerList={[
-								{ id: 0, name: 'NONE' },
-								...customerData.data.map((x) => {
-									return { id: x.id, name: x.firstName + ' ' + x.lastName };
-								})
-							]}
-							customer={customer}
-							setCustomer={setCustomer}
-						/>
 					</div>
 				)}
 

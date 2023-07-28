@@ -8,50 +8,48 @@ import { api } from './utils';
 
 function App() {
 	const [showNav, setShowNav] = useState(true);
-  const [userId, setUserId] = useState(0)
+	const [UserId, setUserId] = useState(0);
 	const { location } = window;
 
-	useEffect(() => {
-    if (localStorage.getItem("token") && location.pathname !== "/login") {
-      checkTokenData()
-    }
-  }, [])
-  
+	const { isLoading } = useQuery({
+		queryKey: `check-token`,
+		queryFn: () => api.checkToken(),
 
-	useEffect(() => {
-		// if (isLoading) return;
+		onSuccess: (response) => {
+			const token = response?.data?.token;
+			const UserId = response?.data?.UserId;
+			const isLoginPage = location.pathname === '/login';
 
-		const isLoginPage = location.pathname === '/login';
-		if (!isLoginPage) {
-      setShowNav(true);
-		} else {
-      setShowNav(false);
-    }
+			if (token && isLoginPage) {
+				location.replace('/');
+			}
 
-	}, [location.pathname]);
+			if (token) {
+				setShowNav(true);
+				setUserId(UserId);
+				localStorage.setItem('token', token);
+				return;
+			}
 
-  const checkTokenData = async () => {
-    const res = await api.checkToken()
-    setUserId(res.data.userId)
-  }
+			if (!isLoginPage) {
+				location.replace('/login');
+			}
 
-  const logout = () => {
-    setUserId(0)
-    api.logout()
-    location.replace("/login")
-  }
+			setShowNav(false);
+		}
+	});
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				{showNav ? <Navbar userId={userId} logout={logout}/> : null}
+				{showNav ? <Navbar /> : null}
 
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login userId={userId} setUserId={setUserId}/>} />
-					<Route path='/new-shift' element={<NewShift userId={userId}/>} />
+					<Route path='/login' element={<Login setUserId={setUserId} />} />
+					<Route path='/new-shift' element={<NewShift UserId={UserId} />} />
 					<Route path='/edit-shift' element={<EditShift />} />
-					<Route path='/service' element={<Service userId={userId}/>} />
+					<Route path='/service' element={<Service UserId={UserId} />} />
 					<Route path='/service2' element={<Service2 />} />
 					<Route path='/new-customer' element={<NewCustomer />} />
 					<Route path='/reports' element={<Reports />} />

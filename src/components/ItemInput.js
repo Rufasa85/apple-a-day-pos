@@ -5,55 +5,67 @@ import { api } from '../utils';
 
 export default function ItemInput({ query, setQuery, addItem }) {
 	const [items, setItems] = useState([]);
+	const [suggestions, setSuggestions] = useState([]);
 	const [showSuggestions, setShowSuggestions] = useState(true);
 
-	const filteredItems = query === '' ? items : items.filter((item) => item.toLowerCase().replace(/\s+/g, '').includes(query.toLowerCase().replace(/\s+/g, '')));
-
-	const { data: response, isLoading } = useQuery({
+	const { isLoading } = useQuery({
 		queryKey: ['all-items'],
-		queryFn: () => api.getAllItems()
+		queryFn: () => api.getAllItems(),
+
+		onSuccess: (response) => {
+			if (response.data) {
+				const allItemNames = response.data.map((item) => item.name);
+				setItems(allItemNames);
+				setSuggestions(allItemNames);
+			}
+		}
 	});
 
 	const handleInputChange = (e) => {
-		setQuery(e.target.value);
-		setShowSuggestions(true);
+		const search = e.target.value;
+
+		const haveSuggestions = suggestions.length > 0 && search.length > 0;
+		setShowSuggestions(haveSuggestions);
+
+		const filteredItems = search === '' ? items : items.filter((item) => item.toLowerCase().replace(/\s+/g, '').includes(query?.toLowerCase().replace(/\s+/g, '')));
+		setSuggestions(filteredItems);
+
+		setQuery(search);
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') {
+			setShowSuggestions(false);
+		}
+
+		if (e.key === 'Enter' && !showSuggestions) {
+			addItem();
+		}
+
+		if (e.key === 'Tab') {
+			e.preventDefault();
+			setShowSuggestions(false);
+		}
 	};
 
 	useEffect(() => {
-		if (isLoading) return;
+		window.addEventListener('keydown', handleKeyDown);
 
-		const data = response?.data;
-		const status = response?.status;
-
-		if (status === 200) {
-			const allItemNames = data.map((item) => item.name);
-			setItems(allItemNames);
-		}
-
-		window.addEventListener('keydown', (e) => {
-			if (e.isComposing) return;
-
-			if (e.key === 'Enter' || e.key === 'Tab' || e.key === 'Escape') {
-				e.preventDefault();
-				setShowSuggestions(false);
-			}
-
-			if (e.key === 'Enter' && (!showSuggestions || filteredItems.length === 0)) {
-				addItem();
-			}
-		});
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
 
 		// eslint-disable-next-line
-	}, [isLoading]);
+	}, []);
 
 	return (
 		<div onClick={() => setShowSuggestions(false)} className='relative flex flex-col w-full'>
 			<input type='text' placeholder='Soup' value={query} onChange={handleInputChange} className='border-gray-300 shadow-sm flex w-full rounded-md' />
 
-			{query.length > 0 && filteredItems.length > 0 && showSuggestions ? (
+			{query?.length > 0 && suggestions.length > 0 && showSuggestions ? (
 				<div className='h-fit max-h-60 overflow-auto mt-2 shadow-xl w-full top-full rounded-md bg-white absolute flex flex-col'>
 					<ol className='w-full h-fit rounded-md flex flex-col'>
-						{filteredItems.map((item, i) => {
+						{suggestions.map((item, i) => {
 							if (item === '') return null;
 
 							return (

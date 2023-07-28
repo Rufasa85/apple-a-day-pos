@@ -2,11 +2,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { api, LogoutButton } from '../components';
-import { BouncingApple } from '../components';
+import { LogoutButton } from '../components';
 import { classCondition } from '../utils';
 
-export default function Navbar({ userId, logout }) {
+export default function Navbar() {
 	const { pathname } = useLocation();
 
 	const navigation = [
@@ -38,15 +37,9 @@ export default function Navbar({ userId, logout }) {
 							</div>
 						</div>
 
-						{userId !== 0 ? (
-							<div className='hidden sm:flex justify-end'>
-								<LogoutButton className=' hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium' logout={logout} />
-							</div>
-						) : (
-							<div className='sm:hidden md:flex'>
-								<Link to='/login'>Login</Link>
-							</div>
-						)}
+						<div className='hidden sm:flex justify-end'>
+							<LogoutButton className=' hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium' />
+						</div>
 
 						<div className='flex justify-end sm:hidden'>
 							{/* Mobile menu button*/}
@@ -61,27 +54,16 @@ export default function Navbar({ userId, logout }) {
 					<Disclosure.Panel className='sm:hidden'>
 						<div className='grid grid-flow-row px-2 pb-3 pt-2'>
 							{navigation.map((item) => (
-								<Link
-									key={item.name}
-									// as="a"
-									to={item.href}
-									className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'block rounded-md px-3 py-2 text-base font-medium')}
-									aria-current={item.current ? 'page' : undefined}>
+								<Link key={item.name} to={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'block rounded-md px-3 py-2 text-base font-medium')} aria-current={item.current ? 'page' : undefined}>
 									{item.name}
 								</Link>
 							))}
 
 							<hr className='my-2 h-px w-full bg-gray-800/20 flex border-0 sm:hidden' />
 
-							{userId !== 0 ? (
-								<div className='sm:hidden flex'>
-									<LogoutButton className=' hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium' />
-								</div>
-							) : (
-								<div className='sm:hidden flex'>
-									<Link to='/login'>Login</Link>
-								</div>
-							)}
+							<div className='sm:hidden flex'>
+								<LogoutButton className=' hover:bg-gray-200 rounded-md px-3 py-2 text-base font-medium' />
+							</div>
 						</div>
 					</Disclosure.Panel>
 				</>

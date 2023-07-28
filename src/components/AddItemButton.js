@@ -4,18 +4,19 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ItemInput } from '../components';
 import { api, classCondition } from '../utils';
 
-const AddItemModal = ({ className, refetch }) => {
+const AddItemModal = ({ className, UserId, refetch }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [query, setQuery] = useState('');
 
-	const addItem = async () => {
+	const addItem = async (e) => {
+		e.preventDefault();
+
 		if (query === '') return;
 
-		const itemObj = {
+		await api.createItem({
 			name: query
-		};
+		});
 
-		await api.createItem(itemObj);
 		setIsOpen(false);
 		refetch();
 	};
@@ -41,7 +42,7 @@ const AddItemModal = ({ className, refetch }) => {
 					<div className='flex min-h-full items-center justify-center p-6 sm:p-0 fixed inset-0 z-10'>
 						<Transition.Child as={Fragment} enter='ease-out duration-300' enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95' enterTo='opacity-100 translate-y-0 sm:scale-100' leave='ease-in duration-200' leaveFrom='opacity-100 translate-y-0 sm:scale-100' leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
 							<Dialog.Panel className='relative rounded-lg shadow-xl text-left transition-all sm:my-8 sm:w-full sm:max-w-lg'>
-								<div className='gap-6 flex flex-col w-full p-6 bg-slate-100 rounded-lg'>
+								<form onSubmit={addItem} className='gap-6 flex flex-col w-full p-6 bg-slate-100 rounded-lg'>
 									<div className='gap-2 flex flex-col w-full'>
 										<Dialog.Title as='h3' className='text-lg font-semibold text-gray-900'>
 											Add Item
@@ -57,11 +58,11 @@ const AddItemModal = ({ className, refetch }) => {
 											Cancel
 										</button>
 
-										<button type='button' onClick={addItem} className={classCondition(query.length === 0 ? 'opacity-75 cursor-default hover:bg-blue-600' : null, 'w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm hover:bg-blue-500 sm:w-auto')}>
+										<button type='submit' className={classCondition(query?.length === 0 ? 'opacity-75 cursor-default hover:bg-blue-600' : null, 'w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm hover:bg-blue-500 sm:w-auto')}>
 											Add Item
 										</button>
 									</div>
-								</div>
+								</form>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
