@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { AddItemButton, ComboboxEl, Loading } from '../components';
+import { AddItem, TypeaheadInput, Loading } from '../components';
 import { api, classCondition, getEmoji, twColors } from '../utils';
 
 const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
 	const [customers, setCustomers] = useState([]);
+	const [customerQuery, setCustomerQuery] = useState('');
 	const [order, setOrder] = useState({});
 	const [itemCount, setItemCount] = useState(0);
 	const [ShiftId, setShiftId] = useState(0);
@@ -35,11 +36,11 @@ const Service = ({ UserId }) => {
 	});
 
 	const { isLoading: customersLoading } = useQuery({
-		queryKey: `all-customers`,
+		queryKey: ['all-customers'],
 		queryFn: () => api.getAllCustomers(),
 
 		onSuccess: (response) => {
-			if (response) {
+			if (response.data) {
 				setCustomers(response.data);
 			}
 		}
@@ -121,7 +122,7 @@ const Service = ({ UserId }) => {
 									);
 								})}
 
-						<AddItemButton refetch={itemRefetch} className='flex' />
+						<AddItem refetch={itemRefetch} className='flex' />
 					</div>
 				)}
 			</section>
@@ -138,6 +139,8 @@ const Service = ({ UserId }) => {
 						<h2 className='text-xl mb-4'>
 							Customer <span className='text-gray-500'>(optional)</span>
 						</h2>
+
+						<TypeaheadInput query={customerQuery} setQuery={setCustomerQuery} data={customers} />
 					</div>
 				)}
 

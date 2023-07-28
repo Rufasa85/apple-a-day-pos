@@ -1,12 +1,27 @@
 import { Fragment, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
 
-import { ItemInput } from '../components';
+import { ItemInput } from '.';
+import { TypeaheadInput } from '../components';
 import { api, classCondition } from '../utils';
 
-const AddItemModal = ({ className, UserId, refetch }) => {
-	const [isOpen, setIsOpen] = useState(false);
+export default function AddItem({ className, UserId, refetch }) {
+	const [items, setItems] = useState([]);
 	const [query, setQuery] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
+
+	const { isLoading } = useQuery({
+		queryKey: ['all-items'],
+		queryFn: () => api.getAllItems(),
+
+		onSuccess: (response) => {
+			if (response.data) {
+				const allItemNames = response.data.map((item) => item.name);
+				setItems(allItemNames);
+			}
+		}
+	});
 
 	const addItem = async (e) => {
 		e.preventDefault();
@@ -51,7 +66,7 @@ const AddItemModal = ({ className, UserId, refetch }) => {
 										<Dialog.Description>Enter or search an item for today's menu.</Dialog.Description>
 									</div>
 
-									<ItemInput query={query} setQuery={setQuery} addItem={addItem} />
+									<TypeaheadInput query={query} setQuery={setQuery} data={items} />
 
 									<div className='gap-3 flex justify-end w-full'>
 										<button type='button' onClick={() => setIsOpen(false)} className='w-full justify-center rounded-md bg-white px-4 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-stone-50 sm:w-auto'>
@@ -70,6 +85,4 @@ const AddItemModal = ({ className, UserId, refetch }) => {
 			</Transition.Root>
 		</div>
 	);
-};
-
-export default AddItemModal;
+}

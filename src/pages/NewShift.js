@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { Loading, AddItemButton } from '../components';
+import { Loading, AddItem } from '../components';
 import { api, getEmoji, twColors, classCondition } from '../utils';
 
 const NewShift = ({ userId }) => {
@@ -42,7 +42,7 @@ const NewShift = ({ userId }) => {
 								);
 							})}
 
-					<AddItemButton refetch={refetch} className='flex' />
+					<AddItem refetch={refetch} className='flex' />
 				</section>
 			)}
 		</main>
