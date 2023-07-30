@@ -8,6 +8,7 @@ import { api, classCondition } from '../utils';
 export default function AddItem({ className, refetch }) {
 	const [items, setItems] = useState([]);
 	const [inputValue, setInputValue] = useState({ id: null, value: '' });
+	const [error, setError] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { isLoading } = useQuery({
@@ -27,21 +28,26 @@ export default function AddItem({ className, refetch }) {
 
 		try {
 			const { id, value } = inputValue;
-			if (value === '') return;
 
-			const name = inputValue.trim();
+			const name = value.trim();
+			if (name === '') return;
 
-			await api.createItem({ id, name });
+			const response = await api.createItem({ id, name });
 
-			setIsOpen(false);
-			refetch();
+			if (response?.status === 200) {
+				setIsOpen(false);
+				refetch();
+			} else {
+				console.log(response);
+				setError(true);
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	return (
-		<div className={className}>
+		<div className='overflow-visible flex h-fit'>
 			<div onClick={() => setIsOpen(true)} className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 cursor-pointer hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100'>
 				<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-16 h-16'>
 					<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
@@ -71,6 +77,8 @@ export default function AddItem({ className, refetch }) {
 									</div>
 
 									<TypeaheadInput query={inputValue} setQuery={setInputValue} data={items} />
+
+									{error && <p className='text-red-600'>Sorry, something went wrong.</p>}
 
 									<div className='gap-3 flex justify-end w-full'>
 										<button type='button' onClick={() => setIsOpen(false)} className='button-secondary'>

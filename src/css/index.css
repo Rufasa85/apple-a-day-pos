@@ -15,7 +15,7 @@ code {
 
 @layer components {
 	.input-base {
-		@apply px-4 py-2 rounded-md shadow-sm hover:shadow-md focus:shadow-lg active:shadow-none ring-inset ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400/75 sm:text-sm text-base border-none w-full flex;
+		@apply px-4 py-2 rounded-md ring-inset ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400/75 sm:text-sm text-base border-none w-full flex;
 	}
 
 	.input-with-icon {

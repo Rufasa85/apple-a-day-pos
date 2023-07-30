@@ -104,8 +104,8 @@ const Service = ({ UserId }) => {
 	};
 
 	return (
-		<main className='gap-12 w-full h-full flex flex-grow'>
-			<section className='pl-12 pt-8 pb-12 gap-8 w-full max-w-[75%] flex flex-col'>
+		<main className='w-full h-full flex flex-grow'>
+			<section className='px-12 pt-8 pb-12 gap-8 w-full max-w-[75%] flex flex-col'>
 				<header className='gap-1 flex flex-col place-content-center'>
 					<h3 className='section-headline'>{longDate}</h3>
 				</header>
@@ -113,7 +113,7 @@ const Service = ({ UserId }) => {
 				{itemsLoading ? (
 					<Loading />
 				) : (
-					<div className='gap-8 overflow-scroll w-full max-h-full grid grid-cols-2'>
+					<div className='gap-8 overflow-x-visible overflow-y-scroll w-full h-full max-h-full grid grid-cols-2'>
 						{items &&
 							items
 								.sort((a, b) => a.createdAt > b.createdAt)
@@ -128,7 +128,7 @@ const Service = ({ UserId }) => {
 									);
 								})}
 
-						<AddItem refetch={itemRefetch} className='flex' />
+						<AddItem refetch={itemRefetch} className='' />
 					</div>
 				)}
 			</section>
