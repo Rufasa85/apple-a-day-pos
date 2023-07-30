@@ -7,13 +7,13 @@ export default function LogoutButton({ className, logout }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleLogout = async () => {
-		logout()
+		logout();
 	};
 
 	return (
-		<div className={className}>
-			<div className='inset-0 flex items-center justify-center'>
-				<button onClick={() => setIsOpen(true)} className='w-full justify-center shadow-sm sm:w-auto'>
+		<div className='sm:w-auto w-full'>
+			<div className='inset-0 flex items-center sm:justify-center justify-end'>
+				<button onClick={() => setIsOpen(true)} className={className}>
 					Logout
 				</button>
 			</div>

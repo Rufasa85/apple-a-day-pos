@@ -2,13 +2,12 @@ import { Fragment, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
 
-import { ItemInput } from '.';
 import { TypeaheadInput } from '../components';
 import { api, classCondition } from '../utils';
 
-export default function AddItem({ className, UserId, refetch }) {
+export default function AddItem({ className, refetch }) {
 	const [items, setItems] = useState([]);
-	const [query, setQuery] = useState('');
+	const [inputValue, setInputValue] = useState({ id: null, value: '' });
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { isLoading } = useQuery({
@@ -17,8 +16,8 @@ export default function AddItem({ className, UserId, refetch }) {
 
 		onSuccess: (response) => {
 			if (response.data) {
-				const allItemNames = response.data.map((item) => item.name);
-				setItems(allItemNames);
+				const itemObjects = response.data.map(({ id, name }) => ({ id, value: name }));
+				setItems(itemObjects);
 			}
 		}
 	});
@@ -26,25 +25,30 @@ export default function AddItem({ className, UserId, refetch }) {
 	const addItem = async (e) => {
 		e.preventDefault();
 
-		if (query === '') return;
+		try {
+			const { id, value } = inputValue;
+			if (value === '') return;
 
-		await api.createItem({
-			name: query
-		});
+			const name = inputValue.trim();
 
-		setIsOpen(false);
-		refetch();
+			await api.createItem({ id, name });
+
+			setIsOpen(false);
+			refetch();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
 		<div className={className}>
-			<button className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100' onClick={() => setIsOpen(true)}>
-				<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-36 h-36'>
+			<div onClick={() => setIsOpen(true)} className='p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center bg-slate-50 text-slate-400 rounded-3xl border-dashed border border-current opacity-95 cursor-pointer hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:bg-slate-100 active:shadow-lg active:shadow-gray-200 active:opacity-100'>
+				<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-16 h-16'>
 					<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
 				</svg>
 
-				<h2 className='text-3xl font-semibold'>Add Menu Item</h2>
-			</button>
+				<h2 className='text-2xl font-semibold'>Add Menu Item</h2>
+			</div>
 
 			<Transition.Root show={isOpen} as={Fragment}>
 				<Dialog as='div' className='relative z-10' onClose={setIsOpen}>
@@ -63,17 +67,17 @@ export default function AddItem({ className, UserId, refetch }) {
 											Add Item
 										</Dialog.Title>
 
-										<Dialog.Description>Enter or search an item for today's menu.</Dialog.Description>
+										<Dialog.Description>Search or add an item for today's menu.</Dialog.Description>
 									</div>
 
-									<TypeaheadInput query={query} setQuery={setQuery} data={items} />
+									<TypeaheadInput query={inputValue} setQuery={setInputValue} data={items} />
 
 									<div className='gap-3 flex justify-end w-full'>
-										<button type='button' onClick={() => setIsOpen(false)} className='w-full justify-center rounded-md bg-white px-4 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-stone-50 sm:w-auto'>
+										<button type='button' onClick={() => setIsOpen(false)} className='button-secondary'>
 											Cancel
 										</button>
 
-										<button type='submit' className={classCondition(query?.length === 0 ? 'opacity-75 cursor-default hover:bg-blue-600' : null, 'w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm hover:bg-blue-500 sm:w-auto')}>
+										<button type='submit' className={classCondition(inputValue?.value?.length < 1 ? 'button-primary-off' : 'button-primary')}>
 											Add Item
 										</button>
 									</div>

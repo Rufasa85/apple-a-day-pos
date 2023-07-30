@@ -8,13 +8,13 @@ import { api, classCondition, getEmoji, twColors } from '../utils';
 const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
 	const [customers, setCustomers] = useState([]);
-	const [customerQuery, setCustomerQuery] = useState('');
+	const [customerValue, setCustomerValue] = useState({ id: null, value: '' });
 	const [order, setOrder] = useState({});
 	const [itemCount, setItemCount] = useState(0);
 	const [ShiftId, setShiftId] = useState(0);
-	const [selectedCustomer, setSelectedCustomer] = useState({ id: 0, name: 'NONE' });
 
 	const today = dayjs().format('MM/DD/YYYY');
+	const longDate = dayjs().format('dddd, MMMM D, YYYY');
 
 	const { isLoading: itemsLoading, refetch: itemRefetch } = useQuery({
 		queryKey: `items-${today}`,
@@ -41,13 +41,19 @@ const Service = ({ UserId }) => {
 
 		onSuccess: (response) => {
 			if (response.data) {
-				setCustomers(response.data);
+				const customerObjects = response.data.map(({ id, firstName, lastName }) => {
+					const value = `${firstName} ${lastName}`;
+
+					return { id, value };
+				});
+
+				setCustomers(customerObjects);
 			}
 		}
 	});
 
 	const reset = () => {
-		setSelectedCustomer({ id: 0, name: 'NONE' });
+		setCustomerValue({ id: null, value: 'NONE' });
 		setItemCount(0);
 		setOrder({});
 	};
@@ -56,7 +62,7 @@ const Service = ({ UserId }) => {
 		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
 
 		if (confirmed) {
-			const CustomerId = selectedCustomer.id === 0 ? null : selectedCustomer.id;
+			const CustomerId = customerValue.id;
 			const ItemIds = [];
 
 			for (const key in order) {
@@ -101,7 +107,7 @@ const Service = ({ UserId }) => {
 		<main className='gap-12 w-full h-full flex flex-grow'>
 			<section className='pl-12 pt-8 pb-12 gap-8 w-full max-w-[75%] flex flex-col'>
 				<header className='gap-1 flex flex-col place-content-center'>
-					<h3 className='text-2xl'>{today}</h3>
+					<h3 className='section-headline'>{longDate}</h3>
 				</header>
 
 				{itemsLoading ? (
@@ -116,7 +122,7 @@ const Service = ({ UserId }) => {
 										<button key={`menuitem-${id}`} onClick={() => addToOrder(id, name)} className={classCondition(twColors.getColorClass(i), 'p-12 h-72 gap-4 flex grow place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
 											<div className='gap-4 flex flex-col justify-center items-center'>
 												<h2 className='text-8xl font-semibold drop-shadow-md flex flex-col justify-end items-center'>{getEmoji(name)}</h2>
-												<h2 className='text-3xl font-semibold drop-shadow-md'>{name}</h2>
+												<h2 className='text-2xl font-semibold drop-shadow-md'>{name}</h2>
 											</div>
 										</button>
 									);
@@ -127,20 +133,20 @@ const Service = ({ UserId }) => {
 				)}
 			</section>
 
-			<section className='px-8 pt-8 pb-12 gap-8 w-1/4 bg-slate-50 border-l border-gray-300 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
+			<section className='px-8 pt-8 pb-12 gap-8 w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-300 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
 				<header className='flex flex-col place-content-center'>
-					<h3 className='text-2xl'>Current Order</h3>
+					<h3 className='section-headline'>Current Order</h3>
 				</header>
 
 				<hr className='h-px bg-gray-400 border-0' />
 
 				{customersLoading ? null : (
-					<div className='pb-2'>
-						<h2 className='text-xl mb-4'>
+					<div className='pb-2 gap-4 flex flex-col'>
+						<h2 className='font-medium leading-6'>
 							Customer <span className='text-gray-500'>(optional)</span>
 						</h2>
 
-						<TypeaheadInput query={customerQuery} setQuery={setCustomerQuery} data={customers} />
+						<TypeaheadInput query={customerValue} setQuery={setCustomerValue} data={customers} />
 					</div>
 				)}
 
