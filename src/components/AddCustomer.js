@@ -1,19 +1,19 @@
 import { Fragment, useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
-import DatePicker from 'react-date-picker';
-// import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
+import dayjs from 'dayjs';
 
 import { SearchInput, Typeahead } from '../components';
 import { api, classCondition } from '../utils';
 
 export default function AddCustomer({ customer, setCustomer }) {
 	const [customers, setCustomers] = useState([]);
-	const [inputValue, setInputValue] = useState({ id: null, value: '' });
+	const [filteredCustomers, setFilteredCustomers] = useState([]);
+
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [dateOfBirth, setDateOfBirth] = useState('');
+
 	const [error, setError] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -34,16 +34,48 @@ export default function AddCustomer({ customer, setCustomer }) {
 		}
 	});
 
+	const filterCustomers = (customerQuery) => {
+		const noInput = !customerQuery.firstName && !customerQuery.lastName && !customerQuery.dateOfBirth;
+		if (noInput) return customers;
+
+		const filteredData = customers.filter((previousCustomer) => {
+			const firstNameMatch = previousCustomer.firstName.toLowerCase().replace(/\s+/g, '').includes(customerQuery.firstName.toLowerCase().replace(/\s+/g, ''));
+			const lastNameMatch = previousCustomer.lastName.toLowerCase().replace(/\s+/g, '').includes(customerQuery.lastName.toLowerCase().replace(/\s+/g, ''));
+			const dateOfBirthMatch = dayjs(customerQuery.dateOfBirth).diff(previousCustomer.dateOfBirth, 'day') < 1;
+
+			const notMatch = !firstNameMatch || !lastNameMatch || !dateOfBirthMatch;
+
+			return !notMatch;
+		});
+
+		return filteredData;
+	};
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+
+		console.log('typed');
+
+		const customerQuery = {
+			firstName: name === 'first-name' ? value : customer.firstName,
+			lastName: name === 'last-name' ? value : customer.lastName,
+			dateOfBirth: name === 'date-of-birth' ? value : customer.dateOfBirth
+		};
+
+		setCustomer(customerQuery);
+
+		const filteredData = filterCustomers(customerQuery);
+		setFilteredCustomers(filteredData);
+
+		const dataMatch = filteredData.length === 1 ? filteredData[0] : null;
+		setCustomer(dataMatch || customer);
+	};
+
 	const addCustomer = async (e) => {
 		e.preventDefault();
 
 		try {
-			const { id, value } = inputValue;
-
-			const name = value.trim();
-			if (name === '') return;
-
-			const response = await api.createCustomer({ id, name });
+			const response = await api.createCustomer(customer);
 
 			if (response?.status === 200) {
 				setIsOpen(false);
@@ -83,11 +115,11 @@ export default function AddCustomer({ customer, setCustomer }) {
 									</div>
 
 									<div className='gap-x-3 gap-y-4 grid grid-cols-2 relative'>
-										<SearchInput id='first-name' value={firstName} onChange={setFirstName} placeholder={'First Name'} />
-										<SearchInput type='search' value={lastName} onChange={setLastName} placeholder={'Last Name'} />
-										<SearchInput type='date' value={dateOfBirth} onChange={setDateOfBirth} placeholder={'Date of Birth'} className='col-span-2' />
+										<SearchInput name='first-name' value={customer.firstName} onChange={handleInputChange} placeholder={'First Name'} />
+										<SearchInput name='last-name' value={customer.lastName} onChange={handleInputChange} placeholder={'Last Name'} />
+										<SearchInput name='date-of-birth' type='date' value={customer.dateOfBirth} onChange={handleInputChange} placeholder={'Date of Birth'} className='col-span-2' />
 
-										<Typeahead query={{ firstName, lastName, dateOfBirth }} data={customers} setSelection={setCustomer} />
+										<Typeahead isQuery={firstName.length > 0 || lastName.length > 0 || dateOfBirth.length > 0} data={filteredCustomers} setSelection={setCustomer} />
 									</div>
 
 									{error && <p className='input-error'>Sorry, something went wrong.</p>}
@@ -97,7 +129,7 @@ export default function AddCustomer({ customer, setCustomer }) {
 											Cancel
 										</button>
 
-										<button type='submit' className={classCondition(inputValue?.value?.length < 1 ? 'button-primary-off' : 'button-primary')}>
+										<button type='submit' className={classCondition(!firstName || !lastName < 1 ? 'button-primary-off' : 'button-primary')}>
 											Add Customer
 										</button>
 									</div>

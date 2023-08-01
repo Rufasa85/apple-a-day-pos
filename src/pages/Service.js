@@ -7,7 +7,7 @@ import { api, classCondition, getEmoji, twColors } from '../utils';
 
 const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
-	const [customer, setCustomer] = useState([]);
+	const [customer, setCustomer] = useState({ firstName: '', lastName: '', dateOfBirth: '' });
 	const [customerValue, setCustomerValue] = useState({ id: null, value: '' });
 	const [order, setOrder] = useState({});
 	const [itemCount, setItemCount] = useState(0);
