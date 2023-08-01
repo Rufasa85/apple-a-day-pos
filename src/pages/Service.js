@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { AddItem, TypeaheadInput, Loading } from '../components';
+import { AddCustomer, AddItem, Loading } from '../components';
 import { api, classCondition, getEmoji, twColors } from '../utils';
 
 const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
-	const [customers, setCustomers] = useState([]);
+	const [customer, setCustomer] = useState([]);
 	const [customerValue, setCustomerValue] = useState({ id: null, value: '' });
 	const [order, setOrder] = useState({});
 	const [itemCount, setItemCount] = useState(0);
@@ -31,23 +31,6 @@ const Service = ({ UserId }) => {
 
 				setShiftId(response.data.id);
 				setItems(itemObjects);
-			}
-		}
-	});
-
-	const { isLoading: customersLoading } = useQuery({
-		queryKey: ['all-customers'],
-		queryFn: () => api.getAllCustomers(),
-
-		onSuccess: (response) => {
-			if (response.data) {
-				const customerObjects = response.data.map(({ id, firstName, lastName }) => {
-					const value = `${firstName} ${lastName}`;
-
-					return { id, value };
-				});
-
-				setCustomers(customerObjects);
 			}
 		}
 	});
@@ -105,52 +88,42 @@ const Service = ({ UserId }) => {
 
 	return (
 		<main className='pt-[84px] w-screen h-screen max-w-screen max-h-screen flex'>
-			<section className='px-4 pb-4 overflow-y-auto w-full h-full max-w-[75%] max-h-full flex flex-col'>
-				<header className='p-8 gap-1 flex flex-col place-content-center'>
+			<section className='p-4 overflow-y-auto w-full h-full max-w-[75%] max-h-full flex flex-col'>
+				<header className='p-4 flex flex-col place-content-center'>
 					<h3 className='section-headline'>{longDate}</h3>
 				</header>
 
 				{itemsLoading ? (
 					<Loading />
 				) : (
-					<div className='px-8 pb-8 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1'>
+					<div className='p-4 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1'>
 						{items &&
 							items
 								.sort((a, b) => a.createdAt > b.createdAt)
 								.map(({ id, name }, i) => {
 									return (
-										<button key={`menuitem-${id}`} onClick={() => addToOrder(id, name)} className={classCondition(twColors.getColorClass(i), 'p-12 h-72 gap-4 flex grow place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
-											<div className='gap-4 flex flex-col justify-center items-center'>
-												<h2 className='text-8xl font-semibold drop-shadow-md flex flex-col justify-end items-center'>{getEmoji(name)}</h2>
+										<button key={`menuitem-${id}`} onClick={() => addToOrder(id, name)} className={classCondition(twColors.getColorClass(i), 'h-72 gap-4 flex grow justify-center items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-200 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
+											<div className='gap-4 h-28 flex flex-col justify-end items-center'>
+												<h2 className='text-6xl font-semibold drop-shadow-md flex flex-col justify-end items-center'>{getEmoji(name)}</h2>
 												<h2 className='text-2xl font-semibold drop-shadow-md'>{name}</h2>
 											</div>
 										</button>
 									);
 								})}
 
-						<AddItem refetch={itemRefetch} className='' />
+						<AddItem refetch={itemRefetch} />
 					</div>
 				)}
 			</section>
 
-			<section className='px-4 gap-8 w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-300 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
-				<header className='flex flex-col place-content-center'>
+			<section className='p-4 divide-gray-400/50 divide-y overflow-y-auto w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-200 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
+				<header className='p-4 mb-4 flex flex-col place-content-center'>
 					<h3 className='section-headline'>Current Order</h3>
 				</header>
 
-				<hr className='h-px bg-gray-400 border-0' />
-
-				{customersLoading ? null : (
-					<div className='pb-2 gap-4 flex flex-col'>
-						<h2 className='font-medium leading-6'>
-							Customer <span className='text-gray-500'>(optional)</span>
-						</h2>
-
-						<TypeaheadInput query={customerValue} setQuery={setCustomerValue} data={customers} />
-					</div>
-				)}
-
-				<hr className='h-px bg-gray-400 border-0' />
+				<div className='px-4 py-8'>
+					<AddCustomer customer={customer} setCustomer={setCustomer} />
+				</div>
 
 				<div className='h-full'>
 					<ul>

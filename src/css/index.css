@@ -15,7 +15,7 @@ code {
 
 @layer components {
 	.input-base {
-		@apply px-4 py-2 rounded-md ring-inset ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-600 placeholder:text-slate-400/75 sm:text-sm text-base border-none w-full flex;
+		@apply px-4 py-2 rounded-lg ring-inset ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-600 placeholder:text-gray-400 sm:text-sm text-base border-none w-full flex;
 	}
 
 	.input-with-icon {
@@ -27,19 +27,19 @@ code {
 	}
 
 	.button-base {
-		@apply input-base font-semibold sm:w-auto justify-center items-center;
+		@apply input-base font-semibold sm:w-auto justify-center items-center ring-0;
 	}
 
 	.button-primary {
-		@apply button-base text-white bg-blue-600 ring-0 hover:opacity-90;
+		@apply button-base text-white bg-blue-600 hover:bg-opacity-90;
 	}
 
 	.button-primary-off {
-		@apply button-base text-white bg-blue-600 ring-0 opacity-50 cursor-not-allowed;
+		@apply button-primary hover:bg-blue-600 opacity-50 cursor-not-allowed;
 	}
 
 	.button-secondary {
-		@apply button-base bg-white ring-gray-300 hover:text-red-600;
+		@apply button-base bg-gray-200 hover:bg-opacity-75;
 	}
 
 	.section-headline {
@@ -47,7 +47,7 @@ code {
 	}
 
 	.modal {
-		@apply gap-6 flex flex-col w-full p-6 bg-slate-100 rounded-lg;
+		@apply gap-6 flex flex-col w-full p-6 bg-slate-50 rounded-lg;
 	}
 
 	.modal-buttons {
@@ -57,4 +57,54 @@ code {
 	.modal-background {
 		@apply fixed inset-0 bg-gray-500 bg-opacity-50 backdrop-blur-md transition-opacity;
 	}
+}
+
+.react-date-picker__wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: white;
+	border-radius: 0.5rem;
+	--tw-ring-inset: inset;
+	--tw-ring-color: rgb(229 231 235);
+	box-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	width: 100%;
+	padding: 0.2rem 1rem;
+}
+
+.react-date-picker__wrapper:focus {
+	box-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.react-date-picker__inputGroup {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	gap: 0.5rem;
+}
+
+.react-date-picker__inputGroup__input {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	width: fit-content;
+	margin: 0;
+	padding: 0.3rem 0.1rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+	appearance: textfield;
+	-moz-appearance: textfield;
 }

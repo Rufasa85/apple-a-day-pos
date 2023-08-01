@@ -18,7 +18,8 @@ export default function TypeaheadInput({ query, setQuery, data }) {
 		const filteredData = inputValue === '' ? data : data.filter((item) => item.value.toLowerCase().replace(/\s+/g, '').includes(query?.value?.toLowerCase().replace(/\s+/g, '')));
 		setSuggestions(filteredData);
 
-		setQuery({ id: null, value: inputValue });
+		const dataMatch = filteredData.length === 1 ? filteredData[0] : null;
+		setQuery(dataMatch || { id: null, value: inputValue });
 	};
 
 	const handleKeyDown = (e) => {
