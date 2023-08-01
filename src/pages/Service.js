@@ -104,16 +104,16 @@ const Service = ({ UserId }) => {
 	};
 
 	return (
-		<main className='w-full h-full flex flex-grow'>
-			<section className='px-12 pt-8 pb-12 gap-8 w-full max-w-[75%] flex flex-col'>
-				<header className='gap-1 flex flex-col place-content-center'>
+		<main className='pt-[84px] w-screen h-screen max-w-screen max-h-screen flex'>
+			<section className='px-4 pb-4 overflow-y-auto w-full h-full max-w-[75%] max-h-full flex flex-col'>
+				<header className='p-8 gap-1 flex flex-col place-content-center'>
 					<h3 className='section-headline'>{longDate}</h3>
 				</header>
 
 				{itemsLoading ? (
 					<Loading />
 				) : (
-					<div className='gap-8 overflow-x-visible overflow-y-scroll w-full h-full max-h-full grid grid-cols-2'>
+					<div className='px-8 pb-8 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1'>
 						{items &&
 							items
 								.sort((a, b) => a.createdAt > b.createdAt)
@@ -133,7 +133,7 @@ const Service = ({ UserId }) => {
 				)}
 			</section>
 
-			<section className='px-8 pt-8 pb-12 gap-8 w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-300 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
+			<section className='px-4 gap-8 w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-300 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
 				<header className='flex flex-col place-content-center'>
 					<h3 className='section-headline'>Current Order</h3>
 				</header>

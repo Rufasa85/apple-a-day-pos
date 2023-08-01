@@ -4,19 +4,17 @@ import { BouncingApple } from '../components';
 import { api, classCondition } from '../utils';
 
 const Login = ({ setUserId }) => {
-	const [passwordInput, setPasswordInput] = useState('');
-	const [emailInput, setEmailInput] = useState('');
+	const [password, setPassword] = useState('');
 	const [infoText, setInfoText] = useState('');
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 
 		try {
-			const loginObj = {
-				email: emailInput,
-				password: passwordInput
-			};
+			const isGuest = password === 'guest';
+			const username = isGuest ? 'guest' : 'admin';
 
+			const loginObj = { username, password };
 			const response = await api.login(loginObj);
 
 			if (response.status === 400) {
@@ -25,8 +23,7 @@ const Login = ({ setUserId }) => {
 			}
 
 			if (response.status === 200) {
-				setEmailInput('');
-				setPasswordInput('');
+				setPassword('');
 				setInfoText('');
 
 				setUserId(response.data.userId);
@@ -49,12 +46,10 @@ const Login = ({ setUserId }) => {
 					<h1>Please login to continue.</h1>
 				</div>
 
-				<input type='text' placeholder='email' value={emailInput} onChange={(e) => setEmailInput(e.target.value)} id='email' className='z-50 block w-full rounded-md border-0 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600' />
-
-				<input type='password' placeholder='password' value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} id='password' className='z-50 block w-full rounded-md border-0 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600' />
+				<input type='password' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} id='password' className='z-50 block w-full rounded-md border-0 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600' />
 
 				{infoText ? <p className='text-red-700 pb-3'>{infoText}</p> : null}
-				<button type='submit' className={classCondition(passwordInput.length > 0 ? 'opacity-100 hover:bg-blue-500 cursor-pointer' : 'opacity-50 cursor-not-allowed', 'z-50 inline-flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto')}>
+				<button type='submit' className={classCondition(password.length > 0 ? 'button-primary' : 'button-primary')}>
 					Login
 				</button>
 			</form>

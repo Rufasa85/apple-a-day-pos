@@ -16,7 +16,7 @@ export default function Navbar() {
 	];
 
 	return (
-		<Disclosure as='nav' className='z-10 bg-gray-900 shadow-lg shadow-gray-400/25 box-border'>
+		<Disclosure as='nav' className='z-10 bg-gray-900 shadow-lg shadow-gray-400/25 box-border absolute w-screen h-[84px]'>
 			{({ open }) => (
 				<>
 					<div className='px-8 py-6 grid grid-cols-3 items-center relative mx-auto'>

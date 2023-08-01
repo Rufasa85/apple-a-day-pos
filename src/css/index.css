@@ -22,6 +22,10 @@ code {
 		@apply input-base pl-9;
 	}
 
+	.input-error {
+		@apply text-red-600 transition-all;
+	}
+
 	.button-base {
 		@apply input-base font-semibold sm:w-auto justify-center items-center;
 	}
@@ -31,7 +35,7 @@ code {
 	}
 
 	.button-primary-off {
-		@apply button-base text-white bg-blue-600 ring-0 opacity-50 cursor-default;
+		@apply button-base text-white bg-blue-600 ring-0 opacity-50 cursor-not-allowed;
 	}
 
 	.button-secondary {
@@ -40,5 +44,17 @@ code {
 
 	.section-headline {
 		@apply text-lg font-medium leading-6;
+	}
+
+	.modal {
+		@apply gap-6 flex flex-col w-full p-6 bg-slate-100 rounded-lg;
+	}
+
+	.modal-buttons {
+		@apply gap-3 flex justify-end w-full;
+	}
+
+	.modal-background {
+		@apply fixed inset-0 bg-gray-500 bg-opacity-50 backdrop-blur-md transition-opacity;
 	}
 }
