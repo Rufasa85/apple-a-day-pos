@@ -1,31 +1,57 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import NewShift from './pages/NewShift';
-import EditShift from './pages/EditShift';
-import Reports from './pages/Reports';
-import Service from './pages/Service';
-import Service2 from './pages/Service2';
-import ShiftReport from './pages/ShiftReport';
-import CustomerReport from './pages/CustomerReport';
-import NewCustomer from './pages/NewCustomer';
+import { useQuery } from 'react-query';
+
+import { Home, Login, NotFound, NewShift, EditShift, Reports, Service, Service2, ShiftReport, CustomerReport, NewCustomer } from './pages';
+import { Navbar } from './components';
+import { api } from './utils';
 
 function App() {
-	// check for token
-	// redirect
+	const [showNav, setShowNav] = useState(true);
+  const [userId, setUserId] = useState(0)
+	const { location } = window;
+
+	useEffect(() => {
+    if (localStorage.getItem("token") && location.pathname !== "/login") {
+      checkTokenData()
+    }
+  }, [])
+  
+
+	useEffect(() => {
+		// if (isLoading) return;
+
+		const isLoginPage = location.pathname === '/login';
+		if (!isLoginPage) {
+      setShowNav(true);
+		} else {
+      setShowNav(false);
+    }
+
+	}, [location.pathname]);
+
+  const checkTokenData = async () => {
+    const res = await api.checkToken()
+    setUserId(res.data.userId)
+  }
+
+  const logout = () => {
+    setUserId(0)
+    api.logout()
+    location.replace("/login")
+  }
 
 	return (
 		<div className='flex flex-col min-h-screen'>
 			<Router>
-				<Navbar />
+				{showNav ? <Navbar userId={userId} logout={logout}/> : null}
+
 				<Routes>
 					<Route index={true} element={<Home />} />
-					<Route path='/login' element={<Login />} />
-					<Route path='/new-shift' element={<NewShift />} />
+					<Route path='/login' element={<Login userId={userId} setUserId={setUserId}/>} />
+					<Route path='/new-shift' element={<NewShift userId={userId}/>} />
 					<Route path='/edit-shift' element={<EditShift />} />
-					<Route path='/service' element={<Service />} />
+					<Route path='/service' element={<Service userId={userId}/>} />
 					<Route path='/service2' element={<Service2 />} />
 					<Route path='/new-customer' element={<NewCustomer />} />
 					<Route path='/reports' element={<Reports />} />
