@@ -21,7 +21,7 @@ const getEmoji = (search) => {
 		}
 	}
 
-	return foundEmoji || <img src='./assets/icons/food-icon.png' alt='food-icon' className='h-32' />;
+	return foundEmoji || <img src='./assets/icons/food-icon.png' alt='food-icon' className='h-16' />;
 };
 
 export default getEmoji;

@@ -116,12 +116,12 @@ const Service = ({ UserId }) => {
 				)}
 			</section>
 
-			<section className='p-4 divide-gray-400/50 divide-y overflow-y-auto w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-200 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
-				<header className='p-4 mb-4 flex flex-col place-content-center'>
+			<section className='p-4 overflow-y-auto w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-200 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
+				<header className='p-4 flex flex-col place-content-center'>
 					<h3 className='section-headline'>Current Order</h3>
 				</header>
 
-				<div className='px-4 py-8'>
+				<div className='px-4 py-4'>
 					<AddCustomer customer={customer} setCustomer={setCustomer} />
 				</div>
 

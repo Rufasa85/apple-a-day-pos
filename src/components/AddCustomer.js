@@ -54,7 +54,7 @@ export default function AddCustomer({ customer, setCustomer }) {
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 
-		console.log('typed');
+		console.log(customer);
 
 		const customerQuery = {
 			firstName: name === 'first-name' ? value : customer.firstName,
@@ -90,8 +90,14 @@ export default function AddCustomer({ customer, setCustomer }) {
 
 	return (
 		<div className='overflow-visible flex h-fit'>
-			<button onClick={() => setIsOpen(true)} className='button-secondary w-full hover:text-current'>
-				Add Customer
+			<button onClick={() => setIsOpen(true)} className='gap-4 flex grow flex-col justify-center items-start bg-slate-50/50 text-slate-400/50 border-slate-400/50 rounded-xl border-dashed border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-100 hover:opacity-90 active:bg-slate-100 active:shadow-md active:shadow-gray-100 active:opacity-100'>
+				<div className='p-6 gap-4 flex justify-start items-center'>
+					<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-8 h-8'>
+						<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
+					</svg>
+
+					<h2 className='text-lg font-semibold'>Add Customer</h2>
+				</div>
 			</button>
 
 			<Transition.Root show={isOpen} as={Fragment}>
