@@ -34,7 +34,7 @@ const compareCustomers = (customer, query) => {
 	if (firstMatch && lastMatch) return 'close';
 
 	const nameFlip = customerFirst?.includes(queryLast) && customerLast?.includes(queryFirst);
-	if (firstMatch || lastMatch || nameFlip) return 'partial';
+	if (nameFlip) return 'partial';
 
 	return '';
 };

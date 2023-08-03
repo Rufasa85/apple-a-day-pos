@@ -11,6 +11,12 @@ export default function DateInput({ name = 'date', placeholder = new Date(), val
 		}
 	};
 
+	const handleChange = () => {
+		if (showPlaceholder) {
+			setShowPlaceholder(false);
+		}
+	};
+
 	return (
 		<div className={className + ' cursor-pointer relative flex items-center'}>
 			{/* calendar icon */}
@@ -22,7 +28,7 @@ export default function DateInput({ name = 'date', placeholder = new Date(), val
 
 			<span className='sr-only'>Date</span>
 
-			<input type='date' name={name} placeholder={placeholder} autoComplete='off' ref={inputRef} onClick={handleClicks} value={value} onChange={onChange} className='input-with-icon' />
+			<input type='date' name={name} placeholder={placeholder} autoComplete='off' ref={inputRef} onClick={handleClicks} value={value} onChange={handleChange} className='input-with-icon' />
 
 			{/* placeholder */}
 			{showPlaceholder && (

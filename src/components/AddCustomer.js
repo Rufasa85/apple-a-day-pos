@@ -35,7 +35,7 @@ export default function AddCustomer({ customer, setCustomer }) {
 		const data = { exact: [], close: [], partial: [], date: [] };
 
 		if (noInput) {
-			data.partial.push(customers);
+			data.close.push(...customers);
 			return data;
 		}
 
@@ -47,6 +47,8 @@ export default function AddCustomer({ customer, setCustomer }) {
 			if (match === 'partial') data.partial.push(customer);
 			if (match === 'date') data.date.push(customer);
 		});
+
+		console.log(data);
 
 		return data;
 	};
@@ -121,7 +123,7 @@ export default function AddCustomer({ customer, setCustomer }) {
 										<SearchInput name='last-name' placeholder={'Last Name'} value={customer.lastName} onChange={handleInputChange} />
 										<DateInput name='date-of-birth' placeholder={'Date of Birth'} value={customer.dateOfBirth} onChange={handleInputChange} className='col-span-2' />
 
-										<Typeahead isQuery={customer.firstName || customer.lastName || customer.dateOfBirth} data={filteredCustomers} setSelection={setCustomer} />
+										<Typeahead data={filteredCustomers} setSelection={setCustomer} />
 									</div>
 
 									{error && <p className='input-error'>Sorry, something went wrong.</p>}
