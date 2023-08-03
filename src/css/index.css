@@ -57,4 +57,12 @@ code {
 	.modal-background {
 		@apply fixed inset-0 bg-gray-500 bg-opacity-50 backdrop-blur-md transition-opacity;
 	}
+
+	.add-button {
+		@apply gap-4 text-gray-900/30 border-gray-900/30 rounded-xl border-dashed border-2 opacity-90 hover:opacity-80 active:opacity-100 active:shadow-inner active:bg-neutral-300/5 justify-center items-center flex flex-col grow;
+	}
+
+	.item-button-content {
+		@apply gap-4 h-28 flex flex-col justify-end items-center;
+	}
 }

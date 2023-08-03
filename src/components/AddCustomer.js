@@ -3,17 +3,12 @@ import { useQuery } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
 import dayjs from 'dayjs';
 
-import { SearchInput, Typeahead } from '../components';
-import { api, classCondition } from '../utils';
+import { DateInput, SearchInput, Typeahead } from '../components';
+import { api, compareCustomers, classCondition } from '../utils';
 
 export default function AddCustomer({ customer, setCustomer }) {
 	const [customers, setCustomers] = useState([]);
-	const [filteredCustomers, setFilteredCustomers] = useState([]);
-
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [dateOfBirth, setDateOfBirth] = useState('');
-
+	const [filteredCustomers, setFilteredCustomers] = useState({});
 	const [error, setError] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -30,45 +25,46 @@ export default function AddCustomer({ customer, setCustomer }) {
 				});
 
 				setCustomers(customerObjects);
+				setFilteredCustomers({ exact: [], close: [], partial: customerObjects, date: [] });
 			}
 		}
 	});
 
-	const filterCustomers = (customerQuery) => {
-		const noInput = !customerQuery.firstName && !customerQuery.lastName && !customerQuery.dateOfBirth;
-		if (noInput) return customers;
+	const filterCustomers = (query) => {
+		const noInput = !query.firstName && !query.lastName && !query.dateOfBirth;
+		const data = { exact: [], close: [], partial: [], date: [] };
 
-		const filteredData = customers.filter((previousCustomer) => {
-			const firstNameMatch = previousCustomer.firstName.toLowerCase().replace(/\s+/g, '').includes(customerQuery.firstName.toLowerCase().replace(/\s+/g, ''));
-			const lastNameMatch = previousCustomer.lastName.toLowerCase().replace(/\s+/g, '').includes(customerQuery.lastName.toLowerCase().replace(/\s+/g, ''));
-			const dateOfBirthMatch = dayjs(customerQuery.dateOfBirth).diff(previousCustomer.dateOfBirth, 'day') < 1;
+		if (noInput) {
+			data.partial.push(customers);
+			return data;
+		}
 
-			const notMatch = !firstNameMatch || !lastNameMatch || !dateOfBirthMatch;
+		customers.forEach((customer) => {
+			const match = compareCustomers(customer, query);
 
-			return !notMatch;
+			if (match === 'exact') data.exact.push(customer);
+			if (match === 'close') data.close.push(customer);
+			if (match === 'partial') data.partial.push(customer);
+			if (match === 'date') data.date.push(customer);
 		});
 
-		return filteredData;
+		return data;
 	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 
-		console.log(customer);
+		const firstName = name === 'first-name' ? value : customer.firstName;
+		const lastName = name === 'last-name' ? value : customer.lastName;
+		const dateOfBirth = name === 'date-of-birth' ? value : customer.dateOfBirth;
 
-		const customerQuery = {
-			firstName: name === 'first-name' ? value : customer.firstName,
-			lastName: name === 'last-name' ? value : customer.lastName,
-			dateOfBirth: name === 'date-of-birth' ? value : customer.dateOfBirth
-		};
+		const query = { firstName, lastName, dateOfBirth };
 
-		setCustomer(customerQuery);
-
-		const filteredData = filterCustomers(customerQuery);
+		const filteredData = filterCustomers(query);
 		setFilteredCustomers(filteredData);
 
-		const dataMatch = filteredData.length === 1 ? filteredData[0] : null;
-		setCustomer(dataMatch || customer);
+		const exactMatch = filteredData.exact.length === 1 ? filteredData.exact[0] : null;
+		setCustomer(exactMatch || query);
 	};
 
 	const addCustomer = async (e) => {
@@ -90,8 +86,8 @@ export default function AddCustomer({ customer, setCustomer }) {
 
 	return (
 		<div className='overflow-visible flex h-fit'>
-			<button onClick={() => setIsOpen(true)} className='gap-4 flex grow flex-col justify-center items-start bg-slate-50/50 text-slate-400/50 border-slate-400/50 rounded-xl border-dashed border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-100 hover:opacity-90 active:bg-slate-100 active:shadow-md active:shadow-gray-100 active:opacity-100'>
-				<div className='p-6 gap-4 flex justify-start items-center'>
+			<button onClick={() => setIsOpen(true)} className='h-20 add-button'>
+				<div className='gap-3 w-full justify-center items-center flex'>
 					<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-8 h-8'>
 						<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
 					</svg>
@@ -121,11 +117,11 @@ export default function AddCustomer({ customer, setCustomer }) {
 									</div>
 
 									<div className='gap-x-3 gap-y-4 grid grid-cols-2 relative'>
-										<SearchInput name='first-name' value={customer.firstName} onChange={handleInputChange} placeholder={'First Name'} />
-										<SearchInput name='last-name' value={customer.lastName} onChange={handleInputChange} placeholder={'Last Name'} />
-										<SearchInput name='date-of-birth' type='date' value={customer.dateOfBirth} onChange={handleInputChange} placeholder={'Date of Birth'} className='col-span-2' />
+										<SearchInput name='first-name' placeholder={'First Name'} value={customer.firstName} onChange={handleInputChange} />
+										<SearchInput name='last-name' placeholder={'Last Name'} value={customer.lastName} onChange={handleInputChange} />
+										<DateInput name='date-of-birth' placeholder={'Date of Birth'} value={customer.dateOfBirth} onChange={handleInputChange} className='col-span-2' />
 
-										<Typeahead isQuery={firstName.length > 0 || lastName.length > 0 || dateOfBirth.length > 0} data={filteredCustomers} setSelection={setCustomer} />
+										<Typeahead isQuery={customer.firstName || customer.lastName || customer.dateOfBirth} data={filteredCustomers} setSelection={setCustomer} />
 									</div>
 
 									{error && <p className='input-error'>Sorry, something went wrong.</p>}
@@ -135,7 +131,7 @@ export default function AddCustomer({ customer, setCustomer }) {
 											Cancel
 										</button>
 
-										<button type='submit' className={classCondition(!firstName || !lastName < 1 ? 'button-primary-off' : 'button-primary')}>
+										<button type='submit' className={classCondition(!customer.firstName || !customer.lastName ? 'button-primary-off' : 'button-primary')}>
 											Add Customer
 										</button>
 									</div>

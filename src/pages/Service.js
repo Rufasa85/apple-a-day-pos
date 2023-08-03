@@ -7,7 +7,7 @@ import { api, classCondition, getEmoji, twColors } from '../utils';
 
 const Service = ({ UserId }) => {
 	const [items, setItems] = useState([]);
-	const [customer, setCustomer] = useState({ firstName: '', lastName: '', dateOfBirth: '' });
+	const [customer, setCustomer] = useState({ id: null, firstName: '', lastName: '', dateOfBirth: '' });
 	const [customerValue, setCustomerValue] = useState({ id: null, value: '' });
 	const [order, setOrder] = useState({});
 	const [itemCount, setItemCount] = useState(0);
@@ -143,7 +143,7 @@ const Service = ({ UserId }) => {
 					</ul>
 				</div>
 
-				<button disabled={itemCount === 0} onClick={submitOrder} className={classCondition(itemCount > 0 ? 'opacity-100 hover:bg-blue-500 cursor-pointer' : 'opacity-50 cursor-not-allowed', 'w-full justify-center rounded-md bg-blue-600 px-4 py-2 font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto')}>
+				<button disabled={itemCount === 0} onClick={submitOrder} className={classCondition(itemCount > 0 ? 'opacity-100 hover:bg-blue-500 cursor-pointer' : 'opacity-50 cursor-not-allowed', 'm-4 button-primary')}>
 					Submit Order
 				</button>
 			</section>

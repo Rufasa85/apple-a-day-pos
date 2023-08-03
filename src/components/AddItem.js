@@ -48,8 +48,8 @@ export default function AddItem({ refetch }) {
 
 	return (
 		<div className='overflow-visible flex h-fit'>
-			<button onClick={() => setIsOpen(true)} className='h-72 gap-4 flex grow flex-col justify-center items-center bg-slate-50/50 text-slate-400/50 border-slate-400/50 rounded-3xl border-dashed border-2 opacity-95 hover:shadow-lg hover:shadow-gray-100 hover:opacity-90 active:bg-slate-100 active:shadow-md active:shadow-gray-100 active:opacity-100'>
-				<div className='gap-4 h-28 flex flex-col justify-end items-center'>
+			<button onClick={() => setIsOpen(true)} className='h-72 rounded-3xl add-button'>
+				<div className='item-button-content'>
 					<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-16 h-16'>
 						<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
 					</svg>
