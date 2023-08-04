@@ -2,14 +2,15 @@ import { Fragment, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Dialog, Transition } from '@headlessui/react';
 
-import { TypeaheadInput } from '../components';
-import { api, classCondition } from '../utils';
+import { SearchInput, Typeahead } from '../components';
+import { api, classCondition, compare } from '../utils';
 
 export default function AddItem({ refetch }) {
-	const [items, setItems] = useState([]);
-	const [inputValue, setInputValue] = useState({ id: null, value: '' });
+	const [allItems, setAllItems] = useState([]);
+	const [filteredItems, setFilteredItems] = useState({});
+	const [itemQuery, setItemQuery] = useState({ id: null, value: '' });
+	const [visible, setVisible] = useState(false);
 	const [error, setError] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
 
 	const { isLoading } = useQuery({
 		queryKey: ['all-items'],
@@ -17,25 +18,67 @@ export default function AddItem({ refetch }) {
 
 		onSuccess: (response) => {
 			if (response.data) {
-				const itemObjects = response.data.map(({ id, name }) => ({ id, value: name }));
-				setItems(itemObjects);
+				const itemObjects = response.data.map(({ id, name }) => ({ id, name, typeaheadValue: name }));
+
+				setAllItems(itemObjects);
 			}
 		}
 	});
+
+	const filterItems = (query) => {
+		const noInput = !query.name;
+		const data = { exact: [], close: [] };
+
+		if (noInput) {
+			data.close.push(...allItems);
+			return data;
+		}
+
+		allItems.forEach((item) => {
+			const exactMatch = compare.stringsExact(item.name, query.name);
+
+			if (exactMatch) {
+				data.exact.push(item);
+				return;
+			}
+
+			const closeMatch = compare.stringIncludes(item.name, query.name);
+
+			if (closeMatch) {
+				data.close.push(item);
+			}
+		});
+
+		return data;
+	};
+
+	const handleInputChange = (e) => {
+		const query = {
+			name: e.target.value
+		};
+
+		const filteredData = filterItems(query);
+		setFilteredItems(filteredData);
+
+		const exactMatch = filteredData.exact.length === 1 ? filteredData.exact[0] : null;
+		setItemQuery(exactMatch || query);
+	};
 
 	const addItem = async (e) => {
 		e.preventDefault();
 
 		try {
-			const { id, value } = inputValue;
+			const itemObject = {
+				id: itemQuery.id,
+				name: itemQuery.name.trim()
+			};
 
-			const name = value.trim();
-			if (name === '') return;
+			if (!itemObject.name) return;
 
-			const response = await api.createItem({ id, name });
+			const response = await api.createItem(itemObject);
 
 			if (response?.status === 200) {
-				setIsOpen(false);
+				setVisible(false);
 				refetch();
 			} else {
 				console.log(response);
@@ -48,7 +91,7 @@ export default function AddItem({ refetch }) {
 
 	return (
 		<div className='overflow-visible flex h-fit'>
-			<button onClick={() => setIsOpen(true)} className='h-72 rounded-3xl add-button'>
+			<button onClick={() => setVisible(true)} className='h-72 rounded-3xl add-button'>
 				<div className='item-button-content'>
 					<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='3 3 18 18' strokeWidth={1.5} stroke='currentColor' className='w-16 h-16'>
 						<path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
@@ -58,8 +101,8 @@ export default function AddItem({ refetch }) {
 				</div>
 			</button>
 
-			<Transition.Root show={isOpen} as={Fragment}>
-				<Dialog as='div' className='relative z-10' onClose={setIsOpen}>
+			<Transition.Root show={visible} as={Fragment}>
+				<Dialog as='div' className='relative z-10' onClose={setVisible}>
 					{/* Modal background */}
 					<Transition.Child as={Fragment} enter='ease-out duration-300' enterFrom='opacity-0' enterTo='opacity-100' leave='ease-in duration-200' leaveFrom='opacity-100' leaveTo='opacity-0'>
 						<div className='modal-background' />
@@ -78,16 +121,20 @@ export default function AddItem({ refetch }) {
 										<Dialog.Description>Search or add an item for today's menu.</Dialog.Description>
 									</div>
 
-									<TypeaheadInput query={inputValue} setQuery={setInputValue} data={items} />
+									<div className='relative'>
+										<SearchInput placeholder={allItems[0]?.name || 'Add or Search'} value={itemQuery.name} onChange={handleInputChange} />
+
+										<Typeahead isQuery={!!itemQuery.name} data={filteredItems} setSelection={setItemQuery} />
+									</div>
 
 									{error && <p className='input-error'>Sorry, something went wrong.</p>}
 
 									<div className='modal-buttons'>
-										<button type='button' onClick={() => setIsOpen(false)} className='button-secondary'>
+										<button type='button' onClick={() => setVisible(false)} className='button-secondary'>
 											Cancel
 										</button>
 
-										<button type='submit' className={classCondition(inputValue?.value?.length < 1 ? 'button-primary-off' : 'button-primary')}>
+										<button type='submit' className={classCondition(itemQuery?.value?.length < 1 ? 'button-primary-off' : 'button-primary')}>
 											Add Item
 										</button>
 									</div>

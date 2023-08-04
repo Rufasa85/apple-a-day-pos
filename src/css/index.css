@@ -42,6 +42,10 @@ code {
 		@apply button-base bg-gray-200 hover:bg-opacity-75;
 	}
 
+	.button-danger {
+		@apply button-base text-white bg-red-600 hover:bg-opacity-90;
+	}
+
 	.section-headline {
 		@apply text-lg font-medium leading-6;
 	}

@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 
 import { classCondition } from '../utils';
 
-const defaultData = { exact: [], close: [], partial: [], date: [] };
-
-export default function Typeahead({ data = defaultData, setSelection }) {
-	const [showSuggestions, setShowSuggestions] = useState(true);
+const Typeahead = ({ isQuery, data, setSelection, className }) => {
+	const [showSuggestions, setShowSuggestions] = useState(false);
 	const dataKeyArray = Object.keys(data);
 
 	const handleClick = (item) => {
@@ -33,8 +30,8 @@ export default function Typeahead({ data = defaultData, setSelection }) {
 		// eslint-disable-next-line
 	}, []);
 
-	return showSuggestions && dataKeyArray.some((key) => data[key].length > 0) ? (
-		<div className='mt-2 max-h-60 shadow-xl w-full h-fit top-full overflow-y-auto ring-inset ring-1 ring-gray-200 rounded-lg bg-white absolute flex flex-col z-10'>
+	return isQuery && showSuggestions && dataKeyArray.some((key) => data[key].length > 0) ? (
+		<div className={className + ' mt-2 max-h-60 shadow-xl w-full h-fit top-full overflow-y-auto ring-inset ring-1 ring-gray-200 rounded-lg bg-white absolute flex flex-col z-10'}>
 			<ol className='w-full h-fit rounded-lg flex flex-col'>
 				{dataKeyArray.map((key) =>
 					data[key].map((item, i) => {
@@ -52,14 +49,6 @@ export default function Typeahead({ data = defaultData, setSelection }) {
 								)}
 
 								<p>{item.typeaheadValue}</p>
-
-								<p>
-									{dayjs(item.dateOfBirth).format('MM')}
-									<span className='mx-[2px] opacity-50'>/</span>
-									{dayjs(item.dateOfBirth).format('DD')}
-									<span className='mx-[2px] opacity-50'>/</span>
-									{dayjs(item.dateOfBirth).format('YYYY')}
-								</p>
 							</li>
 						);
 					})
@@ -67,4 +56,6 @@ export default function Typeahead({ data = defaultData, setSelection }) {
 			</ol>
 		</div>
 	) : null;
-}
+};
+
+export default Typeahead;

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { AddCustomer, AddItem, Loading } from '../components';
+import { Customer, AddItem, Loading } from '../components';
 import { api, classCondition, getEmoji, twColors } from '../utils';
 
 const Service = ({ UserId }) => {
-	const [items, setItems] = useState([]);
-	const [customer, setCustomer] = useState({ id: null, firstName: '', lastName: '', dateOfBirth: '' });
-	const [customerValue, setCustomerValue] = useState({ id: null, value: '' });
 	const [order, setOrder] = useState({});
+	const [items, setItems] = useState([]);
+	const [customer, setCustomer] = useState();
 	const [itemCount, setItemCount] = useState(0);
 	const [ShiftId, setShiftId] = useState(0);
 
@@ -22,21 +21,22 @@ const Service = ({ UserId }) => {
 
 		onSuccess: (response) => {
 			if (response?.data?.ShiftItems) {
-				const itemObjects = response.data.ShiftItems.map((shiftItem) => {
+				const { id, ShiftItems } = response.data;
+
+				const itemObjects = ShiftItems.map((shiftItem) => {
 					const { createdAt, Item } = shiftItem;
 					const { id, name } = Item;
 
 					return { id, name, createdAt };
 				});
 
-				setShiftId(response.data.id);
+				setShiftId(id);
 				setItems(itemObjects);
 			}
 		}
 	});
 
 	const reset = () => {
-		setCustomerValue({ id: null, value: 'NONE' });
 		setItemCount(0);
 		setOrder({});
 	};
@@ -45,7 +45,7 @@ const Service = ({ UserId }) => {
 		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
 
 		if (confirmed) {
-			const CustomerId = customerValue.id;
+			const CustomerId = customer.id;
 			const ItemIds = [];
 
 			for (const key in order) {
@@ -86,6 +86,15 @@ const Service = ({ UserId }) => {
 		setOrder(newOrder);
 	};
 
+	useEffect(() => {
+		const storedOrder = JSON.parse(localStorage.getItem('order'));
+
+		if (storedOrder) {
+			setCustomer(storedOrder.customer);
+		}
+		// eslint-disable-next-line
+	}, []);
+
 	return (
 		<main className='pt-[84px] w-screen h-screen max-w-screen max-h-screen flex'>
 			<section className='p-4 overflow-y-auto w-full h-full max-w-[75%] max-h-full flex flex-col'>
@@ -121,9 +130,7 @@ const Service = ({ UserId }) => {
 					<h3 className='section-headline'>Current Order</h3>
 				</header>
 
-				<div className='px-4 py-4'>
-					<AddCustomer customer={customer} setCustomer={setCustomer} />
-				</div>
+				<div className='px-4 py-4 flex'>{customer ? <Customer.Card customer={customer} setCustomer={setCustomer} /> : <Customer.AddButton customer={customer} setCustomer={setCustomer} />}</div>
 
 				<div className='h-full'>
 					<ul>
@@ -133,9 +140,11 @@ const Service = ({ UserId }) => {
 									<p className='p-1'>
 										{item[1].count}x {item[1].name}
 									</p>
+
 									<button className='p-1 bg-red-500 text-white hover:bg-red-700 rounded ml-2' onClick={() => decrementItem(item[0])}>
 										Delete
 									</button>
+
 									<button className='p-1 bg-blue-500 text-white hover:bg-blue-700 rounded ml-2'>Update quantity</button>
 								</li>
 							);
