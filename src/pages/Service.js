@@ -66,10 +66,12 @@ const Service = ({ UserId }) => {
 		if (confirmed) {
 			const CustomerId = customer.id;
 
-			const items = orderItems.map((item) => {
-				const { ItemId, quantity } = item;
-				return { ItemId, quantity };
-			});
+			const items = orderItems
+				.filter((item) => item.quantity > 0)
+				.map((item) => {
+					const { ItemId, quantity } = item;
+					return { ItemId, quantity };
+				});
 
 			const res = await api.createOrder({ ShiftId, CustomerId, items });
 
