@@ -6,6 +6,7 @@ import ComboboxEl from './ComboboxEl';
 import Customers from './Customers';
 import DateInput from './DateInput';
 import Icon from './Icon';
+import Item from './Item';
 import Loading from './Loading';
 import LogoutButton from './LogoutButton';
 import Navbar from './Navbar';
@@ -14,4 +15,4 @@ import Shifts from './Shifts';
 import Typeahead from './Typeahead';
 import TypeaheadInput from './TypeaheadInput';
 
-export { Customer, AddCustomer, AddItem, BouncingApple, ComboboxEl, Customers, DateInput, Icon, Loading, LogoutButton, Navbar, SearchInput, Shifts, Typeahead, TypeaheadInput };
+export { Customer, AddCustomer, AddItem, BouncingApple, ComboboxEl, Customers, DateInput, Icon, Item, Loading, LogoutButton, Navbar, SearchInput, Shifts, Typeahead, TypeaheadInput };

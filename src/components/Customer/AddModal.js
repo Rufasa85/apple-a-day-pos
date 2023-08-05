@@ -88,10 +88,7 @@ const AddModal = ({ visible, setVisible, setCustomer }) => {
 				const selectedCustomer = response.data.customer[0];
 				setCustomer(selectedCustomer);
 
-				const storedOrder = JSON.parse(localStorage.getItem('order')) || {};
-				storedOrder.customer = selectedCustomer;
-
-				localStorage.setItem('order', JSON.stringify(storedOrder));
+				localStorage.setItem('customer', JSON.stringify(selectedCustomer));
 			} else {
 				setError(true);
 			}

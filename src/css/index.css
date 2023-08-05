@@ -13,6 +13,20 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+/* hides default arrows on number inputs */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+
 @layer components {
 	.input-base {
 		@apply px-4 py-2 rounded-lg ring-inset ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-600 placeholder:text-gray-400 sm:text-sm text-base border-none w-full flex;
