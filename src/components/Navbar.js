@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import { LogoutButton } from '../components';
+import { Logout } from '../components';
 import { classCondition } from '../utils';
 
-export default function Navbar() {
+const Navbar = () => {
 	const { pathname } = useLocation();
 
 	const navigation = [
-		// { name: 'Menu', href: '/new-shift' },
 		{ name: 'Service', href: '/service' },
 		{ name: 'Reports', href: '/reports' }
 	];
@@ -39,7 +37,7 @@ export default function Navbar() {
 						</div>
 
 						<div className='hidden sm:flex justify-end'>
-							<LogoutButton className='button-base text-white ring-0 hover:bg-gray-800' />
+							<Logout className='button-base text-white ring-0 hover:bg-gray-800' />
 						</div>
 
 						<div className='flex justify-end sm:hidden'>
@@ -63,7 +61,7 @@ export default function Navbar() {
 							<hr className='my-px h-px w-full bg-gray-800/20 flex border-0 sm:hidden' />
 
 							<div className='w-full sm:hidden flex'>
-								<LogoutButton className='px-8 py-2 rounded-md text-right hover:bg-gray-200 cursor-pointer w-full' />
+								<Logout className='px-8 py-2 rounded-md text-right hover:bg-gray-200 cursor-pointer w-full' />
 							</div>
 						</div>
 					</Disclosure.Panel>
@@ -71,4 +69,6 @@ export default function Navbar() {
 			)}
 		</Disclosure>
 	);
-}
+};
+
+export default Navbar;

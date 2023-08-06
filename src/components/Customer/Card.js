@@ -72,7 +72,7 @@ const Card = ({ customer, setCustomer }) => {
 				</div>
 			</div>
 
-			<Modal options={modalOptions} className='hidden' />
+			<Modal options={modalOptions} />
 		</div>
 	);
 };

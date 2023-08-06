@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
-import { Home, Login, Layout, NotFound, NewShift, EditShift, Reports, Service, Service2, ShiftReport, CustomerReport, NewCustomer } from './pages';
+import { Home, Login, Layout, NotFound, EditShift, Reports, Service, Service2, ShiftReport, CustomerReport, NewCustomer } from './pages';
 import { Navbar } from './components';
 import { api } from './utils';
 

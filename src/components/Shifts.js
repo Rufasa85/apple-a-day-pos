@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 import Loading from '../components/Loading';
-import api from '../utils/API';
+import { api } from '../utils';
 
 dayjs.extend(advancedFormat);
 
@@ -19,13 +19,13 @@ const Shifts = () => {
 };
 
 const shiftCard = (shiftObj) => {
-	console.log(shiftObj);
 	const totalOrders = shiftObj.Orders.length;
 	const itemCounts = {};
-	shiftObj.Items.forEach((item) => {
+	shiftObj.ShiftItems.forEach((item) => {
 		itemCounts[item.id] = { name: item.name, count: 0 };
 	});
 	shiftObj.Orders.forEach((order) => {
+		console.log(order);
 		order.OrderItems.forEach((orderItem) => {
 			itemCounts[orderItem.ItemId].count = itemCounts[orderItem.ItemId].count + 1;
 		});
