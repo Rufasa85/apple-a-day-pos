@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-import { Icon } from '../../components';
-import RemoveModal from './RemoveModal';
+import { Icon, Modal } from '../../components';
 
 const Card = ({ customer, setCustomer }) => {
 	const [visible, setVisible] = useState(false);
@@ -13,6 +12,35 @@ const Card = ({ customer, setCustomer }) => {
 	const year = dayjs(dateOfBirth).format('YYYY');
 
 	const dateSeperator = <span className='mx-px text-gray-400'>/</span>;
+
+	const handleRemove = (e) => {
+		e.preventDefault();
+
+		setCustomer(null);
+		localStorage.removeItem('customer');
+
+		setVisible(false);
+	};
+
+	const dynamicDescription = (
+		<p>
+			Are you sure you want to remove{' '}
+			<span className='font-semibold'>
+				{customer.firstName} {customer.lastName}
+			</span>{' '}
+			from this order?
+		</p>
+	);
+
+	const modalOptions = {
+		visible,
+		setVisible,
+		title: 'Remove Customer',
+		description: dynamicDescription,
+		buttonText: 'Remove',
+		buttonClassName: 'button-danger',
+		onSubmit: handleRemove
+	};
 
 	return (
 		<div onClick={() => setVisible(true)} className='p-5 bg-white ring-inset ring-1 ring-gray-200 shadow shadow-gray-200 cursor-pointer h-20 gap-3 rounded-xl w-full flex'>
@@ -44,7 +72,7 @@ const Card = ({ customer, setCustomer }) => {
 				</div>
 			</div>
 
-			<RemoveModal visible={visible} setVisible={setVisible} customer={customer} setCustomer={setCustomer} />
+			<Modal options={modalOptions} className='hidden' />
 		</div>
 	);
 };

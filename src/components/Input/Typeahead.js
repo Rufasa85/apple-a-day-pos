@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { classCondition } from '../utils';
+import { classCondition } from '../../utils';
 
 const Typeahead = ({ isQuery, data, setSelection, className }) => {
 	const [showSuggestions, setShowSuggestions] = useState(false);

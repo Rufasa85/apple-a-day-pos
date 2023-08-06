@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
 
-import { Customer, Item, AddItem, Loading } from '../components';
-import { api, classCondition, getEmoji, twColors } from '../utils';
+import { Customer, Item, Loading } from '../components';
+import { api, classCondition } from '../utils';
 
 const Service = ({ UserId }) => {
 	const [ShiftId, setShiftId] = useState(0);
@@ -39,26 +39,6 @@ const Service = ({ UserId }) => {
 			}
 		}
 	});
-
-	const addOrderItem = (ItemId, name) => {
-		for (let i = 0; i < orderItems.length; i++) {
-			const item = orderItems[i];
-
-			if (item.ItemId === ItemId) {
-				const updatedOrderItems = [...orderItems];
-				updatedOrderItems[i].quantity += 1;
-
-				setOrderItems(updatedOrderItems);
-				localStorage.setItem('items', JSON.stringify(updatedOrderItems));
-				return;
-			}
-		}
-
-		const updatedOrderItems = [...orderItems, { ItemId, name, quantity: 1 }];
-
-		setOrderItems(updatedOrderItems);
-		localStorage.setItem('items', JSON.stringify(updatedOrderItems));
-	};
 
 	const submitOrder = async () => {
 		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
@@ -96,18 +76,11 @@ const Service = ({ UserId }) => {
 					<Loading />
 				) : (
 					<div className='p-4 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1'>
-						{shiftItems?.map(({ id, name }, i) => {
-							return (
-								<button key={`shiftitem-${id}`} onClick={() => addOrderItem(id, name)} className={classCondition(twColors.getColorClass(i), 'h-72 gap-4 flex grow justify-center items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-200 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100')}>
-									<div className='gap-4 h-28 flex flex-col justify-end items-center'>
-										<h2 className='text-6xl font-semibold drop-shadow-md flex flex-col justify-end items-center'>{getEmoji(name)}</h2>
-										<h2 className='text-2xl font-semibold drop-shadow-md'>{name}</h2>
-									</div>
-								</button>
-							);
+						{shiftItems?.map((item, i) => {
+							return <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} />;
 						})}
 
-						<AddItem refetch={refetch} />
+						<Item.Add refetch={refetch} />
 					</div>
 				)}
 			</section>
@@ -117,7 +90,7 @@ const Service = ({ UserId }) => {
 					<h3 className='section-headline'>Current Order</h3>
 				</header>
 
-				<div className='px-4 py-4 flex'>{customer ? <Customer.Card customer={customer} setCustomer={setCustomer} /> : <Customer.AddButton customer={customer} setCustomer={setCustomer} />}</div>
+				<div className='px-4 py-4 flex'>{customer ? <Customer.Card customer={customer} setCustomer={setCustomer} /> : <Customer.Add customer={customer} setCustomer={setCustomer} />}</div>
 
 				<ul className='px-3 py-8 gap-8 mx-1 my-4 border-t border-b h-full overflow-y-auto flex flex-col'>
 					{orderItems.map((item, i) => {

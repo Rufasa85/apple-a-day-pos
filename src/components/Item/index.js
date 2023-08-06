@@ -1,7 +1,11 @@
+import Add from './Add';
 import OrderItem from './OrderItem';
+import ShiftItem from './ShiftItem';
 
 const Item = {
-	OrderItem
+	Add,
+	OrderItem,
+	ShiftItem
 };
 
 export default Item;

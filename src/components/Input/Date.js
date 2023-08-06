@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 
-import { Icon } from '../components';
+import { Icon } from '..';
 
-const DateInput = ({ name = 'date', placeholder, value = '', onChange = (e) => console.log(e), className = '' }) => {
+const Date = ({ name = 'date', placeholder, value = '', onChange = (e) => console.log(e), className = '' }) => {
 	const [showPlaceholder, setShowPlaceholder] = useState(true);
 	const inputRef = useRef(null);
 
@@ -40,4 +40,4 @@ const DateInput = ({ name = 'date', placeholder, value = '', onChange = (e) => c
 	);
 };
 
-export default DateInput;
+export default Date;

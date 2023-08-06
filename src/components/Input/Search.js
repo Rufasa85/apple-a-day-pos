@@ -1,6 +1,6 @@
-import { Icon } from '../components';
+import { Icon } from '../';
 
-const SearchInput = ({ name = 'search', placeholder = 'Search', value = '', onChange = (e) => console.log(e), className = '' }) => {
+const Search = ({ name = 'search', placeholder = 'Search', value = '', onChange = (e) => console.log(e), className = '' }) => {
 	return (
 		<div className={className + ' relative flex items-center'}>
 			<span className='absolute inset-y-0 left-2 z-10 flex items-center'>
@@ -14,4 +14,4 @@ const SearchInput = ({ name = 'search', placeholder = 'Search', value = '', onCh
 	);
 };
 
-export default SearchInput;
+export default Search;

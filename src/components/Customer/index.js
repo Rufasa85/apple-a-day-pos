@@ -1,13 +1,9 @@
-import AddButton from './AddButton';
-import AddModal from './AddModal';
+import Add from './Add';
 import Card from './Card';
-import RemoveModal from './RemoveModal';
 
 const Customer = {
-	AddButton,
-	AddModal,
-	Card,
-	RemoveModal
+	Add,
+	Card
 };
 
 export default Customer;
