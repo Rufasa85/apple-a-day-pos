@@ -23,7 +23,7 @@ const Date = ({ name = 'date', placeholder, value = '', onChange = (e) => consol
 
 	return (
 		<div className={className + ' cursor-pointer relative flex items-center'}>
-			<span onClick={handleClicks} className='absolute inset-y-0 left-2 z-10 flex items-center'>
+			<span onClick={handleClicks} className='absolute left-2 flex items-center'>
 				<Icons.Date className='h-5 w-5 stroke-gray-400' />
 			</span>
 
@@ -32,7 +32,7 @@ const Date = ({ name = 'date', placeholder, value = '', onChange = (e) => consol
 			<input type='date' name={name} autoComplete='off' ref={inputRef} onClick={handleClicks} value={value} onChange={handleChange} className='input-with-icon' />
 
 			{showPlaceholder && !value && (
-				<span onClick={handleClicks} className='px-7 mx-2 text-gray-400 bg-white absolute sm:text-sm text-base flex items-center'>
+				<span onClick={handleClicks} className='text-gray-400 absolute left-32 sm:text-sm text-base flex items-center'>
 					{placeholder}
 				</span>
 			)}

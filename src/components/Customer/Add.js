@@ -120,7 +120,7 @@ const Add = ({ setCustomer }) => {
 			<Modal options={modalOptions} className='gap-x-3 gap-y-4 grid grid-cols-2 relative'>
 				<Input.Search name='first-name' placeholder={'First Name'} value={customerQuery.firstName} onChange={handleInputChange} />
 				<Input.Search name='last-name' placeholder={'Last Name'} value={customerQuery.lastName} onChange={handleInputChange} />
-				<Input.Date name='date-of-birth' placeholder={'Date of Birth'} value={customerQuery.dateOfBirth} onChange={handleInputChange} className='col-span-2 peer' />
+				<Input.Date name='date-of-birth' placeholder={'Date of Birth (optional)'} value={customerQuery.dateOfBirth} onChange={handleInputChange} className='col-span-2 peer' />
 
 				<Input.Typeahead isQuery={customerQuery.firstName || customerQuery.lastName || customerQuery.dateOfBirth} data={filteredCustomers} setSelection={setCustomerQuery} className='peer-focus-within:hidden' />
 

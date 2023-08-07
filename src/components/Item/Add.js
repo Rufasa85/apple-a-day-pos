@@ -7,7 +7,7 @@ import { api, compare } from '../../utils';
 const Add = ({ refetch }) => {
 	const [allItems, setAllItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState({});
-	const [itemQuery, setItemQuery] = useState({ id: null, value: '' });
+	const [itemQuery, setItemQuery] = useState({ id: null, name: '' });
 	const [visible, setVisible] = useState(false);
 	const [error, setError] = useState(false);
 
@@ -94,8 +94,8 @@ const Add = ({ refetch }) => {
 		title: 'Add Item',
 		description: `Search or add an item for today's menu.`,
 		buttonText: 'Add',
-		buttonClassName: itemQuery?.value?.length < 1 ? 'button-primary-off' : 'button-primary',
-		buttonClick: addItem
+		buttonClassName: itemQuery?.name?.length < 1 ? 'button-primary-off' : 'button-primary',
+		onSubmit: addItem
 	};
 
 	return (
