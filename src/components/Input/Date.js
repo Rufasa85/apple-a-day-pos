@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-import { Icon } from '..';
+import { Icons } from '..';
 
 const Date = ({ name = 'date', placeholder, value = '', onChange = (e) => console.log(e), className = '' }) => {
 	const [showPlaceholder, setShowPlaceholder] = useState(true);
@@ -24,7 +24,7 @@ const Date = ({ name = 'date', placeholder, value = '', onChange = (e) => consol
 	return (
 		<div className={className + ' cursor-pointer relative flex items-center'}>
 			<span onClick={handleClicks} className='absolute inset-y-0 left-2 z-10 flex items-center'>
-				<Icon.Date className='h-5 w-5 stroke-gray-400' />
+				<Icons.Date className='h-5 w-5 stroke-gray-400' />
 			</span>
 
 			<span className='sr-only'>Date</span>

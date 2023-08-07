@@ -2,7 +2,7 @@ import Customer from './Customer';
 import BouncingApple from './BouncingApple';
 import ComboboxEl from './ComboboxEl';
 import Customers from './Customers';
-import Icon from './Icon';
+import Icons from './Icons';
 import Input from './Input';
 import Item from './Item';
 import Loading from './Loading';
@@ -11,4 +11,4 @@ import Modal from './Modal';
 import Navbar from './Navbar';
 import Shifts from './Shifts';
 
-export { Customer, BouncingApple, ComboboxEl, Customers, Icon, Input, Item, Loading, Logout, Modal, Navbar, Shifts };
+export { Customer, BouncingApple, ComboboxEl, Customers, Icons, Input, Item, Loading, Logout, Modal, Navbar, Shifts };

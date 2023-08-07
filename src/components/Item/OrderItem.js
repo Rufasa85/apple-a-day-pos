@@ -1,4 +1,4 @@
-import { Icon } from '../../components';
+import { Icons } from '../../components';
 
 const OrderItem = ({ index, item = { name: '', quantity: 0 }, orderItems, setOrderItems }) => {
 	const { name, quantity } = item;
@@ -47,13 +47,13 @@ const OrderItem = ({ index, item = { name: '', quantity: 0 }, orderItems, setOrd
 
 			<div className='w-40 p-0 relative'>
 				<button onClick={decrement} className='w-10 h-full top-0 left-0 absolute p-0 button-secondary'>
-					{quantity ? <Icon.Minus className='w-3 h-3' /> : <Icon.Trash className='w-4 h-4 stroke-red-600' />}
+					{quantity ? <Icons.Minus className='w-3 h-3' /> : <Icons.Trash className='w-4 h-4 stroke-red-600' />}
 				</button>
 
 				<input type='number' value={quantity} onChange={handleInputChange} className='text-center  input-base' />
 
 				<button onClick={increment} className='w-10 h-full top-0 right-0 absolute p-0 button-secondary'>
-					<Icon.Plus className='w-3 h-3' />
+					<Icons.Plus className='w-3 h-3' />
 				</button>
 			</div>
 		</li>

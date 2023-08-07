@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-import { Icon, Modal } from '../../components';
+import { Icons, Modal } from '../../components';
 
 const Card = ({ customer, setCustomer }) => {
 	const [visible, setVisible] = useState(false);
@@ -45,7 +45,7 @@ const Card = ({ customer, setCustomer }) => {
 	return (
 		<div onClick={() => setVisible(true)} className='p-5 bg-white ring-inset ring-1 ring-gray-200 shadow shadow-gray-200 cursor-pointer h-20 gap-3 rounded-xl w-full flex'>
 			<div className='ring-2 ring-gray-900 rounded-full aspect-square h-full overflow-hidden justify-center flex'>
-				<Icon.User className='w-12 h-12 fill-gray-900' />
+				<Icons.User className='w-12 h-12 fill-gray-900' />
 			</div>
 
 			<div className='justify-center items-center grow flex flex-col'>
@@ -66,7 +66,7 @@ const Card = ({ customer, setCustomer }) => {
 								{year}
 							</p>
 
-							<Icon.Cake className='my-[3px] w-4 h-4 fill-gray-900' />
+							<Icons.Cake className='my-[3px] w-4 h-4 fill-gray-900' />
 						</div>
 					)}
 				</div>
