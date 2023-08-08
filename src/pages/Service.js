@@ -1,175 +1,109 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import dayjs from "dayjs";
-import api from "../utils/API";
-import Loading from "../components/Loading";
-import ComboboxEl from "../components/ComboboxEl";
-import getEmoji from "../utils/getEmoji";
-import twColors from "../utils/twColors";
-import classCondition from "../utils/classCondition";
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import dayjs from 'dayjs';
 
-const Service = ({ userId }) => {
-  const [order, setOrder] = useState({});
-  // const [orderIds, setOrderIds] = useState([]);
-  const [itemCount, setItemCount] = useState(0);
-  const [shiftId, setShiftId] = useState(0);
-  const [customer, setCustomer] = useState({ id: 0, name: "NONE" });
+import { Customer, Item, Loading } from '../components';
+import { api, classCondition } from '../utils';
 
-  const today = dayjs().format("MM/DD/YYYY");
-  const { data: itemData, isLoading: itemLoading } = useQuery({
-    queryKey: `items-${today}`,
-    queryFn: () => api.getTodaysItems(userId),
-    onSuccess: (data) => {
-      // setItems(data.items)
-      // if 404, redirect to menu
-      setShiftId(data.data.id);
-    },
-  });
+const Service = ({ UserId }) => {
+	const [ShiftId, setShiftId] = useState(0);
+	const [shiftItems, setShiftItems] = useState([]);
+	const [customer, setCustomer] = useState();
+	const [orderItems, setOrderItems] = useState([]);
 
-  const { data: customerData, isLoading: customerLoading } = useQuery({
-    queryKey: `all-customers`,
-    queryFn: () => api.getAllCustomers(),
-  });
+	const today = dayjs().format('MM/DD/YYYY');
+	const longDate = dayjs().format('dddd, MMMM D, YYYY');
 
-  const submitOrder = async () => {
-    const yes = window.confirm(`Are you sure you'd like to submit this order?`);
-    if (yes) {
-      const orderIds = []
-      for (const key in order) {
-        for (let i=0; i>order[key].count;  i++) {
-          orderIds.push(key)
-        }
-      }
-      const res = await api.createOrder({
-        ShiftId: shiftId,
-        CustomerId: customer.id === 0 ? null : customer.id,
-        ItemIds: orderIds,
-      });
-      if (res.status === 200) {
-        console.log("order added!");
-        reset();
-      } else {
-        window.alert("order failed");
-      }
-    }
-  };
+	const { isLoading, refetch } = useQuery({
+		queryKey: `shiftItems-${today}`,
+		queryFn: () => api.getTodaysItems(UserId),
 
-  const reset = () => {
-    setCustomer({ id: 0, name: "NONE" });
-    setItemCount(0);
-    setOrder({});
-    // setOrderIds([]);
-  };
+		onSuccess: (response) => {
+			if (response?.data?.ShiftItems) {
+				const { id, ShiftItems } = response.data;
 
-  const addToOrder = (id, name) => {
-    if (id in order) {
-      order[id].count = order[id].count + 1;
-    } else {
-      order[id] = { name, count: 1 };
-    }
-    // setOrderIds([...orderIds, id]);
-    setItemCount(itemCount + 1);
-  };
+				const itemsSortedByCreation = ShiftItems.sort((a, b) => a.createdAt > b.createdAt);
+				const itemObjects = itemsSortedByCreation.map((shiftItem) => shiftItem.Item);
 
-  const decrementItem = (itemId) => {
-    // setOrder(prevState => {
-    //   const temp = {itemId: {...prevState[itemId], count: prevState[itemId].count - 1}}
-    //   return temp
-    // })
-    const temp = {...order}
+				setShiftId(id);
+				setShiftItems(itemObjects);
 
-    temp[itemId].count = temp[itemId].count -1
-    setOrder(temp)
-  }
+				const storedCustomer = JSON.parse(localStorage.getItem('customer'));
+				if (storedCustomer) setCustomer(storedCustomer);
 
-  return (
-    <main className="pt-8 px-24 pb-16 flex flex-col">
-      <header className="p-4 gap-1 flex flex-col place-content-center place-items-center  rounded-3xl mb-4">
-        <h1 className="text-4xl font-medium">Service</h1>
-        <h3 className="text-xl font-light">{today}</h3>
-      </header>
-      {customerLoading ? null : (
-        <div className="mb-10">
-          <h2 className="text-xl mb-4">
-            Select Customer <span className="text-slate-400">(optional)</span>
-          </h2>
-          <ComboboxEl
-            customerList={[
-              { id: 0, name: "NONE" },
-              ...customerData.data.map((x) => {
-                return { id: x.id, name: x.firstName + " " + x.lastName };
-              }),
-            ]}
-            customer={customer}
-            setCustomer={setCustomer}
-          />
-        </div>
-      )}
+				const storedItems = JSON.parse(localStorage.getItem('items'));
+				if (storedItems) setOrderItems(storedItems);
+			} else {
+				localStorage.removeItem('customer');
+				localStorage.removeItem('items');
+			}
+		}
+	});
 
-      {itemLoading ? (
-        <Loading />
-      ) : (
-        <article className="grid grid-cols-8 gap-6 mb-6">
-          <section className="col-span-6 grid grid-cols-2 gap-8">
-            {itemData?.data.Items.length > 0 &&
-              itemData?.data.Items.sort(
-                (a, b) => a.ShiftItem.createdAt > b.ShiftItem.createdAt
-              ).map(({ id, name }, i) => {
-                return (
-                  <button
-                    key={`menuitem-${id}`}
-                    className={classCondition(
-                      twColors.getColorClasses(i),
-                      "p-12 h-72 gap-4 flex grow flex-col place-content-center place-items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-100 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100"
-                    )}
-                    onClick={() => addToOrder(id, name)}
-                  >
-                    <h2 className="text-9xl font-semibold">{getEmoji(name)}</h2>
-                    <h2 className="text-3xl font-semibold">{name}</h2>
-                  </button>
-                );
-              })}
-          </section>
-          <section className="col-span-2">
-            <h2 className="text-2xl">Current Order:</h2>
-            <div className="mb-8">
-              <ul>
-                {Object.entries(order).map((item) => {
-                  return (
-                    <li key={item[0]} className="flex">
-                      <p className="p-1">
-                        {item[1].count}x {item[1].name}
-                      </p>
-                      <button className="p-1 bg-red-500 text-white hover:bg-red-700 rounded ml-2" onClick={() => decrementItem(item[0])}>
-                        Delete
-                      </button>
-                      <button className="p-1 bg-blue-500 text-white hover:bg-blue-700 rounded ml-2">
-                        Update quantity
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            <div className="">
-              <button
-                className={classCondition(
-                  "bg-green-700 text-white font-bold p-3 text-lg rounded shadow",
-                  itemCount === 0
-                    ? "opacity-50"
-                    : "opacity-100 hover:bg-green-900"
-                )}
-                disabled={itemCount === 0}
-                onClick={submitOrder}
-              >
-                Submit Order
-              </button>
-            </div>
-          </section>
-        </article>
-      )}
-    </main>
-  );
+	const submitOrder = async () => {
+		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
+
+		if (confirmed) {
+			const CustomerId = customer.id;
+
+			const items = orderItems
+				.filter((item) => item.quantity > 0)
+				.map((item) => {
+					const { ItemId, quantity } = item;
+					return { ItemId, quantity };
+				});
+
+			const res = await api.createOrder({ ShiftId, CustomerId, items });
+
+			if (res.status === 200) {
+				console.log(res);
+				setCustomer();
+				setOrderItems([]);
+			} else {
+				window.alert('order failed');
+			}
+		}
+	};
+
+	return (
+		<main className='pt-[84px] w-screen h-screen max-w-screen max-h-screen flex'>
+			<section className='p-4 overflow-y-auto w-full h-full max-w-[75%] max-h-full flex flex-col'>
+				<header className='p-4 flex flex-col place-content-center'>
+					<h3 className='section-headline'>{longDate}</h3>
+				</header>
+
+				{isLoading ? (
+					<Loading />
+				) : (
+					<div className='p-4 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1'>
+						{shiftItems?.map((item, i) => {
+							return <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} />;
+						})}
+
+						<Item.Add refetch={refetch} />
+					</div>
+				)}
+			</section>
+
+			<section className='p-4 w-1/4 bg-slate-50 ring-inset ring-1 ring-gray-200 shadow-lg shadow-gray-200 min-h-full min-w-fit flex flex-col'>
+				<header className='p-4 flex flex-col place-content-center'>
+					<h3 className='section-headline'>Current Order</h3>
+				</header>
+
+				<div className='px-4 py-4 flex'>{customer ? <Customer.Card customer={customer} setCustomer={setCustomer} /> : <Customer.Add customer={customer} setCustomer={setCustomer} />}</div>
+
+				<ul className='px-3 py-8 gap-8 mx-1 my-4 border-t border-b h-full overflow-y-auto flex flex-col'>
+					{orderItems.map((item, i) => {
+						return <Item.OrderItem key={`orderitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} />;
+					})}
+				</ul>
+
+				<button disabled={orderItems.length < 1} onClick={submitOrder} className={classCondition(orderItems.length < 1 ? 'button-primary-off' : 'button-primary', 'm-4')}>
+					Submit Order
+				</button>
+			</section>
+		</main>
+	);
 };
 
 export default Service;

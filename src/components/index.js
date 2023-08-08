@@ -1,10 +1,14 @@
-import AddItemButton from './AddItemButton';
+import Customer from './Customer';
 import BouncingApple from './BouncingApple';
+import ComboboxEl from './ComboboxEl';
 import Customers from './Customers';
-import ItemInput from './ItemInput';
+import Icons from './Icons';
+import Input from './Input';
+import Item from './Item';
 import Loading from './Loading';
-import LogoutButton from './LogoutButton1';
+import Logout from './Logout';
+import Modal from './Modal';
 import Navbar from './Navbar';
 import Shifts from './Shifts';
 
-export { AddItemButton, BouncingApple, Customers, ItemInput, Loading, LogoutButton, Navbar, Shifts };
+export { Customer, BouncingApple, ComboboxEl, Customers, Icons, Input, Item, Loading, Logout, Modal, Navbar, Shifts };
