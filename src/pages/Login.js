@@ -9,13 +9,14 @@ const Login = ({ setUserId }) => {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-
+    console.log("hi")
 		try {
 			const isGuest = password === 'guest';
 			const username = isGuest ? 'guest' : 'admin';
 
 			const loginObj = { username, password };
 			const response = await api.login(loginObj);
+      console.log(response)
 
 			if (response.status === 400) {
 				setInfoText(response.data.error);
@@ -37,9 +38,9 @@ const Login = ({ setUserId }) => {
 	};
 
 	return (
-		<main className='flex flex-col justify-center items-center w-full h-screen border-2 bg-gray-500 bg-opacity-50'>
+    <main className='flex flex-col justify-center items-center w-full h-screen border-2 bg-gray-500 bg-opacity-50'>
 			<form onSubmit={handleLogin} className='gap-6 px-24 py-10 relative flex flex-col justify-center items-center shadow-2xl border border-slate-300 bg-slate-100 rounded-lg'>
-				<BouncingApple />
+      <BouncingApple />
 
 				<div className='z-50 flex flex-col justify-center items-center'>
 					<h1 className='text-4xl'>Welcome back!</h1>
@@ -49,7 +50,7 @@ const Login = ({ setUserId }) => {
 				<input type='password' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)} id='password' className='z-50 block w-full rounded-md border-0 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600' />
 
 				{infoText ? <p className='text-red-700 pb-3'>{infoText}</p> : null}
-				<button type='submit' className={classCondition(password.length > 0 ? 'button-primary' : 'button-primary')}>
+				<button type='submit' className={classCondition(password.length > 0 ? 'button-primary z-10' : 'button-primary z-10')}>
 					Login
 				</button>
 			</form>

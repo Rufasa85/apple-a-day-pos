@@ -3,11 +3,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../utils/API";
 import dayjs from "dayjs"
+import { classCondition } from "../utils";
 
 const NewCustomer = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState();
+  const [dateOfBirth, setDateOfBirth] = useState(null);
 
   const saveCustomer = async (event) => {
     event.preventDefault()
@@ -27,6 +28,14 @@ const NewCustomer = () => {
     //   console.log(response)
     //   alert("something went wrong (check console for more info)")
     // }
+  }
+
+  const validInfo = () => {
+    if (firstName !== "" && lastName !== "") {
+      return true
+    } else {
+      return false
+    }
   }
 
   return (
@@ -75,7 +84,13 @@ const NewCustomer = () => {
           <DatePicker selected={dateOfBirth} onChange={(date) => setDateOfBirth(date)} id="birthday" placeholderText="MM/DD/YYYY"
           dateFormat={"MM/dd/yyyy"}/>
         </div>
-        <button className="bg-primary text-white rounded shadow-md p-2 hover:bg-red-600" type="submit">Save Customer</button>
+        <button
+              className={classCondition(!validInfo() ? "bg-red-200" : "bg-red-400 hover:bg-red-500", "text-white rounded shadow-md p-2")}
+              type="submit"
+              disabled={!validInfo()}
+            >
+              Save Customer
+            </button>
       </form>
     </div>
   );

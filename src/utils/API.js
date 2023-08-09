@@ -80,7 +80,7 @@ const api = {
 			console.log(error);
 		}
 	},
-	updateCustomer: async (customerObj, customerId) => {
+	updateCustomer: async (customerId, customerObj) => {
 		try {
 			const updatedCustomer = await instance.put(`/customers/${customerId}`, customerObj, {
 				headers: {
@@ -253,6 +253,7 @@ const api = {
 	},
 	getTodaysItems: async (UserId) => {
 		try {
+      console.log("userId "+UserId)
 			const shift = await instance.get(`/shifts/today/${UserId}`);
 			return shift;
 		} catch (error) {
