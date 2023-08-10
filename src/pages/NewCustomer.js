@@ -8,6 +8,7 @@ import { classCondition } from "../utils";
 const NewCustomer = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [infoText, setInfoText] = useState("")
   const [dateOfBirth, setDateOfBirth] = useState(null);
 
   const saveCustomer = async (event) => {
@@ -22,12 +23,18 @@ const NewCustomer = () => {
     const body = {firstName, lastName, dateOfBirth: dob}
     console.log(body)
     const response = await api.createCustomer(body)
-    // if (response.status === 200) {
-    //   window.location.assign("/reports")
-    // } else {
-    //   console.log(response)
-    //   alert("something went wrong (check console for more info)")
-    // }
+    if (response.status === 200) {
+      setDateOfBirth(null)
+      setFirstName("")
+      setLastName("")
+      setInfoText("Successfully added!")
+      setTimeout(() => {
+        setInfoText("")
+      }, 3000);
+    } else {
+      console.log(response)
+      alert("something went wrong (check console for more info)")
+    }
   }
 
   const validInfo = () => {
@@ -41,6 +48,7 @@ const NewCustomer = () => {
   return (
     <div className="container">
       <h3 className="my-5 text-xl">New Customer</h3>
+      <p className="italic text-green-500 font-light mb-3">{infoText}</p>
       <form onSubmit={saveCustomer}>
         <div className="mb-4">
           <label
