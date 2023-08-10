@@ -10,7 +10,7 @@ const Navbar = () => {
 
 	const navigation = [
 		{ name: 'Service', href: '/service' },
-		{ name: 'Reports', href: '/reports' }
+		{ name: 'Reports', href: '/reports/shifts' }
 	];
 
 	return (
@@ -27,7 +27,7 @@ const Navbar = () => {
 								<div className='hidden sm:ml-6 sm:block'>
 									<nav className='gap-0.5 ring-2 ring-gray-50 bg-gray-50 rounded-md flex justify-center items-center'>
 										{navigation.map((item) => (
-											<Link key={item.name} to={item.href} className={classCondition(item.href === pathname ? 'bg-gray-900 text-white cursor-default peer/active' : 'hover:bg-gray-200 ring-inset ring-2 ring-gray-50', 'w-36 rounded-md px-4 py-2 font-semibold text-sm flex justify-center items-center')} aria-current={item.current ? 'page' : undefined}>
+											<Link key={item.name} to={item.href} className={classCondition(item.name.toLowerCase() === pathname.split("/")[1] ? 'bg-gray-900 text-white cursor-default peer/active' : 'hover:bg-gray-200 ring-inset ring-2 ring-gray-50', 'w-36 rounded-md px-4 py-2 font-semibold text-sm flex justify-center items-center')} aria-current={item.current ? 'page' : undefined}>
 												{item.name}
 											</Link>
 										))}
@@ -53,7 +53,7 @@ const Navbar = () => {
 					<Disclosure.Panel className='sm:hidden'>
 						<div className='gap-2 grid grid-flow-row px-2 pb-3 pt-2 bg-gray-50 text-right'>
 							{navigation.map((item) => (
-								<Link key={item.name} to={item.href} className={classCondition(item.href === pathname ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'block rounded-md px-8 py-2 text-base font-medium')} aria-current={item.current ? 'page' : undefined}>
+								<Link key={item.name} to={item.href} className={classCondition(item.name.toLowerCase() === pathname.split("/")[1] ? 'bg-gray-800 text-white' : 'hover:bg-gray-200', 'block rounded-md px-8 py-2 text-base font-medium')} aria-current={item.current ? 'page' : undefined}>
 									{item.name}
 								</Link>
 							))}
