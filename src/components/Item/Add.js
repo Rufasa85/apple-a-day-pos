@@ -16,7 +16,7 @@ const Add = ({ refetch }) => {
 		queryFn: () => api.getAllItems(),
 
 		onSuccess: (response) => {
-			if (response.data) {
+			if (response && response.data) {
 				const itemObjects = response.data.map(({ id, name }) => ({ id, name, typeaheadValue: name }));
 
 				setAllItems(itemObjects);

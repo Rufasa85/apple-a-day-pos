@@ -16,7 +16,7 @@ const Add = ({ setCustomer }) => {
 		queryFn: () => api.getAllCustomers(),
 
 		onSuccess: (response) => {
-			if (response.data) {
+			if (response && response.data) {
 				const customerObjects = response.data.map(({ id, firstName, lastName, dateOfBirth }) => {
 					const typeaheadValue = `${firstName} ${lastName}`;
 
