@@ -13,12 +13,11 @@ const Service = ({ UserId }) => {
 
 	const today = dayjs().format('MM/DD/YYYY');
 	const longDate = dayjs().format('dddd, MMMM D, YYYY');
-  
 
 	const { isLoading, refetch } = useQuery({
 		queryKey: `shiftItems-${today}`,
 		queryFn: () => api.getTodaysItems(UserId),
-    enabled: !!UserId,
+		enabled: !!UserId,
 		onSuccess: (response) => {
 			if (response?.data?.ShiftItems) {
 				const { id, ShiftItems } = response.data;
@@ -40,26 +39,26 @@ const Service = ({ UserId }) => {
 			}
 		}
 	});
-  
+
 	const submitOrder = async () => {
-    const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
-    
+		const confirmed = window.confirm(`Are you sure you'd like to submit this order?`);
+
 		if (confirmed) {
-      const CustomerId = customer ? customer.id : null;
-      
+			const CustomerId = customer ? customer.id : null;
+
 			const items = orderItems
-      .filter((item) => item.quantity > 0)
-      .map((item) => {
-        const { ItemId, quantity } = item;
-        return { ItemId, quantity };
-      });
-      
+				.filter((item) => item.quantity > 0)
+				.map((item) => {
+					const { ItemId, quantity } = item;
+					return { ItemId, quantity };
+				});
+
 			const res = await api.createOrder({ ShiftId, CustomerId, items });
-      
+
 			if (res.status === 200) {
-        console.log(res);
-        localStorage.removeItem('customer');
-        localStorage.removeItem("items")
+				console.log(res);
+				localStorage.removeItem('customer');
+				localStorage.removeItem('items');
 				setCustomer();
 				setOrderItems([]);
 			} else {
