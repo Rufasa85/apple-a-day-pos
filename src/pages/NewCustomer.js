@@ -21,7 +21,6 @@ const NewCustomer = () => {
     }
     const dob = dayjs(dateOfBirth).format("MM/DD/YYYY")
     const body = {firstName, lastName, dateOfBirth: dob}
-    console.log(body)
     const response = await api.createCustomer(body)
     if (response.status === 200) {
       setDateOfBirth(null)

@@ -40,11 +40,9 @@ const CustomerReport = () => {
       lastName,
       dateOfBirth,
     });
-    console.log(response)
     if (response.status === 200) {
       window.location.assign("/reports/customer");
     } else {
-      console.log(response);
       alert("something went wrong (check console for more info)");
     }
   };

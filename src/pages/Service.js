@@ -56,7 +56,6 @@ const Service = ({ UserId }) => {
 			const res = await api.createOrder({ ShiftId, CustomerId, items });
 
 			if (res.status === 200) {
-				console.log(res);
 				localStorage.removeItem('customer');
 				localStorage.removeItem('items');
 				setCustomer();

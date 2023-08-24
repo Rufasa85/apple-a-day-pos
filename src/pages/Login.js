@@ -9,14 +9,12 @@ const Login = ({ setUserId }) => {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-    console.log("hi")
 		try {
 			const isGuest = password === 'guest';
 			const username = isGuest ? 'guest' : 'admin';
 
 			const loginObj = { username, password };
 			const response = await api.login(loginObj);
-      console.log(response)
 
 			if (response.status === 400) {
 				setInfoText(response.data.error);
