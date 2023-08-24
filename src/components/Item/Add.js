@@ -78,6 +78,7 @@ const Add = ({ refetch }) => {
 
 			if (response?.status === 200) {
 				setVisible(false);
+				setItemQuery({ id: null, name: '' });
 				refetch();
 			} else {
 				console.log(response);
