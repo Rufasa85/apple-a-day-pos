@@ -22,10 +22,11 @@ const Customers = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <>
+        <div className="p-6">
           <h2 className="text-2xl text-gray-900 mb-5">All Customers</h2>
-          <ul>{response.data.map(customerCard)}</ul>
-        </>
+          <ul>{response?.data?.map(customerCard)}</ul>
+          {!response ? <p>No customers yet :(</p> : null}
+        </div>
       )}
     </>
   );

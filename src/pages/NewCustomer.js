@@ -46,8 +46,8 @@ const NewCustomer = () => {
   }
 
   return (
-    <div className="container">
-      <h3 className="my-5 text-xl">New Customer</h3>
+    <div className="p-6">
+      <h3 className=" text-2xl">New Customer</h3>
       <p className="italic text-green-500 font-light mb-3">{infoText}</p>
       <form onSubmit={saveCustomer}>
         <div className="mb-4">

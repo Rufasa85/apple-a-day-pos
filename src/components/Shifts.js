@@ -20,9 +20,10 @@ const Shifts = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div>
-          <h2 className="text-3xl mb-2">Recent Shifts</h2>
+        <div className="p-6">
+          <h2 className="text-2xl mb-2">Recent Shifts</h2>
           <ul>{response?.data?.map(shiftCard)}</ul>
+          {!response ? <p>No shifts yet :(</p> : null}
         </div>
       )}
     </>
