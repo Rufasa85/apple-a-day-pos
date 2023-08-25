@@ -40,11 +40,9 @@ const CustomerReport = () => {
       lastName,
       dateOfBirth,
     });
-    console.log(response)
     if (response.status === 200) {
       window.location.assign("/reports/customer");
     } else {
-      console.log(response);
       alert("something went wrong (check console for more info)");
     }
   };
@@ -60,12 +58,11 @@ const CustomerReport = () => {
 
 
   return (
-    <div className="container">
-      <h3 className="text-3xl">Customer Details</h3>
+    <div className="p-6">
+      <h3 className="text-2xl mb-2">Customer Info</h3>
       {isLoading ? <Loading /> : null}
       {response ? (
         <div>
-          <h3 className="my-5 text-xl">Edit Info</h3>
           <form onSubmit={updateCustomer} className="mb-4">
             <div className="mb-4">
               <label

@@ -81,7 +81,6 @@ const Add = ({ refetch }) => {
 				setItemQuery({ id: null, name: '' });
 				refetch();
 			} else {
-				console.log(response);
 				setError(true);
 			}
 		} catch (error) {

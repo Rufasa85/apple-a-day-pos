@@ -3,12 +3,12 @@ import { classCondition } from "../utils";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
 
-const OrderCard = ({ order, customer }) => {
+const OrderCard = ({ order }) => {
 
-  const customerInfo = customer ? customer : order.Customer;
+  const customerInfo = order.Customer;
   return (
-    <li className="items-center text-gray-900 mb-4" key={order.id}>
-      <div className="rounded-md relative w-80 shadow-2xl p-3 bg-white">
+    <li className="items-center text-gray-900 mb-4">
+      <div className="rounded-md w-5/6 mx-auto shadow-lg p-2 bg-white">
         <div className="text-md pl-2">
           <div className="mb-1 text-gray-600">Order ID：<span className="text-gray-900">{order.id}</span></div>
           <div className="mb-1 text-gray-600">
