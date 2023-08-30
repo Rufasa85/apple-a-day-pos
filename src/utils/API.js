@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api';
-// const baseUrl = "deployedurl"
+// const baseUrl = 'http://localhost:3001/api';
+const baseUrl = "https://apple-a-day-pos-11214dcf0b89.herokuapp.com/api"
 
 const instance = axios.create({
 	baseURL: baseUrl,
