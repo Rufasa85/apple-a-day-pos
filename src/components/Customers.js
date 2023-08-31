@@ -22,8 +22,8 @@ const Customers = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="p-6">
-          <h2 className="text-2xl text-gray-900 mb-5">All Customers</h2>
+        <div className="max-w-7xl mx-auto py-6 px-20">
+          <h2 className="text-3xl text-gray-900 my-4">All Customers</h2>
           <ul>{response?.data?.map(customerCard)}</ul>
           {!response ? <p>No customers yet :(</p> : null}
         </div>
@@ -57,9 +57,9 @@ const customerCard = (customerObj) => {
             </p>
             <p className="text-sm text-gray-500 truncate flex">
               {Icons.Cake({ className: "h-5 mr-1" })}
-              {dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
+              {customerObj.dateOfBirth ? dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
                 "MMM DD, YYYY"
-              )}
+              ) : "--"}
             </p>
           </div>
           <div className="inline-flex items-center text-base font-semibold text-gray-900">
