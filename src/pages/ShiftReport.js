@@ -65,10 +65,10 @@ const ShiftReport = () => {
 
   return (
     <div className="relative">
-      <Link to="/reports/shifts" className="absolute left-5 top-5 hover:border-b-2 border-black">
+      <Link to="/reports/shifts" className="absolute -left-5 top-7 hover:border-b-2 border-black">
         <img
-          width="40"
-          height="40"
+          width="30"
+          height="30"
           src="https://img.icons8.com/ios/50/long-arrow-left.png"
           alt="long-arrow-left"
           className=""
@@ -76,8 +76,8 @@ const ShiftReport = () => {
         {/* <span className="inline flex text-2xl ml-2">Back</span> */}
         
       </Link>
-      <div className="max-w-7xl mx-auto py-6 px-20">
-        <h3 className="text-3xl mt-4">Shift Report</h3>
+      <div className="p-6">
+        <h3 className="text-3xl">Shift Report</h3>
         {isLoading ? <Loading /> : null}
         <h5 className="text-xl text-gray-600">{date}</h5>
         <div className="grid grid-cols-6 mt-5 gap-6">

@@ -89,19 +89,19 @@ const CustomerReport = () => {
     <div className="relative">
       <Link
         to="/reports/customers"
-        className="absolute left-5 top-5 hover:border-b-2 border-black"
+        className="absolute -left-5 top-7 hover:border-b-2 border-black"
       >
         <img
-          width="40"
-          height="40"
+          width="30"
+          height="30"
           src="https://img.icons8.com/ios/50/long-arrow-left.png"
           alt="long-arrow-left"
           className=""
         />
         {/* <span className="inline flex text-2xl ml-2">Back</span> */}
       </Link>
-      <div className="max-w-7xl mx-auto py-6 px-20">
-        <h3 className="text-3xl my-4">Customer Info</h3>
+      <div className="p-6">
+        <h3 className="text-3xl mb-4">Customer Info</h3>
         {isLoading ? <Loading /> : null}
         {response ? (
           <div>
