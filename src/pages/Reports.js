@@ -20,7 +20,10 @@ const Reports = () => {
         <Aside setView={setView} view={view} />
       </aside>
       <section className="col-span-5 flex-1 overflow-auto">
+        <div className="max-w-6xl mx-auto">
+
         <Outlet />
+        </div>
       </section>
     </main>
   );

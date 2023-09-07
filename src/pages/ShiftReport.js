@@ -63,7 +63,7 @@ const ShiftReport = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="mx-auto p-6">
       <h3 className="text-3xl mb-0">Shift Report</h3>
       {isLoading ? <Loading /> : null}
       <h5 className="text-xl text-gray-600">{date}</h5>
