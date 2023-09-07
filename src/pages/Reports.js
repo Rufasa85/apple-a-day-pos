@@ -15,7 +15,7 @@ const Reports = () => {
   }, []);
 
   return (
-    <main className="bg-slate-50 grid grid-cols-6 flex pt-[84px] h-[780px]">
+    <main className="bg-slate-50 grid grid-cols-6 flex pt-[84px] h-screen">
       <aside className="bg-white shadow-md col-span-1 flex-1">
         <Aside setView={setView} view={view} />
       </aside>

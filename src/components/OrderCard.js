@@ -10,10 +10,10 @@ const OrderCard = ({ order }) => {
     <li className="items-center text-gray-900 mb-4">
       <div className="rounded-md w-5/6 mx-auto shadow-lg p-2 bg-white">
         <div className="text-md pl-2">
-          <div className="mb-1 text-gray-600">Order ID：<span className="text-gray-900">{order.id}</span></div>
+          <div className="mb-1 text-gray-600">Order ID：<span className="text-gray-900 font-semibold">{order.id}</span></div>
           <div className="mb-1 text-gray-600">
             Customer：
-            <span className="text-gray-900">{customerInfo ? `${customerInfo.firstName} ${customerInfo.lastName}` : "None"}</span>
+            <span className={customerInfo ? "text-gray-900 font-semibold" : "text-gray-900"}>{customerInfo ? `${customerInfo.firstName} ${customerInfo.lastName}` : "None"}</span>
           </div>
         </div>
         <div className="border-double border-t-4 border-b-4 border-l-0 border-r-0 border-gray-900 my-3">
@@ -25,8 +25,8 @@ const OrderCard = ({ order }) => {
             {order.OrderItems.map((item) => {
               return (
                 <div className="flex justify-between text-sm" key={item.id}>
-                  <span className="w-3/6 truncate">{item.Item.name}</span>
-                  <span className="w-3/6 text-right">{item.quantity}</span>
+                  <span className="w-3/6 truncate font-semibold">{item.Item.name}</span>
+                  <span className="w-3/6 text-right font-semibold">{item.quantity}</span>
                 </div>
               );
             })}

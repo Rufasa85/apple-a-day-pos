@@ -26,7 +26,7 @@ const ShiftReport = () => {
         getItemCounts(response.data.Orders);
         setDate(dayjs(response.data.date).format("MMMM Do, YYYY"));
       } else {
-        setDate("No shift with this ID")
+        setDate("No shift with this ID");
       }
     },
   });
@@ -64,54 +64,70 @@ const ShiftReport = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h3 className="text-2xl mb-0">Shift Report</h3>
+      <h3 className="text-3xl mb-0">Shift Report</h3>
       {isLoading ? <Loading /> : null}
       <h5 className="text-xl text-gray-600">{date}</h5>
       <div className="grid grid-cols-6 mt-5 gap-6">
         <div className="col-span-4">
-          <h4 className="text-2xl mb-3">Items</h4>
-          <div className="h-[450px]">
-            <Doughnut
-              className="mx-auto"
-              style={{height: "450px", width: "450px"}}
-              data={{
-                labels: Object.keys(itemCounts),
-                datasets: [
-                  {
-                    label: "Quantity",
-                    data: Object.values(itemCounts),
-                    backgroundColor: [
-                      "rgba(255, 99, 132, 0.2)",
-                      "rgba(54, 162, 235, 0.2)",
-                      "rgba(255, 206, 86, 0.2)",
-                      "rgba(75, 192, 192, 0.2)",
-                      "rgba(153, 102, 255, 0.2)",
-                      "rgba(255, 159, 64, 0.2)",
-                    ],
-                    borderColor: [
-                      "rgba(255, 99, 132, 1)",
-                      "rgba(54, 162, 235, 1)",
-                      "rgba(255, 206, 86, 1)",
-                      "rgba(75, 192, 192, 1)",
-                      "rgba(153, 102, 255, 1)",
-                      "rgba(255, 159, 64, 1)",
-                    ],
-                    borderWidth: 1,
+          <h4 className="text-2xl mb-3">Item Summary</h4>
+          <div className="grid grid-cols-4 gap-3">
+            <div className="col-span-1 flex items-center">
+              <div>
+                <h5 className="text-xl font-semibold">Total Sold</h5>
+                <ul className="">
+                  {Object.keys(itemCounts).map((item) => {
+                    return (
+                      <li>
+                        <h3 className="italic text-lg">{item} - {itemCounts[item]}</h3>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+            <div className="col-span-3">
+              <Doughnut
+                className="mx-auto"
+                style={{ height: "auto", width: "90%"}}
+                data={{
+                  labels: Object.keys(itemCounts),
+                  datasets: [
+                    {
+                      label: "Quantity",
+                      data: Object.values(itemCounts),
+                      backgroundColor: [
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(54, 162, 235, 0.2)",
+                        "rgba(255, 206, 86, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(153, 102, 255, 0.2)",
+                        "rgba(255, 159, 64, 0.2)",
+                      ],
+                      borderColor: [
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(54, 162, 235, 1)",
+                        "rgba(255, 206, 86, 1)",
+                        "rgba(75, 192, 192, 1)",
+                        "rgba(153, 102, 255, 1)",
+                        "rgba(255, 159, 64, 1)",
+                      ],
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      labels: {
+                        font: {
+                          size: 20,
+                        },
+                      },
+                    },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    labels: {
-                      font: {
-                        size: 20
-                      }
-                    }
-                  }
-                }
-              }}
-            />
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className="col-span-2 ">
