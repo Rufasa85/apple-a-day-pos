@@ -57,9 +57,9 @@ const customerCard = (customerObj) => {
             </p>
             <p className="text-sm text-gray-500 truncate flex">
               {Icons.Cake({ className: "h-5 mr-1" })}
-              {dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
+              {customerObj.dateOfBirth ? dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
                 "MMM DD, YYYY"
-              )}
+              ) : "--"}
             </p>
           </div>
           <div className="inline-flex items-center text-base font-semibold text-gray-900">

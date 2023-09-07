@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
 import api from "../utils/API";
@@ -63,32 +64,29 @@ const ShiftReport = () => {
   };
 
   return (
-    <div className="mx-auto p-6">
-      <h3 className="text-3xl mb-0">Shift Report</h3>
-      {isLoading ? <Loading /> : null}
-      <h5 className="text-xl text-gray-600">{date}</h5>
-      <div className="grid grid-cols-6 mt-5 gap-6">
-        <div className="col-span-4">
-          <h4 className="text-2xl mb-3">Item Summary</h4>
-          <div className="grid grid-cols-4 gap-3">
-            <div className="col-span-1 flex items-center">
-              <div>
-                <h5 className="text-xl font-semibold">Total Sold</h5>
-                <ul className="">
-                  {Object.keys(itemCounts).map((item) => {
-                    return (
-                      <li>
-                        <h3 className="italic text-lg">{item} - {itemCounts[item]}</h3>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-            <div className="col-span-3">
+    <div className="relative">
+      <Link to="/reports/shifts" className="absolute left-5 top-5 hover:border-b-2 border-black">
+        <img
+          width="40"
+          height="40"
+          src="https://img.icons8.com/ios/50/long-arrow-left.png"
+          alt="long-arrow-left"
+          className=""
+        />
+        {/* <span className="inline flex text-2xl ml-2">Back</span> */}
+        
+      </Link>
+      <div className="max-w-7xl mx-auto py-6 px-20">
+        <h3 className="text-3xl mt-4">Shift Report</h3>
+        {isLoading ? <Loading /> : null}
+        <h5 className="text-xl text-gray-600">{date}</h5>
+        <div className="grid grid-cols-6 mt-5 gap-6">
+          <div className="col-span-4">
+            <h4 className="text-2xl mb-3">Items</h4>
+            <div className="h-[450px]">
               <Doughnut
                 className="mx-auto"
-                style={{ height: "auto", width: "90%"}}
+                style={{ height: "450px", width: "450px" }}
                 data={{
                   labels: Object.keys(itemCounts),
                   datasets: [
@@ -129,21 +127,21 @@ const ShiftReport = () => {
               />
             </div>
           </div>
-        </div>
-        <div className="col-span-2 ">
-          <div className="mb-4">
-            <h4 className="text-2xl">Orders</h4>
-            {/* <button className="text-blue-400" onClick={sortOrders}>
+          <div className="col-span-2 ">
+            <div className="mb-4">
+              <h4 className="text-2xl">Orders</h4>
+              {/* <button className="text-blue-400" onClick={sortOrders}>
               Sort by customer name
             </button> */}
+            </div>
+            {orders.length > 0 ? (
+              <ul className="h-[480px] overflow-y-scroll">
+                {orders.map((order) => {
+                  return <OrderCard order={order} key={order.id} />;
+                })}
+              </ul>
+            ) : null}
           </div>
-          {orders.length > 0 ? (
-            <ul className="h-[480px] overflow-y-scroll">
-              {orders.map((order) => {
-                return <OrderCard order={order} key={order.id} />;
-              })}
-            </ul>
-          ) : null}
         </div>
       </div>
     </div>

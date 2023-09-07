@@ -7,7 +7,7 @@ const OrderCard = ({ order }) => {
 
   const customerInfo = order.Customer;
   return (
-    <li className="items-center text-gray-900 mb-4">
+    <li className="items-center text-gray-900 mb-4" key={order.id}>
       <div className="rounded-md w-5/6 mx-auto shadow-lg p-2 bg-white">
         <div className="text-md pl-2">
           <div className="mb-1 text-gray-600">Order ID：<span className="text-gray-900 font-semibold">{order.id}</span></div>
