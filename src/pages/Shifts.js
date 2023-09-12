@@ -21,7 +21,7 @@ const Shifts = () => {
         <Loading />
       ) : (
         <div className="p-6">
-          <h2 className="text-2xl mb-2">Recent Shifts</h2>
+          <h2 className="text-3xl mb-5">Recent Shifts</h2>
           <ul>{response?.data?.map(shiftCard)}</ul>
           {!response ? <p>No shifts yet :(</p> : null}
         </div>
@@ -57,8 +57,11 @@ const shiftCard = (shiftObj) => {
   }
 
   return (
-    <li className="mb-4 p-3 bg-white rounded shadow hover:bg-red-100">
-      <Link to={`/reports/shifts/${shiftObj.id}`} key={shiftObj.id}>
+    <li
+      className="mb-4 p-3 bg-white rounded shadow hover:bg-red-100"
+      key={shiftObj.id}
+    >
+      <Link to={`/reports/shifts/${shiftObj.id}`}>
         <div className="flex items-center space-x-4">
           <div className="flex-shrink-0">
             <svg
@@ -76,14 +79,21 @@ const shiftCard = (shiftObj) => {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-lg font-medium text-gray-600 truncate">
-              Date: <span className="font-semibold text-gray-900">{dayjs(shiftObj.date, "YYYY-MM-DD").format("MMMM Do, YYYY")}</span>
+              Date:{" "}
+              <span className="font-semibold text-gray-900">
+                {dayjs(shiftObj.date, "YYYY-MM-DD").format("MMMM Do, YYYY")}
+              </span>
             </p>
             <p className="text-md font-medium text-gray-600 truncate">
-              Total Orders: <span className="font-semibold text-gray-900">{shiftObj.Orders.length}</span>
+              Total Orders:{" "}
+              <span className="font-semibold text-gray-900">
+                {shiftObj.Orders.length}
+              </span>
             </p>
           </div>
           <div className="inline-flex items-center text-base text-gray-600">
-            Best Selling Item:&nbsp;<span className="font-semibold text-gray-900">{`${bestItem.name} (${bestItem.count})`}</span>
+            Best Selling Item:&nbsp;
+            <span className="font-semibold text-gray-900">{`${bestItem.name} (${bestItem.count})`}</span>
           </div>
         </div>
       </Link>

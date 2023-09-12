@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat.js";
 import Loading from "../components/Loading";
 import api from "../utils/API";
-import Icons from "./Icons";
+import Icons from "../components/Icons";
 
 dayjs.extend(advancedFormat);
 
@@ -23,7 +23,7 @@ const Customers = () => {
         <Loading />
       ) : (
         <div className="p-6">
-          <h2 className="text-2xl text-gray-900 mb-5">All Customers</h2>
+          <h2 className="text-3xl text-gray-900 mb-5">All Customers</h2>
           <ul>{response?.data?.map(customerCard)}</ul>
           {!response ? <p>No customers yet :(</p> : null}
         </div>
@@ -34,8 +34,8 @@ const Customers = () => {
 
 const customerCard = (customerObj) => {
   return (
-    <li className="mb-4 p-3 bg-white rounded shadow hover:bg-red-100">
-      <Link to={`/reports/customers/${customerObj.id}`} key={customerObj.id}>
+    <li className="mb-4 p-3 bg-white rounded shadow hover:bg-red-100" key={customerObj.id}>
+      <Link to={`/reports/customers/${customerObj.id}`}>
         <div className="flex items-center space-x-4">
           <div className="flex-shrink-0">
             <svg
@@ -57,9 +57,9 @@ const customerCard = (customerObj) => {
             </p>
             <p className="text-sm text-gray-500 truncate flex">
               {Icons.Cake({ className: "h-5 mr-1" })}
-              {dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
+              {customerObj.dateOfBirth ? dayjs(customerObj.dateOfBirth, "YYYY-MM-DD").format(
                 "MMM DD, YYYY"
-              )}
+              ) : "--"}
             </p>
           </div>
           <div className="inline-flex items-center text-base font-semibold text-gray-900">
