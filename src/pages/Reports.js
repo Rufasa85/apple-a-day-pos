@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { Tab } from "@headlessui/react";
-import Aside from "../components/Aside";
-import classCondition from "../utils/classCondition";
+import React, { useEffect, useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import Aside from '../components/Aside'
 
 const Reports = () => {
-  const [view, setView] = useState(window.location.pathname.split("/")[2]);
-  const navigate = useNavigate();
+  const [view, setView] = useState(window.location.pathname.split('/')[2])
+  const navigate = useNavigate()
   useEffect(() => {
     if (!view) {
-      navigate("/reports/shifts");
+      navigate('/reports/shifts')
     }
-  }, []);
+  }, [navigate, view])
 
   return (
     <main className="bg-slate-50 grid grid-cols-6 flex pt-[84px] h-screen">
@@ -21,12 +18,11 @@ const Reports = () => {
       </aside>
       <section className="col-span-5 flex-1 overflow-auto">
         <div className="max-w-6xl mx-auto px-10">
-
-        <Outlet />
+          <Outlet />
         </div>
       </section>
     </main>
-  );
-};
+  )
+}
 
-export default Reports;
+export default Reports

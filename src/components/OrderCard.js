@@ -11,6 +11,7 @@ const OrderCard = ({ order }) => {
       <div className="rounded-md w-5/6 mx-auto shadow-lg p-2 bg-white">
         <div className="text-md pl-2">
           <div className="mb-1 text-gray-600">Order ID：<span className="text-gray-900 font-semibold">{order.id}</span></div>
+          {order.Shift ? <div className="mb-1 text-gray-600">Date: <span className="text-gray-900 font-semibold">{dayjs(order.Shift.date).format("MMM Do, YYYY")}</span></div>: null}
           <div className="mb-1 text-gray-600">
             Customer：
             <span className={customerInfo ? "text-gray-900 font-semibold" : "text-gray-900"}>{customerInfo ? `${customerInfo.firstName} ${customerInfo.lastName}` : "None"}</span>

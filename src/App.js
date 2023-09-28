@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import {
-  Home,
   Login,
   Layout,
   NotFound,
-  EditShift,
   Reports,
   Service,
-  Service2,
   ShiftReport,
   CustomerReport,
   NewCustomer,
-} from "./pages";
-import { Customers, Navbar, Shifts } from "./components";
-import { api } from "./utils";
+} from './pages';
+import { Customers, Navbar, Shifts } from './components';
+import { api } from './utils';
 
 function App() {
   const [UserId, setUserId] = useState(null);
@@ -28,21 +25,21 @@ function App() {
 
     onSuccess: (response) => {
       const token = response?.data?.token;
-      const UserId = response?.data?.UserId;
-      const isLoginPage = location.pathname === "/login";
+      const userId = response?.data?.UserId;
+      const isLoginPage = location.pathname === '/login';
 
       if (token && isLoginPage) {
-        location.replace("/");
+        location.replace('/');
       }
 
       if (token) {
-        setUserId(UserId);
-        localStorage.setItem("token", token);
+        setUserId(userId);
+        localStorage.setItem('token', token);
         return;
       }
 
       if (!isLoginPage) {
-        location.replace("/login");
+        location.replace('/login');
       }
     },
   });

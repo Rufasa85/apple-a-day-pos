@@ -1,12 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-const NotFound  = () => {
-
-    return (
-        <div className='container'>
-             <h3>404</h3>
-        </div>
-    )
-}
+const NotFound = () => (
+  <div className="container">
+    <h3>404</h3>
+  </div>
+)
 
 export default NotFound

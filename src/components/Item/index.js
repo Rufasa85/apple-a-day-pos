@@ -1,11 +1,11 @@
-import Add from './Add';
-import OrderItem from './OrderItem';
-import ShiftItem from './ShiftItem';
+import Add from './Add'
+import OrderItem from './OrderItem'
+import ShiftItem from './ShiftItem'
 
 const Item = {
-	Add,
-	OrderItem,
-	ShiftItem
-};
+  Add,
+  OrderItem,
+  ShiftItem,
+}
 
-export default Item;
+export default Item

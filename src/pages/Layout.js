@@ -1,21 +1,21 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom'
 
-import { Navbar } from '../components';
+import { Navbar } from '../components'
 
 const Layout = () => {
-	const { pathname } = window?.location;
-	const navigate = useNavigate();
+  const { pathname } = window.location
+  const navigate = useNavigate()
 
-	if (pathname === '/') {
-		navigate('/service');
-	}
+  if (pathname === '/') {
+    navigate('/service')
+  }
 
-	return (
-		<>
-			<Navbar />
-			<Outlet />
-		</>
-	);
-};
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  )
+}
 
-export default Layout;
+export default Layout

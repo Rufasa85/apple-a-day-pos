@@ -1,5 +1,3 @@
-const classCondition = (...classes) => {
-	return classes.filter(Boolean).join(' ');
-};
+const classCondition = (...classes) => classes.filter(Boolean).join(' ')
 
-export default classCondition;
+export default classCondition
