@@ -1,9 +1,9 @@
-import Add from './Add';
-import Card from './Card';
+import Add from './Add'
+import Card from './Card'
 
 const Customer = {
-	Add,
-	Card
-};
+  Add,
+  Card,
+}
 
-export default Customer;
+export default Customer

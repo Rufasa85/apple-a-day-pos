@@ -3,84 +3,84 @@
 @tailwind utilities;
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 /* hides default arrows on number inputs */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
 input[type='number'] {
-	appearance: textfield;
-	-moz-appearance: textfield;
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 @layer components {
-	.input-base {
-		@apply px-4 py-2 rounded-lg ring-inset ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-600 placeholder:text-gray-400 sm:text-sm text-base border-none w-full flex;
-	}
+  .input-base {
+    @apply px-4 py-2 rounded-lg ring-inset ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-600 placeholder:text-gray-400 sm:text-sm text-base border-none w-full flex;
+  }
 
-	.input-with-icon {
-		@apply input-base pl-9;
-	}
+  .input-with-icon {
+    @apply input-base pl-9;
+  }
 
-	.input-error {
-		@apply text-red-600 transition-all;
-	}
+  .input-error {
+    @apply text-red-600 transition-all;
+  }
 
-	.button-base {
-		@apply input-base font-semibold sm:w-auto justify-center items-center ring-0;
-	}
+  .button-base {
+    @apply input-base font-semibold sm:w-auto justify-center items-center ring-0;
+  }
 
-	.button-primary {
-		@apply button-base text-white bg-blue-600 hover:bg-opacity-90;
-	}
+  .button-primary {
+    @apply button-base text-white bg-blue-600 hover:bg-opacity-90;
+  }
 
-	.button-primary-off {
-		@apply button-primary hover:bg-blue-600 opacity-50 cursor-not-allowed;
-	}
+  .button-primary-off {
+    @apply button-primary hover:bg-blue-600 opacity-50 cursor-not-allowed;
+  }
 
-	.button-secondary {
-		@apply button-base bg-gray-200 hover:bg-opacity-75;
-	}
+  .button-secondary {
+    @apply button-base bg-gray-200 hover:bg-opacity-75;
+  }
 
-	.button-danger {
-		@apply button-base text-white bg-red-600 hover:bg-opacity-90;
-	}
+  .button-danger {
+    @apply button-base text-white bg-red-600 hover:bg-opacity-90;
+  }
 
-	.section-headline {
-		@apply text-lg font-medium leading-6;
-	}
+  .section-headline {
+    @apply text-lg font-medium leading-6;
+  }
 
-	.modal {
-		@apply gap-6 flex flex-col w-full p-6 bg-slate-50 rounded-lg;
-	}
+  .modal {
+    @apply gap-6 flex flex-col w-full p-6 bg-slate-50 rounded-lg;
+  }
 
-	.modal-buttons {
-		@apply gap-3 flex justify-end w-full;
-	}
+  .modal-buttons {
+    @apply gap-3 flex justify-end w-full;
+  }
 
-	.modal-background {
-		@apply fixed inset-0 bg-gray-500 bg-opacity-50 backdrop-blur-md transition-opacity;
-	}
+  .modal-background {
+    @apply fixed inset-0 bg-gray-500 bg-opacity-50 backdrop-blur-md transition-opacity;
+  }
 
-	.add-button {
-		@apply gap-4 text-gray-900/30 border-gray-900/30 rounded-2xl border-dashed border-2 opacity-90 hover:opacity-80 active:opacity-100 active:shadow-inner active:bg-neutral-300/5 justify-center items-center flex flex-col grow;
-	}
+  .add-button {
+    @apply gap-4 text-gray-900/30 border-gray-900/30 rounded-2xl border-dashed border-2 opacity-90 hover:opacity-80 active:opacity-100 active:shadow-inner active:bg-neutral-300/5 justify-center items-center flex flex-col grow;
+  }
 
-	.item-button-content {
-		@apply gap-4 h-28 flex flex-col justify-end items-center;
-	}
+  .item-button-content {
+    @apply gap-4 h-28 flex flex-col justify-end items-center;
+  }
 }

@@ -1,51 +1,41 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useQuery } from 'react-query'
 
-import {
-  Home,
-  Login,
-  Layout,
-  NotFound,
-  EditShift,
-  Reports,
-  Service,
-  Service2,
-  ShiftReport,
-  CustomerReport,
-  NewCustomer,
-} from "./pages";
-import { Customers, Navbar, Shifts } from "./components";
-import { api } from "./utils";
+import { Login, Layout, NotFound, Reports, Service, ShiftReport, CustomerReport, NewCustomer } from './pages'
+import { Customers, Loading, Shifts } from './components'
+import { api } from './utils'
 
 function App() {
-  const [UserId, setUserId] = useState(null);
-  const { location } = window;
+  const [UserId, setUserId] = useState(null)
+  const { location } = window
 
   const { isLoading } = useQuery({
     queryKey: `check-token`,
     queryFn: () => api.checkToken(),
 
     onSuccess: (response) => {
-      const token = response?.data?.token;
-      const UserId = response?.data?.UserId;
-      const isLoginPage = location.pathname === "/login";
+      const token = response?.data.token
+      const userId = response?.data.UserId
+      const isLoginPage = location.pathname === '/login'
 
       if (token && isLoginPage) {
-        location.replace("/");
+        location.replace('/')
       }
 
       if (token) {
-        setUserId(UserId);
-        localStorage.setItem("token", token);
-        return;
+        setUserId(userId)
+        localStorage.setItem('token', token)
+        return
       }
 
       if (!isLoginPage) {
-        location.replace("/login");
+        location.replace('/login')
       }
     },
-  });
+  })
+
+  if (isLoading) return <Loading />
 
   return (
     <div className="flex flex-col box-border w-screen max-w-screen h-screen max-h-screen">
@@ -57,19 +47,10 @@ function App() {
             <Route path="service" element={<Service UserId={UserId} />} />
             <Route path="reports" element={<Reports />}>
               <Route path="shifts" element={<Shifts UserId={UserId} />} />
-              <Route
-                path="shifts/:id"
-                element={<ShiftReport UserId={UserId} />}
-              />
+              <Route path="shifts/:id" element={<ShiftReport UserId={UserId} />} />
               <Route path="customers" element={<Customers UserId={UserId} />} />
-              <Route
-                path="customers/:id"
-                element={<CustomerReport UserId={UserId} />}
-              />
-              <Route
-                path="new-customer"
-                element={<NewCustomer UserId={UserId} />}
-              />
+              <Route path="customers/:id" element={<CustomerReport UserId={UserId} />} />
+              <Route path="new-customer" element={<NewCustomer UserId={UserId} />} />
             </Route>
           </Route>
 
@@ -77,8 +58,7 @@ function App() {
         </Routes>
       </Router>
     </div>
-
-  );
+  )
 }
 
-export default App;
+export default App
