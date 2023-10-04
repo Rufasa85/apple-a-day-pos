@@ -45,7 +45,8 @@ const Typeahead = (properties) => {
                 key={`typeahead-term-${item.id}`}
                 /* eslint-disable no-nested-ternary */
                 className={classCondition(
-                  splitPartials && i === 0 ? 'text-gray-500 border-t border-gray-200' : splitPartials ? 'text-gray-500' : '',
+                  splitPartials && i === 0 ? 'text-gray-500 border-t border-gray-200' : false,
+                  splitPartials > 0 ? 'text-gray-500' : false,
                   'group pl-9 pr-4 py-2 sm:text-sm text-base hover:bg-blue-600 hover:text-white hover:font-semibold hover:cursor-pointer flex justify-between items-center'
                 )}
                 /* eslint-enable no-nested-ternary */

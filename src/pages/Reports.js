@@ -12,11 +12,11 @@ const Reports = () => {
   }, [navigate, view])
 
   return (
-    <main className="bg-slate-50 grid grid-cols-6 flex pt-[84px] h-screen">
-      <aside className="bg-white shadow-md col-span-1 flex-1">
+    <main className="bg-slate-50 grid grid-cols-6 pt-[84px] h-screen">
+      <aside className="bg-white shadow-md col-span-1">
         <Aside setView={setView} view={view} />
       </aside>
-      <section className="col-span-5 flex-1 overflow-auto">
+      <section className="col-span-5 overflow-auto">
         <div className="max-w-6xl mx-auto px-10">
           <Outlet />
         </div>

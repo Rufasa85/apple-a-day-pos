@@ -45,8 +45,9 @@ const shiftCard = (shiftObj) => {
   }
 
   for (const [value] of Object.entries(itemCounts)) {
-    if (value.count > bestItem.count) {
-      bestItem = value
+    const item = itemCounts[value]
+    if (item.count > bestItem.count) {
+      bestItem = item
     }
   }
 

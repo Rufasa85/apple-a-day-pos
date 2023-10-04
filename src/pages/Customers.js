@@ -42,7 +42,7 @@ const customerCard = (customerObj) => (
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-md font-medium text-gray-900 truncate">
+          <p className="text-lg font-medium text-gray-900 truncate">
             {customerObj.firstName} {customerObj.lastName}
           </p>
           <p className="text-sm text-gray-500 truncate flex">

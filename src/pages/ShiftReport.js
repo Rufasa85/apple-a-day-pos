@@ -6,6 +6,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat.js'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import api from '../utils/API'
+import { getObjValue, setObjValue } from '../utils/toolkit'
 import Loading from '../components/Loading'
 import OrderCard from '../components/OrderCard'
 
@@ -19,7 +20,7 @@ const ShiftReport = () => {
 
   const shiftId = window.location.pathname.split('/')[3]
 
-  const { data, isLoading } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: `report-${shiftId}`,
     queryFn: () => api.getOneShift(shiftId),
     onSuccess: (response) => {
@@ -32,16 +33,22 @@ const ShiftReport = () => {
     },
   })
 
-  const getItemCounts = (orders) => {
+  const getItemCounts = (orderObjs) => {
     const counts = {}
     setOrders(
-      orders.map((order) => {
+      orderObjs.map((order) => {
         order.OrderItems.forEach((orderItem) => {
-          if (orderItem.Item.name in counts) {
-            counts[orderItem.Item.name] = counts[orderItem.Item.name] + orderItem.quantity
-          } else {
-            counts[orderItem.Item.name] = orderItem.quantity
-          }
+          // Variable declaration for ease of readability
+          const { name } = orderItem.Item
+          const { quantity } = orderItem
+          // Utils will take the obj and a string and attempt to find a value in that object with the second
+          // parameter of a string
+          const existingCount = getObjValue(counts, name)
+
+          // Here existing count will either have a value or be undefined the turnary will either set
+          // the value in the counts object using the name as the path will the be given the value
+          // of either existingCount + quantity or the order.Item.quantity
+          existingCount ? setObjValue(counts, name, existingCount + quantity) : setObjValue(counts, name, quantity)
         })
         return order
       })
@@ -49,18 +56,18 @@ const ShiftReport = () => {
     setItemCounts(counts)
   }
 
-  const sortOrders = () => {
-    const sorted = orders.sort((a, b) => {
-      if (a.Customer && b.Customer) {
-        return a.Customer?.firstName.localeCompare(b.Customer?.firstName)
-      } else if (!a.Customer) {
-        return 1
-      } else {
-        return -1
-      }
-    })
-    setOrders(sorted)
-  }
+  // const sortOrders = () => {
+  //   const sorted = orders.sort((a, b) => {
+  //     if (a.Customer && b.Customer) {
+  //       return a.Customer?.firstName.localeCompare(b.Customer?.firstName)
+  //     }
+  //     if (!a.Customer) {
+  //       return 1
+  //     }
+  //     return -1
+  //   })
+  //   setOrders(sorted)
+  // }
 
   return (
     <div className="relative">
@@ -128,9 +135,9 @@ const ShiftReport = () => {
             </div>
             {orders.length > 0 ? (
               <ul className="h-[480px] overflow-y-scroll">
-                {orders.map((order) => {
-                  return <OrderCard order={order} key={order.id} />
-                })}
+                {orders.map((order) => (
+                  <OrderCard order={order} key={order.id} />
+                ))}
               </ul>
             ) : null}
           </div>
