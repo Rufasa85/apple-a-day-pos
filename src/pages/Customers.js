@@ -17,8 +17,6 @@ const Customers = () => {
     queryFn: () => api.getAllCustomers(),
   })
 
-  if (response) console.log(response.data)
-
   return isLoading ? (
     <Loading />
   ) : (

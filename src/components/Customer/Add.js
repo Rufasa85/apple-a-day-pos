@@ -65,8 +65,6 @@ const Add = (properties) => {
     setFilteredCustomers(filteredData)
 
     const exactMatch = filteredData.exact.length === 1 ? filteredData.exact[0] : null
-    console.log(exactMatch)
-    console.log(query)
     setCustomerQuery(exactMatch || query)
   }
 
@@ -84,8 +82,6 @@ const Add = (properties) => {
       if (!customerQuery.firstName || !customerQuery.firstName) return
 
       const response = await api.createCustomer(customerObject)
-      console.log(response)
-
       if (response?.status === 200) {
         setVisible(false)
 
