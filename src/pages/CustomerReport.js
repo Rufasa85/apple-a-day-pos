@@ -141,7 +141,6 @@ const CustomerReport = () => {
 
               <ul className="grid grid-cols-2">
                 {response.data.Orders.map((order) => {
-                  console.log(order)
                   const customerInfo = {
                     firstName: response.data.firstName,
                     lastName: response.data.lastName,
