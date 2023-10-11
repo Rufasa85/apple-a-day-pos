@@ -120,9 +120,12 @@ const Add = (properties) => {
         <h2 className="text-lg font-semibold">Add Customer</h2>
       </div>
 
-      <Modal options={modalOptions} className="gap-x-3 gap-y-4 grid grid-cols-2 relative">
-        <Input.Search name="first-name" placeholder="First Name" value={customerQuery.firstName} onChange={handleInputChange} />
-        <Input.Search name="last-name" placeholder="Last Name" value={customerQuery.lastName} onChange={handleInputChange} />
+      <Modal options={modalOptions} className="gap-x-3 gap-y-4 flex flex-col relative">
+        <div className="gap-x-3 gap-y-4 grid grid-cols-2">
+          <Input.Search name="first-name" placeholder="First Name" value={customerQuery.firstName} onChange={handleInputChange} />
+          <Input.Search name="last-name" placeholder="Last Name" value={customerQuery.lastName} onChange={handleInputChange} />
+        </div>
+
         <Input.Date
           name="date-of-birth"
           placeholder="Date of Birth (optional)"
