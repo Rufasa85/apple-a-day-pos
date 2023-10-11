@@ -76,18 +76,17 @@ const Add = (properties) => {
         id: customerQuery.id,
         firstName: customerQuery.firstName.trim(),
         lastName: customerQuery.lastName.trim(),
-        dateOfBirth: customerQuery.dateOfBirth,
+        dateOfBirth: customerQuery.dateOfBirth || null,
       }
 
       if (!customerQuery.firstName || !customerQuery.firstName) return
 
       const response = await api.createCustomer(customerObject)
-
       if (response?.status === 200) {
         setVisible(false)
 
         const selectedCustomer = response.data.customer[0]
-        setCustomer(selectedCustomer)
+        setCustomer({ ...selectedCustomer, dateOfBirth: selectedCustomer.dateOfBirth ? selectedCustomer.dateOfBirth : '' })
 
         localStorage.setItem('customer', JSON.stringify(selectedCustomer))
       } else {
@@ -134,7 +133,7 @@ const Add = (properties) => {
         <Input.Typeahead
           isQuery={customerQuery.firstName || customerQuery.lastName || customerQuery.dateOfBirth}
           data={filteredCustomers}
-          setSelection={setCustomerQuery}
+          setSelection={(customer) => setCustomerQuery({ ...customer, dateOfBirth: customer.dateOfBirth ? customer.dateOfBirth : '' })}
           className="peer-focus-within:hidden"
         />
 

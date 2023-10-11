@@ -24,13 +24,13 @@ const Card = (properties) => {
   }
 
   const dynamicDescription = (
-    <p>
+    <span>
       Are you sure you want to remove{' '}
       <span className="font-semibold">
         {customer.firstName} {customer.lastName}
       </span>{' '}
       from this order?
-    </p>
+    </span>
   )
 
   const modalOptions = {
