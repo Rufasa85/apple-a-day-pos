@@ -6,7 +6,7 @@ const Typeahead = (properties) => {
 
   return (
     <div className="w-full flex flex-col">
-      <p className="font-semibold mt-6 mb-2 sm:text-sm text-base">Suggestions</p>
+      <p className="font-semibold my-2 sm:text-sm text-base">Suggestions</p>
 
       <div className={`${className} h-60 w-full top-full overflow-y-auto ring-inset ring-1 ring-gray-200 rounded-lg bg-white flex flex-col`}>
         <ol className="divide-y w-full h-fit rounded-lg flex flex-col">
@@ -15,18 +15,18 @@ const Typeahead = (properties) => {
               const splitPartials = key === 'partial' && (data.exact.length > 0 || data.close.length > 0)
 
               return (
-                <li
-                  key={`typeahead-term-${item.id}`}
-                  /* eslint-disable no-nested-ternary */
-                  className={classCondition(
-                    splitPartials && i === 0 ? 'text-gray-500 border-t border-gray-200' : false,
-                    splitPartials > 0 ? 'text-gray-500' : false,
-                    'group pl-9 pr-4 py-2 sm:text-sm text-base hover:bg-blue-600 hover:text-white hover:font-semibold hover:cursor-pointer flex justify-between items-center'
-                  )}
-                  /* eslint-enable no-nested-ternary */
-                  // couldn't find clear solution for this -HW
-                >
-                  <button onClick={() => setSelection(item)} type="button">
+                <button onClick={() => setSelection(item)} type="button">
+                  <li
+                    key={`typeahead-term-${item.id}`}
+                    /* eslint-disable no-nested-ternary */
+                    className={classCondition(
+                      splitPartials && i === 0 ? 'text-gray-500 border-t border-gray-200' : false,
+                      splitPartials > 0 ? 'text-gray-500' : false,
+                      'group pl-9 pr-4 py-2 sm:text-sm text-base hover:bg-blue-600 hover:text-white hover:font-semibold hover:cursor-pointer flex justify-between items-center'
+                    )}
+                    /* eslint-enable no-nested-ternary */
+                    // couldn't find clear solution for this -HW
+                  >
                     {/* check mark */}
                     {key === 'exact' && (
                       <span className="absolute left-2 z-10 flex items-center">
@@ -43,8 +43,8 @@ const Typeahead = (properties) => {
                     )}
 
                     <p>{item.typeaheadValue}</p>
-                  </button>
-                </li>
+                  </li>
+                </button>
               )
             })
           )}

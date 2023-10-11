@@ -21,6 +21,7 @@ const Add = (properties) => {
         const itemObjects = response.data.map(({ id, name }) => ({ id, name, typeaheadValue: name }))
 
         setAllItems(itemObjects)
+        setFilteredItems({ exact: [], close: itemObjects })
       }
     },
   })
@@ -111,7 +112,7 @@ const Add = (properties) => {
         </div>
       </button>
 
-      <Modal options={modalOptions} className="relative">
+      <Modal options={modalOptions} className="gap-x-3 gap-y-4 flex flex-col relative">
         <Input.Search placeholder={allItems[0]?.name || 'Add or Search'} value={itemQuery.name} onChange={handleInputChange} />
         <Input.Typeahead data={filteredItems} setSelection={setItemQuery} />
 

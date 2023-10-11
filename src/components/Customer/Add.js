@@ -134,12 +134,7 @@ const Add = (properties) => {
           className="col-span-2 peer"
         />
 
-        <Input.Typeahead
-          isQuery={customerQuery.firstName || customerQuery.lastName || customerQuery.dateOfBirth}
-          data={filteredCustomers}
-          setSelection={setCustomerQuery}
-          className="peer-focus-within:hidden"
-        />
+        <Input.Typeahead data={filteredCustomers} setSelection={setCustomerQuery} className="peer-focus-within:hidden" />
 
         {error && <p className="input-error">Sorry, something went wrong.</p>}
       </Modal>
