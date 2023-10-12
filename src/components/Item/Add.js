@@ -53,13 +53,12 @@ const Add = (properties) => {
     return data
   }
 
-  const handleInputChange = (e) => {
-    const query = {
-      name: e.target.value,
-    }
+  const handleInputChange = (input) => {
+    const query = { name: input?.target?.value || input.name }
 
     const filteredData = filterItems(query)
     setFilteredItems(filteredData)
+
     setItemQuery(query)
   }
 
@@ -114,7 +113,7 @@ const Add = (properties) => {
 
       <Modal options={modalOptions} className="gap-x-3 gap-y-4 flex flex-col relative">
         <Input.Search placeholder={allItems[0]?.name || 'Add or Search'} value={itemQuery.name} onChange={handleInputChange} />
-        <Input.Typeahead data={filteredItems} setSelection={setItemQuery} />
+        <Input.Typeahead data={filteredItems} setSelection={handleInputChange} />
 
         {error && <p className="input-error">Sorry, something went wrong.</p>}
       </Modal>

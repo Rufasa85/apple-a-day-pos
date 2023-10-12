@@ -81,7 +81,7 @@ const Card = (properties) => {
         </div>
       </div>
 
-      <p className="text-gray-400 hover:text-red-600 p-px inset-0 top-full w-full text-center sm:text-sm text:base absolute">Remove Customer</p>
+      <p className="text-gray-400 hover:text-red-600 p-1 inset-0 top-full w-full text-center sm:text-sm text:base absolute">Remove Customer</p>
 
       <Modal options={modalOptions} />
     </button>

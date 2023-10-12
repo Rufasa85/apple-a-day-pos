@@ -51,21 +51,19 @@ const Add = (properties) => {
     return data
   }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    const { firstName, lastName, dateOfBirth } = customerQuery
+  const handleInputChange = (input) => {
+    let query = { ...customerQuery }
 
-    const query = {
-      firstName: name === 'first-name' ? value : firstName,
-      lastName: name === 'last-name' ? value : lastName,
-      dateOfBirth: name === 'date-of-birth' ? value : dateOfBirth,
+    if (input.typeaheadValue) {
+      query = input
+    } else {
+      query[input.target.name] = input.target.value
     }
 
     const filteredData = filterCustomers(query)
     setFilteredCustomers(filteredData)
 
-    const exactMatch = filteredData.exact.length === 1 ? filteredData.exact[0] : null
-    setCustomerQuery(exactMatch || query)
+    setCustomerQuery(query)
   }
 
   const addCustomer = async (e) => {
@@ -122,19 +120,19 @@ const Add = (properties) => {
 
       <Modal options={modalOptions} className="gap-x-3 gap-y-4 flex flex-col relative">
         <div className="gap-x-3 gap-y-4 grid grid-cols-2">
-          <Input.Search name="first-name" placeholder="First Name" value={customerQuery.firstName} onChange={handleInputChange} />
-          <Input.Search name="last-name" placeholder="Last Name" value={customerQuery.lastName} onChange={handleInputChange} />
+          <Input.Search name="firstName" placeholder="First Name" value={customerQuery.firstName} onChange={handleInputChange} />
+          <Input.Search name="lastName" placeholder="Last Name" value={customerQuery.lastName} onChange={handleInputChange} />
         </div>
 
         <Input.Date
-          name="date-of-birth"
+          name="dateOfBirth"
           placeholder="Date of Birth (optional)"
           value={customerQuery.dateOfBirth}
           onChange={handleInputChange}
           className="col-span-2 peer"
         />
 
-        <Input.Typeahead data={filteredCustomers} setSelection={setCustomerQuery} className="peer-focus-within:hidden" />
+        <Input.Typeahead data={filteredCustomers} setSelection={handleInputChange} className="peer-focus-within:hidden" />
 
         {error && <p className="input-error">Sorry, something went wrong.</p>}
       </Modal>

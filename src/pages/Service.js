@@ -79,7 +79,7 @@ const Service = (properties) => {
         ) : (
           <div className="p-4 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1">
             {shiftItems?.map((item, i) => (
-              <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} />
+              <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} refetch={refetch} />
             ))}
 
             <Item.Add refetch={refetch} />
