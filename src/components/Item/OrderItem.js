@@ -4,8 +4,6 @@ const OrderItem = (properties) => {
   const { index, item = { orderItemName: '', quantity: 0 }, orderItems, setOrderItems } = properties
   const { orderItemName, quantity } = item
 
-  console.log(properties)
-
   const handleInputChange = (e) => {
     const updatedOrderItems = [...orderItems]
     const newQuantity = Number(e.target.value)

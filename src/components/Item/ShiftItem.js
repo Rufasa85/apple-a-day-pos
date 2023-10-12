@@ -25,12 +25,23 @@ const ShiftItem = (properties) => {
     localStorage.setItem('items', JSON.stringify(newOrderItems))
   }
 
-  const removeShiftItem = () => {
+  const removeShiftItem = async () => {
     const confirmed = window.confirm("Are you sure you want to remove this item from today's menu?")
     if (!confirmed) return
 
-    api.deleteShiftItem(id)
-    refetch()
+    try {
+      const response = await api.deleteShiftItem(id)
+      // console.log(response)
+      refetch()
+
+      if (response?.status === 200) {
+        refetch()
+      } else {
+        throw new Error('Sorry, something went wrong.')
+      }
+    } catch (error) {
+      alert(error)
+    }
   }
 
   return (

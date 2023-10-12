@@ -297,11 +297,14 @@ const api = {
   },
   deleteShiftItem: async (shiftItemId) => {
     try {
-      const deletedShiftItem = await instance.delete(`/shifts/${shiftItemId}`, {
+      const deletedShiftItem = await instance.delete(`/shiftitems/${shiftItemId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
+
+      console.log(deletedShiftItem)
+
       return deletedShiftItem
     } catch (error) {
       console.log(error)

@@ -15,9 +15,8 @@ const Typeahead = (properties) => {
               const splitPartials = key === 'partial' && (data.exact.length > 0 || data.close.length > 0)
 
               return (
-                <button onClick={() => setSelection(item)} type="button">
+                <button key={`typeahead-term-${item.id}`} onClick={() => setSelection(item)} type="button">
                   <li
-                    key={`typeahead-term-${item.id}`}
                     /* eslint-disable no-nested-ternary */
                     className={classCondition(
                       splitPartials && i === 0 ? 'text-gray-500 border-t border-gray-200' : false,

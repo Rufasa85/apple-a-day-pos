@@ -24,10 +24,11 @@ const Service = (properties) => {
         const { id, ShiftItems } = response.data
 
         const itemsSortedByCreation = ShiftItems.sort((a, b) => a.createdAt > b.createdAt)
-        const itemObjects = itemsSortedByCreation.map((shiftItem) => shiftItem.Item)
+        const itemObjects = itemsSortedByCreation.map((shiftItem) => ({ id: shiftItem.id, name: shiftItem.Item.name }))
 
         setShiftId(id)
         setShiftItems(itemObjects)
+        console.log(itemObjects)
 
         const storedCustomer = JSON.parse(localStorage.getItem('customer'))
         if (storedCustomer) setCustomer(storedCustomer)
