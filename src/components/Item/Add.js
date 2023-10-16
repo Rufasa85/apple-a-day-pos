@@ -21,6 +21,7 @@ const Add = (properties) => {
         const itemObjects = response.data.map(({ id, name }) => ({ id, name, typeaheadValue: name }))
 
         setAllItems(itemObjects)
+        setFilteredItems({ exact: [], close: itemObjects })
       }
     },
   })
@@ -52,16 +53,13 @@ const Add = (properties) => {
     return data
   }
 
-  const handleInputChange = (e) => {
-    const query = {
-      name: e.target.value,
-    }
+  const handleInputChange = (input) => {
+    const query = { name: input?.target?.value || input.name }
 
     const filteredData = filterItems(query)
     setFilteredItems(filteredData)
 
-    const exactMatch = filteredData.exact.length === 1 ? filteredData.exact[0] : null
-    setItemQuery(exactMatch || query)
+    setItemQuery(query)
   }
 
   const addItem = async (e) => {
@@ -113,9 +111,9 @@ const Add = (properties) => {
         </div>
       </button>
 
-      <Modal options={modalOptions} className="relative">
+      <Modal options={modalOptions} className="gap-x-3 gap-y-4 flex flex-col relative">
         <Input.Search placeholder={allItems[0]?.name || 'Add or Search'} value={itemQuery.name} onChange={handleInputChange} />
-        <Input.Typeahead isQuery={!!itemQuery.name} data={filteredItems} setSelection={setItemQuery} />
+        <Input.Typeahead data={filteredItems} setSelection={handleInputChange} />
 
         {error && <p className="input-error">Sorry, something went wrong.</p>}
       </Modal>

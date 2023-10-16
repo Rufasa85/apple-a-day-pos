@@ -24,10 +24,11 @@ const Service = (properties) => {
         const { id, ShiftItems } = response.data
 
         const itemsSortedByCreation = ShiftItems.sort((a, b) => a.createdAt > b.createdAt)
-        const itemObjects = itemsSortedByCreation.map((shiftItem) => shiftItem.Item)
+        const itemObjects = itemsSortedByCreation.map((shiftItem) => ({ id: shiftItem.id, name: shiftItem.Item.name }))
 
         setShiftId(id)
         setShiftItems(itemObjects)
+        console.log(itemObjects)
 
         const storedCustomer = JSON.parse(localStorage.getItem('customer'))
         if (storedCustomer) setCustomer(storedCustomer)
@@ -79,7 +80,7 @@ const Service = (properties) => {
         ) : (
           <div className="p-4 gap-8 w-full grid auto-rows-min sm:grid-cols-2 grid-cols-1">
             {shiftItems?.map((item, i) => (
-              <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} />
+              <Item.ShiftItem key={`shiftitem-${i}`} index={i} item={item} orderItems={orderItems} setOrderItems={setOrderItems} refetch={refetch} />
             ))}
 
             <Item.Add refetch={refetch} />

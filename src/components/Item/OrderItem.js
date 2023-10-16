@@ -1,8 +1,8 @@
 import Icons from '../Icons'
 
 const OrderItem = (properties) => {
-  const { index, item = { name: '', quantity: 0 }, orderItems, setOrderItems } = properties
-  const { name, quantity } = item
+  const { index, item = { orderItemName: '', quantity: 0 }, orderItems, setOrderItems } = properties
+  const { orderItemName, quantity } = item
 
   const handleInputChange = (e) => {
     const updatedOrderItems = [...orderItems]
@@ -43,12 +43,12 @@ const OrderItem = (properties) => {
   return (
     <li className="gap-3 justify-between items-center flex">
       <div className="w-8 max-w-full flex grow">
-        <p className="font-semibold truncate">{name}</p>
+        <p className="font-semibold truncate">{orderItemName}</p>
       </div>
 
       <div className="w-40 p-0 relative">
         <button onClick={decrement} className="w-10 h-full top-0 left-0 absolute p-0 button-secondary" type="button">
-          {quantity > 1 ? <Icons.Minus className="w-3 h-3" /> : <Icons.Trash className="w-4 h-4 stroke-red-600" />}
+          {quantity > 0 ? <Icons.Minus className="w-3 h-3" /> : <Icons.Trash className="w-4 h-4 stroke-red-600" />}
         </button>
 
         <input type="number" value={quantity} onChange={handleInputChange} className="text-center  input-base" />

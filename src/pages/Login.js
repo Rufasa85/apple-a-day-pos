@@ -16,6 +16,7 @@ const Login = (properties) => {
 
       const loginObj = { username, password }
       const response = await api.login(loginObj)
+      console.log(response)
 
       if (response.status === 400) {
         setInfoText(response.data.error)

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// const baseUrl = 'http://localhost:3001/api';
+// const baseUrl = 'http://localhost:3001/api'
 const baseUrl = 'https://apple-a-day-pos-11214dcf0b89.herokuapp.com/api'
 
 const instance = axios.create({
@@ -291,6 +291,21 @@ const api = {
         },
       })
       return deletedShift
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  deleteShiftItem: async (shiftItemId) => {
+    try {
+      const deletedShiftItem = await instance.delete(`/shiftitems/${shiftItemId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+
+      console.log(deletedShiftItem)
+
+      return deletedShiftItem
     } catch (error) {
       console.log(error)
     }
