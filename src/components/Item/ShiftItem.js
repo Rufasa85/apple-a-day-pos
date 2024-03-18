@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { api, classCondition, getEmoji, twColors } from '../../utils'
 import { Icons } from '..'
 
 const ShiftItem = (properties) => {
   const { index, item, orderItems, setOrderItems, refetch } = properties
   const { id, name } = item
+  const [showing,setShowing] = useState(true);
 
   const addOrderItem = (ItemId, orderItemName) => {
     for (let i = 0; i < orderItems.length; i += 1) {
@@ -28,24 +30,26 @@ const ShiftItem = (properties) => {
   const removeShiftItem = async () => {
     const confirmed = window.confirm("Are you sure you want to remove this item from today's menu?")
     if (!confirmed) return
+    setShowing(false);
+    // try {
+    //   const response = await api.deleteShiftItem(id)
+    //   // console.log(response)
+    //   refetch()
 
-    try {
-      const response = await api.deleteShiftItem(id)
-      // console.log(response)
-      refetch()
-
-      if (response?.status === 200) {
-        refetch()
-      } else {
-        throw new Error('Sorry, something went wrong.')
-      }
-    } catch (error) {
-      alert(error)
-    }
+    //   if (response?.status === 200) {
+    //     refetch()
+    //   } else {
+    //     throw new Error('Sorry, something went wrong.')
+    //   }
+    // } catch (error) {
+    //   alert(error)
+    // }
   }
 
   return (
-    <div
+    <div style={{
+      display:showing?'block':'none'
+    }}
       className={classCondition(
         twColors.getColorClass(index),
         'h-72 gap-4 flex grow justify-center items-center rounded-3xl border-2 opacity-95 shadow-lg shadow-gray-200 hover:shadow-xl hover:shadow-gray-200 hover:opacity-90 active:shadow-md active:shadow-gray-200 active:opacity-100 relative'
