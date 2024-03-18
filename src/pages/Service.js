@@ -36,8 +36,8 @@ const Service = (properties) => {
         const storedItems = JSON.parse(localStorage.getItem('items'))
         if (storedItems) setOrderItems(storedItems)
       } else {
-        localStorage.removeItem('customer')
-        localStorage.removeItem('items')
+        // localStorage.removeItem('customer')
+        // localStorage.removeItem('items')
       }
     },
   })
