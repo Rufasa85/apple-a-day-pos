@@ -20,6 +20,11 @@ const Service = (properties) => {
     queryFn: () => api.getTodaysItems(UserId),
     enabled: !!UserId,
     onSuccess: (response) => {
+      const storedDate = localStorage.getItem('today')
+      if(storedDate!==today) {
+        localStorage.removeItem('items')
+        localStorage.removeItem('customer')
+      }
       if (response?.data?.ShiftItems) {
         const { id, ShiftItems } = response.data
 
@@ -28,6 +33,7 @@ const Service = (properties) => {
 
         setShiftId(id)
         setShiftItems(itemObjects)
+        localStorage.setItem('today',today);
         console.log(itemObjects)
 
         const storedCustomer = JSON.parse(localStorage.getItem('customer'))
